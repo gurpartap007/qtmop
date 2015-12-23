@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "header.h"
+#include "database.h"
 /** @brief Music streaming using mpdclient Api,MPD and ICECAST2 server
 
     Detailed description follows here.
@@ -23,6 +24,7 @@ class music_streamer : public QWidget
 public:
     explicit music_streamer(QWidget *parent = 0);
     ~music_streamer();
+    database *bus_database;/**< database connection to BUS_PIS Database in sql**/
     mpd_connection *conn;/**< connection to mpd server**/
     struct mpd_status * status;/**< MPD daemon connection status and to fetch various information from mpd**/
     struct mpd_song *song;/**< Structure to store song information returned from MPD daemon**/
@@ -36,6 +38,8 @@ public slots:
     void on_prev_clicked();/**< Start streaming Previous song in current playlist **/
     void on_play_clicked();/**<Start streaming Current song in current playlist **/
     void on_pause_clicked();/**<Pause stream of Current song in current playlist**/
+    void on_playlist_clicked();/**<Show Playlist retrieved from Sql Database**/
+
 private:
     Ui::music_streamer *ui;
 

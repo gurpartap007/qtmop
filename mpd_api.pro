@@ -23,7 +23,8 @@ SOURCES += main.cpp\
 HEADERS  += mpd.h \
     header.h \
     database.h \
-    music_streamer.h
+    music_streamer.h \
+    sql_enums.h
 
 FORMS    += mpd.ui \
     music_streamer.ui

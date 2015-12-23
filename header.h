@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <QString>
+#include <QStringList>
 #include <QFont>
 #include <QDebug>
 #include <QDebug>

@@ -6,10 +6,7 @@ mpd::mpd(QWidget *parent) :
     ui(new Ui::mpd)
 {
     ui->setupUi(this);
-    /* New Sql database which hold the all details about Routes,Devices,Events and announcements.
-     *
-     * */
-    bus_database = new database;
+
     /*Music Streamer based on mpdclient API which stream through ICECAST server on LOCALHOST on 6600 port no.
      *
      * */

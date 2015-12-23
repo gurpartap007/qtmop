@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "header.h"
+#include "sql_enums.h"
 
 class database : public QObject
 {
@@ -10,10 +11,7 @@ class database : public QObject
 public:
     explicit database(QObject *parent = 0);
     ~database();
-
-signals:
-
-public slots:
+    QStringList *data_name;
 };
 
 #endif // DATABASE_H

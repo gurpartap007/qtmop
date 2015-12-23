@@ -6,6 +6,13 @@ music_streamer::music_streamer(QWidget *parent) :
     ui(new Ui::music_streamer)
 {
     ui->setupUi(this);
+    /* New Sql database which hold the all details about Routes,Devices,Events and announcements.
+     *
+     * */
+    bus_database = new database;
+    /* New process will be created and "/usr/bin/mp3-decoder" will run in new process
+     *
+     * */
     player = new QProcess;
     player->setProcessChannelMode(QProcess::MergedChannels);
     //////////////////// Setting player_timer to delay mplayer start  ////////////////////////
@@ -178,3 +185,11 @@ void music_streamer::on_pause_clicked()
 }
 
 
+
+void music_streamer::on_playlist_clicked()
+{
+ui->textEdit->clear();
+//ui->textEdit->setText(bus_database->data_name->at(0));
+for(int i=0;i<bus_database->data_name->size();i++)
+ui->textEdit->append(bus_database->data_name->at(i));
+}
