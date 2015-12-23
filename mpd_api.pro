@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,9 +16,14 @@ PKGCONFIG = libmpdclient
 
 
 SOURCES += main.cpp\
-        mpd.cpp
+        mpd.cpp \
+    database.cpp \
+    music_streamer.cpp
 
 HEADERS  += mpd.h \
-    header.h
+    header.h \
+    database.h \
+    music_streamer.h
 
-FORMS    += mpd.ui
+FORMS    += mpd.ui \
+    music_streamer.ui

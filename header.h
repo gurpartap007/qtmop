@@ -19,5 +19,11 @@
 #include <QDebug>
 #include <QDebug>
 #include <QDir>
+#include <QTimer>
+#include <QProcess>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlRecord>
+#include <QtSql/QSqlTableModel>
 #endif // HEADER_H
 
