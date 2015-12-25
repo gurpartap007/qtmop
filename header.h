@@ -18,10 +18,14 @@
 #include <QStringList>
 #include <QFont>
 #include <QDebug>
-#include <QDebug>
+#include <QLabel>
+#include <QTimerEvent>
+#include <QRegion>
 #include <QDir>
 #include <QTimer>
 #include <QProcess>
+#include <QPalette>
+#include <QPainter>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlRecord>
