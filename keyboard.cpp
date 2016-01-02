@@ -51,9 +51,9 @@ void keyboard::characterset(int number,int mode)
 
 void keyboard::on_pushButton_3_clicked()
 {
-//    characterset(LETTER_Qq,check);
-    *ptr = '\0';
-    emit value_changed(ENTER_CLICK);
+    characterset(LETTER_Qq,check);
+    //*ptr = '\0';
+    //emit value_changed(ENTER_CLICK);
 }
 
 void keyboard::on_pushButton_4_clicked()
@@ -242,7 +242,8 @@ void keyboard::on_pushButton_31_clicked()
         *pter = '1';ui->pushButton_3->setText(change);*pter = '2';ui->pushButton_4->setText(change);*pter = '3';ui->pushButton_5->setText(change);
         *pter = '4';ui->pushButton_6->setText(change);*pter = '5';ui->pushButton_7->setText(change);*pter = '6';ui->pushButton_8->setText(change);
         *pter = '7';ui->pushButton_9->setText(change);*pter = '8';ui->pushButton_10->setText(change);*pter = '9';ui->pushButton_11->setText(change);
-        *pter = '0';ui->pushButton_12->setText(change);*pter = '@';ui->pushButton_13->setText(change);*pter = ':';ui->pushButton_21->setText(change);
+        *pter = '0';
+        ui->pushButton_12->setText(change);*pter = '@';ui->pushButton_13->setText(change);*pter = ':';ui->pushButton_21->setText(change);
         *pter = ';';ui->pushButton_17->setText(change);*pter = '_';ui->pushButton_18->setText(change);*pter = '$';ui->pushButton_16->setText(change);
         *pter = '#';ui->pushButton_14->setText(change);*pter = '(';ui->pushButton_19->setText(change);*pter = ')';ui->pushButton_15->setText(change);
         *pter = '/';ui->pushButton_20->setText(change);*pter =  92;ui->pushButton_28->setText(change);*pter = '?';ui->pushButton_25->setText(change);

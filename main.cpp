@@ -5,7 +5,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     mpd w;
-    w.show();
+    w.setWindowFlags(Qt::FramelessWindowHint);
+    w.showFullScreen();
 
     return a.exec();
 }

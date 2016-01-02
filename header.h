@@ -24,6 +24,7 @@
 #include <QDir>
 #include <QTimer>
 #include <QProcess>
+#include <QMessageBox>
 #include <QPalette>
 #include <QPainter>
 #include <QtSql/QSqlDatabase>

@@ -8,7 +8,7 @@ music_streamer::music_streamer(QWidget *parent) :
     ui->setupUi(this);
     QPainter painter(this);
     //painter.setBrush(Qt::yellow);
-     painter.setPen(QPen(Qt::yellow, 2));
+    painter.setPen(QPen(Qt::yellow, 2));
     painter.drawEllipse(0,0,50,50);
     /* New Sql database which hold the all details about Routes,Devices,Events and announcements.
      *
@@ -94,13 +94,13 @@ music_streamer::~music_streamer()
     delete ui;
     delete player_timer;
     player->close();
-   // system("pkill -9 mp3-decoder");
+    // system("pkill -9 mp3-decoder");
     mpd_connection_free(conn);
 }
 void music_streamer::on_next_clicked()
 {
     qDebug() << "Next: " <<  mpd_run_next(conn);
-      mpd_response_finish(conn);
+    mpd_response_finish(conn);
     song = mpd_run_current_song(conn);
     if (song != NULL)
     {
@@ -114,7 +114,6 @@ void music_streamer::on_next_clicked()
         qDebug()  <<  "artist: " << value ;
         artist=QString::fromUtf8(value);
         ui->textEdit->append(artist);
-
         value = mpd_song_get_tag(song,MPD_TAG_TITLE ,0);
         qDebug()  <<  "Title: " << value ;
         title=QString::fromUtf8(value);
@@ -137,7 +136,7 @@ void music_streamer::mplayer_start()
     QStringList arguments;
     arguments << "http://127.0.0.1:8000/mpd.mp3";
     qDebug() << "mplayer_slot" <<   mpd_response_finish(conn);
-  //  system("mp3-decoder http://127.0.0.1:8000/mpd.mp3 &");
+    //  system("mp3-decoder http://127.0.0.1:8000/mpd.mp3 &");
     player_timer->stop();
     player->start(program,arguments);
     qDebug() << "player Id:" << player->processId();
@@ -160,7 +159,6 @@ void music_streamer::on_prev_clicked()
         qDebug()  <<  "artist: " << value ;
         artist=QString::fromUtf8(value);
         ui->textEdit->append(artist);
-
         value = mpd_song_get_tag(song,MPD_TAG_TITLE ,0);
         qDebug()  <<  "Title: " << value ;
         title=QString::fromUtf8(value);
@@ -192,8 +190,8 @@ void music_streamer::on_pause_clicked()
 
 void music_streamer::on_playlist_clicked()
 {
-ui->textEdit->clear();
-//ui->textEdit->setText(bus_database->data_name->at(0));
-for(int i=0;i<bus_database->data_name->size();i++)
-ui->textEdit->append(bus_database->data_name->at(i));
+    ui->textEdit->clear();
+    //ui->textEdit->setText(bus_database->data_name->at(0));
+    for(int i=0;i<bus_database->data_name->size();i++)
+        ui->textEdit->append(bus_database->data_name->at(i));
 }

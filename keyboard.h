@@ -1,6 +1,7 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 #include "ui_keyboard.h"
+#include "header.h"
 //#include "all_headers.h"
 #define LETTER_Qq	0
 #define	LETTER_Ww	1
