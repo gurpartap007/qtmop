@@ -16,6 +16,7 @@ class route_selection : public QWidget
 public:
     explicit route_selection(QWidget *parent = 0);
     keyboard *train_selection_keyboard;
+     QPushButton *errorbox;
     ~route_selection();
 public slots:
     void settext(char value);

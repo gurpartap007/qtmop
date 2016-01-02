@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1062</width>
-    <height>495</height>
+    <height>542</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,233 +18,315 @@
 background-color: rgb(230, 230, 230);</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_10">
+   <layout class="QHBoxLayout" name="horizontalLayout_5">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_9">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_14">
+       <layout class="QVBoxLayout" name="verticalLayout_15">
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_6">
-          <property name="spacing">
-           <number>15</number>
-          </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_8">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <layout class="QVBoxLayout" name="verticalLayout">
             <property name="spacing">
-             <number>6</number>
+             <number>0</number>
             </property>
             <item>
-             <spacer name="horizontalSpacer_7">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
+             <widget class="QPushButton" name="settings">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
+              <property name="maximumSize">
                <size>
-                <width>40</width>
-                <height>20</height>
+                <width>16777215</width>
+                <height>100</height>
                </size>
               </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="gsm_label">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
               <property name="styleSheet">
                <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(0,0,0);
-background-color: rgb(230, 230, 230);
-background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
+background-color: rgb(239, 239, 239);
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
+border-top-color: rgb(117, 117, 117);
+border-color: rgb(106, 106, 106);
 </string>
-              </property>
-              <property name="text">
-               <string>GSM</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="gsm">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">
-background-color: rgb(255, 85, 0);</string>
               </property>
               <property name="text">
                <string/>
               </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <property name="spacing">
-             <number>6</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="gps_label">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+              <property name="icon">
+               <iconset>
+                <normaloff>../../Pictures/images/settingsBLACK.png</normaloff>../../Pictures/images/settingsBLACK.png</iconset>
               </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(0,0,0);
-background-color: rgb(230, 230, 230);
-background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
-</string>
-              </property>
-              <property name="text">
-               <string>GPS</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="gps">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">
-background-color: rgb(255, 85, 0);</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
-            <property name="spacing">
-             <number>6</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="call_label">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(0,0,0);
-background-color: rgb(230, 230, 230);
-background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
-</string>
-              </property>
-              <property name="text">
-               <string>CALL</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="call">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">
-background-color: rgb(255, 85, 0);</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <property name="spacing">
-             <number>6</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="pwr_label">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(0,0,0);
-background-color: rgb(230, 230, 230);
-background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
-</string>
-              </property>
-              <property name="text">
-               <string>PWR</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pwr">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">
-background-color: rgb(255, 85, 0);</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::MinimumExpanding</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
+              <property name="iconSize">
                <size>
-                <width>300</width>
-                <height>20</height>
+                <width>80</width>
+                <height>80</height>
                </size>
               </property>
-             </spacer>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="settings_label">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              </property>
+              <property name="text">
+               <string>Settings</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pa">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>100</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
+color: rgb(255, 255, 255);
+background-color: rgb(239, 239, 239);
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
+</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../../Pictures/images/announcement_on_podium.png</normaloff>../../Pictures/images/announcement_on_podium.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>80</width>
+                <height>80</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="announcement_label">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              </property>
+              <property name="text">
+               <string>Announcement</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="intercom">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>100</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
+color: rgb(255, 255, 255);
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../../Pictures/images/intercom2.png</normaloff>../../Pictures/images/intercom2.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>80</width>
+                <height>80</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="intercom_label">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              </property>
+              <property name="text">
+               <string>Intercom</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_7">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="etu">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>100</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
+color: rgb(255, 255, 255);
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../../Pictures/support_operator-512.png</normaloff>../../Pictures/support_operator-512.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>80</width>
+                <height>80</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="etu_label">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              </property>
+              <property name="text">
+               <string>ETU</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="control_room">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>100</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
+color: rgb(255, 255, 255);
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../../Downloads/onlinelogomaker-122515-1610.png</normaloff>../../Downloads/onlinelogomaker-122515-1610.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>80</width>
+                <height>80</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="control_room_label">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              </property>
+              <property name="text">
+               <string>Control Room </string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -497,8 +579,8 @@ background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgb
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>249</width>
-                    <height>156</height>
+                    <width>240</width>
+                    <height>240</height>
                    </size>
                   </property>
                   <property name="maximumSize">
@@ -572,102 +654,6 @@ background-color: rgb(230, 230, 230);</string>
                </layout>
               </item>
               <item>
-               <layout class="QVBoxLayout" name="verticalLayout_4">
-                <item>
-                 <spacer name="verticalSpacer_2">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="settings">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>194</width>
-                    <height>156</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>435</width>
-                    <height>156</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">background-color: rgb(75, 75, 75);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(100, 100, 100, 255));</string>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset>
-                    <normaloff>../../Pictures/images/settings_gray.png</normaloff>../../Pictures/images/settings_gray.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>150</width>
-                    <height>150</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="settings_label">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>435</width>
-                    <height>33</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font: 20pt &quot;Sans Serif&quot;;
-color: rgb(0,0,0);
-background-color: rgb(230, 230, 230);</string>
-                  </property>
-                  <property name="text">
-                   <string>Settings Menu</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer_4">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-              <item>
                <spacer name="horizontalSpacer_5">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
@@ -687,364 +673,84 @@ background-color: rgb(230, 230, 230);</string>
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout">
-            <property name="spacing">
-             <number>0</number>
+           <widget class="Line" name="line_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
-            <item>
-             <widget class="QPushButton" name="mode">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>100</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-background-color: rgb(239, 239, 239);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
-border-top-color: rgb(117, 117, 117);
-border-color: rgb(106, 106, 106);
-</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../Downloads/onlinelogomaker-122515-1417.png</normaloff>../../Downloads/onlinelogomaker-122515-1417.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string>Mode</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
-            <property name="spacing">
-             <number>0</number>
+           <widget class="QLabel" name="label_16">
+            <property name="styleSheet">
+             <string notr="true">font: 12pt &quot;Sans Serif&quot;;
+color: rgb(0,0,0);
+background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
             </property>
-            <item>
-             <widget class="QPushButton" name="pa">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>100</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(255, 255, 255);
-background-color: rgb(239, 239, 239);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
-</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/images/announcement_on_podium.png</normaloff>../../Pictures/images/announcement_on_podium.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string>Announcement</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
+            <property name="text">
+             <string>System Status</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_6">
-            <property name="spacing">
-             <number>0</number>
+           <widget class="Line" name="line_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
-            <item>
-             <widget class="QPushButton" name="intercom">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>100</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(255, 255, 255);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/images/intercom2.png</normaloff>../../Pictures/images/intercom2.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_3">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string>Intercom</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           </widget>
           </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_7">
-            <property name="spacing">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QPushButton" name="etu">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>100</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(255, 255, 255);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/support_operator-512.png</normaloff>../../Pictures/support_operator-512.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_4">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string>ETU</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_8">
-            <property name="spacing">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QPushButton" name="control_room">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>100</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(255, 255, 255);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../Downloads/onlinelogomaker-122515-1610.png</normaloff>../../Downloads/onlinelogomaker-122515-1610.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_5">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string>Control Room </string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_9">
-            <property name="spacing">
-             <number>0</number>
-            </property>
             <item>
-             <widget class="QPushButton" name="end_call">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>100</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(255, 255, 255);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/images/stop1.png</normaloff>../../Pictures/images/stop1.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_6">
+             <widget class="QLabel" name="gps">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="styleSheet">
                <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
               </property>
               <property name="text">
-               <string>End Call</string>
+               <string>GPS</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="gps_status">
+              <property name="font">
+               <font>
+                <family>Free Serif</family>
+                <pointsize>12</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font: 12pt &quot;Free Serif&quot;;
+color: rgb(0,85,0);</string>
+              </property>
+              <property name="text">
+               <string>OK</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -1054,117 +760,47 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
            </layout>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_10">
-            <property name="spacing">
-             <number>0</number>
+           <widget class="Line" name="line_4">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
             </property>
-            <item>
-             <widget class="QPushButton" name="hold_call">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>100</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(255, 255, 255);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/images/hold_call.png</normaloff>../../Pictures/images/hold_call.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_7">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string>Hold Call</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           </widget>
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_11">
-            <property name="spacing">
-             <number>0</number>
-            </property>
             <item>
-             <widget class="QPushButton" name="mute_call">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>100</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(255, 255, 255);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/images/mute_call.png</normaloff>../../Pictures/images/mute_call.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_8">
+             <widget class="QLabel" name="gsm">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="styleSheet">
                <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
               </property>
               <property name="text">
-               <string>Mute Call</string>
+               <string>GSM</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="gsm_status">
+              <property name="styleSheet">
+               <string notr="true">font: 12pt &quot;Free Serif&quot;;
+color: rgb(0, 85, 0);</string>
+              </property>
+              <property name="text">
+               <string>OK</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -1174,57 +810,47 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
            </layout>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_12">
-            <property name="spacing">
-             <number>0</number>
+           <widget class="Line" name="line_5">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
             </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_12">
             <item>
-             <widget class="QPushButton" name="bar_call">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>100</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(255, 255, 255);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/images/end_call.png</normaloff>../../Pictures/images/end_call.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>80</width>
-                <height>80</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_9">
+             <widget class="QLabel" name="call">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
               <property name="styleSheet">
                <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
               </property>
               <property name="text">
-               <string>Bar Call</string>
+               <string>CALL</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="call_status">
+              <property name="styleSheet">
+               <string notr="true">font: 12pt &quot;Free Serif&quot;;
+color: rgb(0,85,0);</string>
+              </property>
+              <property name="text">
+               <string>OK</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -1232,6 +858,72 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
              </widget>
             </item>
            </layout>
+          </item>
+          <item>
+           <widget class="Line" name="line_6">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_14">
+            <item>
+             <widget class="QLabel" name="pwr">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+              </property>
+              <property name="text">
+               <string>PWR</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="pwr_status">
+              <property name="styleSheet">
+               <string notr="true">font: 12pt &quot;Free Serif&quot;;
+color: rgb(0,85,0);</string>
+              </property>
+              <property name="text">
+               <string>OK</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Maximum</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </item>
@@ -1409,6 +1101,20 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
      </widget>
     </item>
    </layout>
+   <zorder>line</zorder>
+   <zorder></zorder>
+   <zorder>gps</zorder>
+   <zorder>gps_status</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>label_16</zorder>
+   <zorder>line_2</zorder>
+   <zorder>horizontalSpacer</zorder>
+   <zorder>horizontalSpacer_7</zorder>
+   <zorder>label_16</zorder>
+   <zorder>line_3</zorder>
+   <zorder>layoutWidget_5</zorder>
+   <zorder>layoutWidget_2</zorder>
+   <zorder>layoutWidget_6</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
