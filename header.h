@@ -27,6 +27,8 @@
 #include <QMessageBox>
 #include <QPalette>
 #include <QPainter>
+#include <QRect>
+#include <QSqlTableModel>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlRecord>

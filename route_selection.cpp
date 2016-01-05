@@ -1,54 +1,55 @@
 #include "route_selection.h"
 #include "ui_route_selection.h"
-QString input;
+QStringList train_routes;
 extern char display[20];
 extern char *ptr;
+extern QSqlDatabase db;
 route_selection::route_selection(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::route_selection)
 {
     ui->setupUi(this);
-    //qreal opacity_level=0;
     train_selection_keyboard = new keyboard(this);
-    // train_selection_keyboard->setMaximumSize(ui->stackedWidget->size());
-    // train_selection_keyboard->setLayout(ui->keyboard_layout);
+    train_database = new database(this);
+    current_route = new train_route(&db);
+    ui->stackedWidget->addWidget(current_route);
     ui->stackedWidget->addWidget(train_selection_keyboard);
     ui->stackedWidget->setCurrentWidget(train_selection_keyboard);
-    this->setGeometry(100,120,this->width(),this->height());
-    // Create TopLevel-Widget
-    setAttribute(Qt::WA_NoSystemBackground, false);
-    setAttribute(Qt::WA_TranslucentBackground, false);
-    setWindowFlags(Qt::WindowStaysOnTopHint);
-    //  setAttribute(Qt::WA_PaintOnScreen); // not needed in Qt 5.2 and up
-    //setWindowOpacity(opacity_level);
     connect(train_selection_keyboard,SIGNAL(value_changed(char)),this,SLOT(settext(char)));
+    connect(this,SIGNAL(train_selected()),this,SLOT(route_window()));
     train_selection_keyboard->on_pushButton_31_clicked();
-
-
 }
 route_selection::~route_selection()
 {
     delete ui;
 }
-
 void route_selection::settext(char value)
 {
-    ui->lineEdit->clear();
-    errorbox = new  QPushButton(this) ;
-    //errorbox.setParent(this);
-    errorbox->setWindowFlags(Qt::WindowStaysOnTopHint);
-    // input.append(QString::fromUtf8(&value));
+    int route_count=0;
     if(value == ENTER_CLICK)
     {
+        qDebug() << train_routes;
+        while(train_routes[route_count]!=NULL)
+        {
+        if(strcmp(display,train_routes[route_count].toUtf8().constData()))
+        {
         ui->lineEdit->clear();
         ui->lineEdit->setText("Invalid Train Route");
         ui->lineEdit->setStyleSheet("QLineEdit { background-color: rgb(255,0,0); }");
-       // memset(display,'\0',sizeof(display));
-        while(ptr != &display[0])
-        {
-            ptr--;	//decrementing write pointer
-            *ptr = '\0';
         }
+        else
+        {
+            emit train_selected();
+            break;
+        }
+        ++route_count;
+        }
+        while(ptr != &display[0])
+                {
+                    ptr--;
+                    *ptr = '\0';
+                }
+
     }
     else
     {
@@ -58,7 +59,15 @@ void route_selection::settext(char value)
     }
 }
 
-void route_selection::on_pushButton_clicked()
+void route_selection::route_window()
+{
+    ui->backButton->hide();
+    ui->lineEdit->hide();
+    ui->select_route_label->hide();
+
+    ui->stackedWidget->setCurrentWidget(current_route);
+}
+void route_selection::on_backButton_clicked()
 {
     while(ptr != &display[0])
     {
@@ -66,5 +75,7 @@ void route_selection::on_pushButton_clicked()
         *ptr = '\0';
     }
     ui->lineEdit->setText(QString::fromUtf8(display));
+    ui->stackedWidget->setCurrentWidget(train_selection_keyboard);
     this->close();
 }
+

@@ -19,12 +19,36 @@ background-color: rgb(230, 230, 230);</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_5">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_15">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_8">
+          <property name="spacing">
+           <number>0</number>
+          </property>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout">
             <property name="spacing">
@@ -338,10 +362,28 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
            <string notr="true">background-color: rgb(230, 230, 230);</string>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="main_screen">
            <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="sizeConstraint">
+             <enum>QLayout::SetMinAndMaxSize</enum>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
             <item>
              <layout class="QGridLayout" name="gridLayout">
               <property name="sizeConstraint">
@@ -530,13 +572,28 @@ background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgb
           </widget>
           <widget class="QWidget" name="main_menu">
            <layout class="QVBoxLayout" name="verticalLayout_13">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <property name="sizeConstraint">
              <enum>QLayout::SetMinAndMaxSize</enum>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
             </property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_11">
               <property name="spacing">
-               <number>80</number>
+               <number>0</number>
               </property>
               <property name="sizeConstraint">
                <enum>QLayout::SetMinAndMaxSize</enum>
@@ -556,6 +613,9 @@ background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgb
               </item>
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_2">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
                 <item>
                  <spacer name="verticalSpacer">
                   <property name="orientation">
@@ -670,10 +730,14 @@ background-color: rgb(230, 230, 230);</string>
             </item>
            </layout>
           </widget>
+          <widget class="QWidget" name="page_3"/>
          </widget>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
           <item>
            <widget class="Line" name="line_2">
             <property name="orientation">
@@ -707,8 +771,14 @@ background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgb
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="spacing">
+           <number>0</number>
+          </property>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_9">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QLabel" name="gps">
               <property name="sizePolicy">
@@ -768,6 +838,9 @@ color: rgb(0,85,0);</string>
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_11">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QLabel" name="gsm">
               <property name="sizePolicy">
@@ -818,6 +891,9 @@ color: rgb(0, 85, 0);</string>
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_12">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QLabel" name="call">
               <property name="sizePolicy">
@@ -868,6 +944,9 @@ color: rgb(0,85,0);</string>
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_14">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QLabel" name="pwr">
               <property name="sizePolicy">
@@ -945,8 +1024,26 @@ color: rgb(0,85,0);</string>
         </property>
         <widget class="QWidget" name="page">
          <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <item>
              <widget class="QPushButton" name="up">
               <property name="sizePolicy">
@@ -1103,18 +1200,6 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
    </layout>
    <zorder>line</zorder>
    <zorder></zorder>
-   <zorder>gps</zorder>
-   <zorder>gps_status</zorder>
-   <zorder>layoutWidget</zorder>
-   <zorder>label_16</zorder>
-   <zorder>line_2</zorder>
-   <zorder>horizontalSpacer</zorder>
-   <zorder>horizontalSpacer_7</zorder>
-   <zorder>label_16</zorder>
-   <zorder>line_3</zorder>
-   <zorder>layoutWidget_5</zorder>
-   <zorder>layoutWidget_2</zorder>
-   <zorder>layoutWidget_6</zorder>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
