@@ -20,12 +20,16 @@
 #include <QDebug>
 #include <QLabel>
 #include <QTimerEvent>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QRegion>
 #include <QDir>
 #include <QTimer>
 #include <QProcess>
 #include <QMessageBox>
 #include <QPalette>
+#include <QPropertyAnimation>
 #include <QPainter>
 #include <QRect>
 #include <QSqlTableModel>

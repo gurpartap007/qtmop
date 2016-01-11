@@ -64,7 +64,6 @@ void route_selection::route_window()
     ui->backButton->hide();
     ui->lineEdit->hide();
     ui->select_route_label->hide();
-
     ui->stackedWidget->setCurrentWidget(current_route);
 }
 void route_selection::on_backButton_clicked()

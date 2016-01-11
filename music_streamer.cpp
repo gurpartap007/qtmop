@@ -5,11 +5,7 @@ music_streamer::music_streamer(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::music_streamer)
 {
-    ui->setupUi(this);
-    QPainter painter(this);
-    //painter.setBrush(Qt::yellow);
-    painter.setPen(QPen(Qt::yellow, 2));
-    painter.drawEllipse(0,0,50,50);
+    ui->setupUi(this);  
     /* New Sql database which hold the all details about Routes,Devices,Events and announcements.
      *
      * */
