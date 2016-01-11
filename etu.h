@@ -23,7 +23,8 @@ public slots:
     void end_current_call();
 signals:
     void call_ended();
-
+protected:
+     void paintEvent(QPaintEvent* event);
 private:
     Ui::etu *ui;
 };

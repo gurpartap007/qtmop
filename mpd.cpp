@@ -42,8 +42,10 @@ void mpd::on_select_route_clicked()
 
 void mpd::on_etu_clicked()
 {
+    qDebug() << ui->stackedWidget->width();
     emergency_talkback->setParent(ui->stackedWidget);
-    emergency_talkback->setWindowFlags(Qt::WindowStaysOnTopHint);
+    emergency_talkback->setGeometry(0,0,ui->stackedWidget->width(),ui->stackedWidget->height());
+   // emergency_talkback->setWindowFlags(Qt::WindowStaysOnTopHint);
     ui->settings->hide();
     ui->control_room->hide();
     ui->intercom->hide();
