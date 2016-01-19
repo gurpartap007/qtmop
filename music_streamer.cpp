@@ -5,10 +5,9 @@ music_streamer::music_streamer(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::music_streamer)
 {
-    ui->setupUi(this);  
+    ui->setupUi(this);
     /* New Sql database which hold the all details about Routes,Devices,Events and announcements.
-     *
-     * */
+     * * */
     bus_database = new database;
     /* New process will be created and "/usr/bin/mp3-decoder" will run in new process
      *
@@ -89,6 +88,9 @@ music_streamer::~music_streamer()
 {
     delete ui;
     delete player_timer;
+    delete bus_database;
+    delete audio_format;
+    delete player;
     player->close();
     // system("pkill -9 mp3-decoder");
     mpd_connection_free(conn);

@@ -3,7 +3,7 @@
 void etu::paintEvent(QPaintEvent* /*event*/)
 {
  QColor backgroundColor = palette().light().color();
- backgroundColor.setAlpha(5);
+ backgroundColor.setAlpha(150);
  QPainter customPainter(this);
  customPainter.fillRect(rect(),backgroundColor);
 }
@@ -12,7 +12,7 @@ etu::etu(QWidget *parent) :
     ui(new Ui::etu)
 {
     ui->setupUi(this);
-    connect(ui->pushButton_3,SIGNAL(clicked()),this,SLOT(end_current_call()));
+    connect(ui->end_call_button,SIGNAL(clicked()),this,SLOT(end_current_call()));
 
 }
 
@@ -25,4 +25,9 @@ etu::~etu()
 void etu::end_current_call()
 {
     emit call_ended();
+}
+
+void etu::on_etu_back_button_clicked()
+{
+    emit back_clicked();
 }

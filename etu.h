@@ -23,8 +23,12 @@ public slots:
     void end_current_call();
 signals:
     void call_ended();
+    void back_clicked();
 protected:
      void paintEvent(QPaintEvent* event);
+private slots:
+     void on_etu_back_button_clicked();
+
 private:
     Ui::etu *ui;
 };

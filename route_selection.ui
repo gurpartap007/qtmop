@@ -74,8 +74,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../../Pictures/images/backbutton.png</normaloff>../../Pictures/images/backbutton.png</iconset>
+        <iconset resource="icons.qrc">
+         <normaloff>:/images/backbutton.png</normaloff>:/images/backbutton.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -212,6 +212,8 @@ background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgb
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

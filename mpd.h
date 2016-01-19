@@ -6,6 +6,8 @@
 #include "etu.h"
 #include "music_streamer.h"
 #include "route_selection.h"
+#include "settings.h"
+#include "public_announcement.h"
 
 /** @brief Main MOP Device CLASS
 
@@ -31,11 +33,18 @@ public:
     music_streamer *announcement_streamer;/**< mpdclient API based music streamer on localhost,port 6600S**/
     route_selection *select_route;
     etu *emergency_talkback;
+    settings *system_settings;
+    public_announcement *announcement;
 
 private slots:
-void on_menu_clicked();
 void on_select_route_clicked();
 void on_etu_clicked();
+void show_train_route_selection();
+void close_etu_popup();
+void on_settings_clicked();
+void close_settings_popup();
+void on_pa_clicked();
+void close_announcement_popup();
 
 private:
     Ui::mpd *ui;

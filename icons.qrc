@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/vol_control_black.png</file>
+        <file>images/update.png</file>
+        <file>images/train_logo_grey.png</file>
+        <file>images/system_config.png</file>
+        <file>images/etu.png</file>
+        <file>images/red_stop_button.png</file>
+        <file>images/start_announce.png</file>
+        <file>images/settingsBLACK.png</file>
+        <file>images/play.png</file>
+        <file>images/control_room.png</file>
+        <file>images/mute_call.png</file>
+        <file>images/intercom.png</file>
+        <file>images/hold_call.png</file>
+        <file>images/end_call.png</file>
+        <file>images/data_transfer_black.png</file>
+        <file>images/green_call_button.png</file>
+        <file>images/backbutton.png</file>
+        <file>images/announcement_on_podium.png</file>
+    </qresource>
+</RCC>

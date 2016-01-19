@@ -56,6 +56,9 @@ background-color: rgb(230, 230, 230);</string>
             </property>
             <item>
              <widget class="QPushButton" name="settings">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -80,8 +83,8 @@ border-color: rgb(106, 106, 106);
                <string/>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/images/settingsBLACK.png</normaloff>../../Pictures/images/settingsBLACK.png</iconset>
+               <iconset resource="icons.qrc">
+                <normaloff>:/images/settingsBLACK.png</normaloff>:/images/settingsBLACK.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -119,6 +122,9 @@ border-color: rgb(106, 106, 106);
             </property>
             <item>
              <widget class="QPushButton" name="pa">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -142,8 +148,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
                <string/>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/images/announcement_on_podium.png</normaloff>../../Pictures/images/announcement_on_podium.png</iconset>
+               <iconset resource="icons.qrc">
+                <normaloff>:/images/announcement_on_podium.png</normaloff>:/images/announcement_on_podium.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -165,7 +171,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
                <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
               </property>
               <property name="text">
-               <string>Announcement</string>
+               <string>Public Announcement</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -181,6 +187,9 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
             </property>
             <item>
              <widget class="QPushButton" name="intercom">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -202,8 +211,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
                <string/>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/images/intercom2.png</normaloff>../../Pictures/images/intercom2.png</iconset>
+               <iconset resource="icons.qrc">
+                <normaloff>:/images/intercom.png</normaloff>:/images/intercom.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -241,6 +250,9 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
             </property>
             <item>
              <widget class="QPushButton" name="etu">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -262,8 +274,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
                <string/>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/support_operator-512.png</normaloff>../../Pictures/support_operator-512.png</iconset>
+               <iconset resource="icons.qrc">
+                <normaloff>:/images/etu.png</normaloff>:/images/etu.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -301,6 +313,9 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
             </property>
             <item>
              <widget class="QPushButton" name="control_room">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -322,8 +337,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
                <string/>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>../../Downloads/onlinelogomaker-122515-1610.png</normaloff>../../Downloads/onlinelogomaker-122515-1610.png</iconset>
+               <iconset resource="icons.qrc">
+                <normaloff>:/images/control_room.png</normaloff>:/images/control_room.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -660,8 +675,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset>
-                    <normaloff>../../Pictures/images/train_logo_grey.png</normaloff>../../Pictures/images/train_logo_grey.png</iconset>
+                   <iconset resource="icons.qrc">
+                    <normaloff>:/images/train_logo_grey.png</normaloff>:/images/train_logo_grey.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -750,7 +765,8 @@ background-color: rgb(230, 230, 230);</string>
             <property name="styleSheet">
              <string notr="true">font: 12pt &quot;Sans Serif&quot;;
 color: rgb(0,0,0);
-background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
+background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
             </property>
             <property name="text">
              <string>System Status</string>
@@ -794,7 +810,8 @@ background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgb
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
+background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
               </property>
               <property name="text">
                <string>GPS</string>
@@ -856,7 +873,8 @@ color: rgb(0,85,0);</string>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
+background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
               </property>
               <property name="text">
                <string>GSM</string>
@@ -909,7 +927,8 @@ color: rgb(0, 85, 0);</string>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
+background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
               </property>
               <property name="text">
                <string>CALL</string>
@@ -962,7 +981,8 @@ color: rgb(0,85,0);</string>
                </font>
               </property>
               <property name="styleSheet">
-               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
+               <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
+background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
               </property>
               <property name="text">
                <string>PWR</string>
@@ -1008,180 +1028,6 @@ color: rgb(0,85,0);</string>
         </item>
        </layout>
       </item>
-      <item>
-       <widget class="QStackedWidget" name="stackedWidget_2">
-        <property name="maximumSize">
-         <size>
-          <width>130</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(68, 68, 68);</string>
-        </property>
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <widget class="QWidget" name="page">
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <property name="spacing">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QPushButton" name="up">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <family>Sans Serif</family>
-                <pointsize>12</pointsize>
-                <weight>50</weight>
-                <italic>false</italic>
-                <bold>false</bold>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-border-color: rgb(159, 159, 159);
-
-color: rgb(255, 255, 255);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/up_arrow.png</normaloff>../../Pictures/up_arrow.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>90</width>
-                <height>90</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="down">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <family>Sans Serif</family>
-                <pointsize>12</pointsize>
-                <weight>50</weight>
-                <italic>false</italic>
-                <bold>false</bold>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(255, 255, 255);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/down_arrow.png</normaloff>../../Pictures/down_arrow.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>90</width>
-                <height>90</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="menu">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <family>Sans Serif</family>
-                <pointsize>12</pointsize>
-                <weight>50</weight>
-                <italic>false</italic>
-                <bold>false</bold>
-               </font>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font: 12pt &quot;Sans Serif&quot;;
-color: rgb(255, 255, 255);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../../Pictures/images/menu_icon_glowing.png</normaloff>../../Pictures/images/menu_icon_glowing.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>100</width>
-                <height>100</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="page_2"/>
-       </widget>
-      </item>
      </layout>
     </item>
     <item>
@@ -1203,6 +1049,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

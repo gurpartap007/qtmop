@@ -7,7 +7,7 @@ train_route::train_route(QSqlDatabase *emu_database,QWidget *parent) :
 {
     ui->setupUi(this);
     QSqlTableModel *model = new QSqlTableModel(this,*emu_database);
-    model->setTable("tbl_slav_mappp");
+    model->setTable("tbl_slave_route");
     ui->route_info_table->setModel(model);
     model->select();
     ui->route_info_table->verticalHeader()->hide();

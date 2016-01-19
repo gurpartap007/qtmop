@@ -31,24 +31,24 @@ void route_selection::settext(char value)
         qDebug() << train_routes;
         while(train_routes[route_count]!=NULL)
         {
-        if(strcmp(display,train_routes[route_count].toUtf8().constData()))
-        {
-        ui->lineEdit->clear();
-        ui->lineEdit->setText("Invalid Train Route");
-        ui->lineEdit->setStyleSheet("QLineEdit { background-color: rgb(255,0,0); }");
-        }
-        else
-        {
-            emit train_selected();
-            break;
-        }
-        ++route_count;
+            if(strcmp(display,train_routes[route_count].toUtf8().constData()))
+            {
+                ui->lineEdit->clear();
+                ui->lineEdit->setText("Invalid Train Route");
+                ui->lineEdit->setStyleSheet("QLineEdit { background-color: rgb(255,0,0); }");
+            }
+            else
+            {
+                emit train_selected();
+                break;
+            }
+            ++route_count;
         }
         while(ptr != &display[0])
-                {
-                    ptr--;
-                    *ptr = '\0';
-                }
+        {
+            ptr--;
+            *ptr = '\0';
+        }
 
     }
     else

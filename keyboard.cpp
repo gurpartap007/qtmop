@@ -1,6 +1,4 @@
 #include "keyboard.h"
-
-
 //VARIABLES
 char display[20], *ptr;
 int check;
@@ -14,7 +12,7 @@ keyboard::keyboard(QWidget *parent) :
     ui(new Ui::keyboard)
 {
     ui->setupUi(this);
-  /*  QDesktopWidget screen_keyboard;
+    /*  QDesktopWidget screen_keyboard;
    // this->setMaximumSize(800,200);
     if(screen_keyboard.width() == 800)
         this->setStyleSheet("QPushButton {font: 16pt \"Arial\";font-weight: bold;}QPushButton{ background-color: rgb(180, 207, 207); }QPushButton:pressed{background-color: rgb(100, 100, 100); }");

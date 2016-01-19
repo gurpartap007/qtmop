@@ -13,7 +13,7 @@ database::database(QObject *parent) : QObject(parent)
     data_name = new QStringList;
     QStringList tables = db.tables();
     qDebug() << tables;
-    QSqlQuery announcements_query("SELECT * FROM `final_tbl_routemaster`");
+    QSqlQuery announcements_query("SELECT * FROM `tbl_RouteMaster`");
     while (announcements_query.next()) {
         train_routes.append(announcements_query.value(0).toString());
     }
@@ -22,6 +22,6 @@ database::database(QObject *parent) : QObject(parent)
 
 database::~database()
 {
-
+delete data_name;
 }
 
