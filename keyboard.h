@@ -30,7 +30,15 @@
 #define LETTER_Nn	24
 #define	LETTER_Mm	25
 #define ENTER_CLICK	100
+/** @brief Android Style Qwerty keyboard Class
 
+    Detailed description follows here.
+    @author Gurpartap Singh
+    @date December 23 2015
+    */
+/** @file
+ *
+ */
 namespace Ui {
 class keyboard;
 }

@@ -33,6 +33,7 @@
 #include <QPainter>
 #include <QRect>
 #include <QSqlTableModel>
+#include <QSortFilterProxyModel>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlRecord>

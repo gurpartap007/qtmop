@@ -6,16 +6,13 @@ mpd::mpd(QWidget *parent) :
     ui(new Ui::mpd)
 {
     ui->setupUi(this);
-    /*Music Streamer based on mpdclient API which stream through ICECAST server on LOCALHOST on 6600 port no.
-     *
-     * */
-    //announcement_streamer = new music_streamer;
+
     select_route = new route_selection;
     emergency_talkback = new etu;
     system_settings = new settings;
     selection_timer = new QTimer;
     announcement = new public_announcement;
-    selection_timer->setInterval(5000);
+    selection_timer->setInterval(1000);
     selection_timer->start();
     ui->stackedWidget->setCurrentIndex(0);
     ui->stackedWidget->addWidget(select_route);
@@ -114,6 +111,7 @@ void mpd::close_settings_popup()
 
 void mpd::on_pa_clicked()
 {
+    //announcement = new public_announcement(this);
     announcement->setParent(ui->stackedWidget);
     announcement->setGeometry(0,0,ui->stackedWidget->width(),ui->stackedWidget->height());
     announcement->setWindowFlags(Qt::WindowStaysOnTopHint);

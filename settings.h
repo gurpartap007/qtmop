@@ -3,7 +3,17 @@
 
 #include <QWidget>
 #include "header.h"
+/** @brief All Settings related to device like volume control,System configuration
+ * Data Transfer and system Update.
+ *
 
+    Detailed description follows here.
+    @author Gurpartap Singh
+    @date December 23 2015
+    */
+/** @file
+ *
+ */
 namespace Ui {
 class settings;
 }

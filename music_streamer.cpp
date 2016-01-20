@@ -8,7 +8,7 @@ music_streamer::music_streamer(QWidget *parent) :
     ui->setupUi(this);
     /* New Sql database which hold the all details about Routes,Devices,Events and announcements.
      * * */
-    bus_database = new database;
+   // bus_database = new database;
     /* New process will be created and "/usr/bin/mp3-decoder" will run in new process
      *
      * */
@@ -88,11 +88,8 @@ music_streamer::~music_streamer()
 {
     delete ui;
     delete player_timer;
-    delete bus_database;
-    delete audio_format;
-    delete player;
-    player->close();
-    // system("pkill -9 mp3-decoder");
+    player->deleteLater();
+    system("pkill -9 mp3-decoder");
     mpd_connection_free(conn);
 }
 void music_streamer::on_next_clicked()
@@ -190,6 +187,6 @@ void music_streamer::on_playlist_clicked()
 {
     ui->textEdit->clear();
     //ui->textEdit->setText(bus_database->data_name->at(0));
-    for(int i=0;i<bus_database->data_name->size();i++)
-        ui->textEdit->append(bus_database->data_name->at(i));
+    //for(int i=0;i<bus_database->data_name->size();i++)
+      //  ui->textEdit->append(bus_database->data_name->at(i));
 }

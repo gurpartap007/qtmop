@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include "header.h"
 #include "etu.h"
-#include "music_streamer.h"
 #include "route_selection.h"
 #include "settings.h"
 #include "public_announcement.h"
@@ -30,9 +29,8 @@ class mpd : public QMainWindow
 public:
     explicit mpd(QWidget *parent = 0);
     ~mpd();
-    music_streamer *announcement_streamer;/**< mpdclient API based music streamer on localhost,port 6600S**/
-    route_selection *select_route;
-    etu *emergency_talkback;
+    route_selection *select_route;/**< Route Selection of train based on database and User input**/
+    etu *emergency_talkback;/**< Emergency Talkback class to handle calls in emergency conditions in Coaches**/
     settings *system_settings;
     public_announcement *announcement;
 
