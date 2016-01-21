@@ -38,5 +38,6 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlRecord>
 #include <QtSql/QSqlTableModel>
+#include <QStandardItemModel>
 #endif // HEADER_H
 

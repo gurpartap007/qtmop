@@ -25,7 +25,7 @@ background-color: rgba(173, 216, 230,70);
      <x>380</x>
      <y>30</y>
      <width>581</width>
-     <height>581</height>
+     <height>551</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_6">

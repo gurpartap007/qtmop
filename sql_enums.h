@@ -31,6 +31,25 @@ enum
 
 
 }
-
+enum
+{
+  SOURCE_NAME,
+  DESTINATION_NAME
+};
+namespace TRAINS_SELECTION {
+enum
+{
+TRAIN_NO,
+TRAIN_NAME
+};
+}
+namespace TABLE_TRAIN_NUMBER
+{
+enum
+{
+    TRAIN_NO,
+    TRAIN_NAME_ENG=11
+};
+}
 #endif // SQL_ENUMS_H
 

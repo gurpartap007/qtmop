@@ -32,6 +32,8 @@ public:
     keyboard *train_selection_keyboard;/**<android style qwerty keyboard to input train route info. **/
     QSqlTableModel *master_trains_model;
     QSqlTableModel *slave_trains_model;
+    QSqlTableModel *dummy_model;
+    QStandardItemModel *model;
     QSortFilterProxyModel *proxyModel;
     database *train_database;/**< mysql database of train routes and trains numbers and their types **/
     train_route *current_route;/**< All information about current selected train route like trains,types of messages**/
@@ -53,6 +55,8 @@ private slots:
      */
     void on_backButton_clicked();
     void lineedit_filtering(QString value);
+    void on_tableView_clicked(const QModelIndex &index);
+
 signals:
     /**
      * @brief This signal is emited when train route entered by the user matched with Database and valid.
@@ -61,6 +65,8 @@ signals:
     void lineedit_filter(QString value);
 private:
     Ui::route_selection *ui;
+    QString train_name;
+
 };
 
 #endif // ROUTE_SELECTION_H

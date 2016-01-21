@@ -138,3 +138,8 @@ void mpd::close_announcement_popup()
     ui->control_room_label->show();
     ui->intercom_label->show();
 }
+
+void mpd::on_intercom_clicked()
+{
+    close();
+}
