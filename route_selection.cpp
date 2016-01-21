@@ -18,7 +18,7 @@ route_selection::route_selection(QWidget *parent) :
     slave_trains_model = new QSqlTableModel(this,db);
     dummy_model = new QSqlTableModel;
     proxyModel = new QSortFilterProxyModel;
-    current_route = new train_route(&db,master_trains_model);
+    current_route = new train_route(&db);
     ui->stackedWidget->addWidget(train_selection_keyboard);
     ui->stackedWidget->setCurrentWidget(train_selection_keyboard);
     connect(train_selection_keyboard,SIGNAL(value_changed(char)),this,SLOT(settext(char)));
@@ -87,6 +87,8 @@ void route_selection::select_train_route_with_sorting()
 {
     int loop_count=0;
     QFont header_font;
+    QStringList labels,datalist;
+    model= new QStandardItemModel(0,0);
     header_font.setPointSize(20);
     header_font.setFamily("Garuda");
     master_trains_model->setTable("tbl_TrainNumber");
@@ -95,12 +97,8 @@ void route_selection::select_train_route_with_sorting()
     slave_trains_model->select();
     slave_trains_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     master_trains_model->select();
-    // proxyModel->setSourceModel(master_trains_model);
-    // proxyModel->setSourceModel(slave_trains_model);
-    QStringList labels;
-    QStringList datalist;
 
-
+    ///////////////////  Query //////////////////////////////
 
     QSqlQuery query1("SELECT `train_no`,`tran_name_english` FROM `tbl_TrainNumber`");
     while(query1.next()){
@@ -113,32 +111,16 @@ void route_selection::select_train_route_with_sorting()
         qDebug() << datalist;
         loop_count++;
     }
-    /*    QStandardItemModel dummy_model1;
-    dummy_model1.setRowCount(5);
-    dummy_model1.setColumnCount(5);
-                QStandardItem *item = new QStandardItem("Hello1");
-                dummy_model1.setItem(0,0,item);
-                dummy_model1.setHorizontalHeaderItem(0, new QStandardItem(tr("Time")));
-    //dummy_model1.insertRow(0,&row1);*/
-    model= new QStandardItemModel(0,0);
+    labels.append("Train_no");
+    labels.append("Train_name");
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->horizontalHeader()->setFont(header_font);
-    int row = 0;
-    //for (int row = 0; row < 4; ++row)
-    //  {
     QList <QStandardItem *> rowData;
     QList <QStandardItem *> ColumnData;
-    labels.append("Train_no");
-    labels.append("Train_name");
-    //////////////////// Inserting New Rows ///////////////////////////
 
-    rowData << new QStandardItem(QString("1001"));
-    rowData << new QStandardItem(QString("1002"));
-    rowData << new QStandardItem(QString("1003"));
-    // model->appendRow(rowData);
 
-    //////////////////// Inserting New Rows ///////////////////////////
+    //////////////////// Inserting Master Train numbers ///////////////////////////
     for(loop_count=0;loop_count<master_trains_model->rowCount();loop_count++)
     {
 
@@ -146,6 +128,10 @@ void route_selection::select_train_route_with_sorting()
         ColumnData << new QStandardItem(master_trains_model->data(master_trains_model->index(loop_count,TABLE_TRAIN_NUMBER::TRAIN_NO)).toString());
         qDebug() << master_trains_model->data(master_trains_model->index(loop_count,TABLE_TRAIN_NUMBER::TRAIN_NO)).toString();
     }
+    ///////////////////////////////////////////////////////////////////////////////
+
+    //////////////////// Inserting Slave Train numbers ////////////////////////////
+
     for(loop_count=0;loop_count<slave_trains_model->rowCount();loop_count++)
     {
 
@@ -155,6 +141,10 @@ void route_selection::select_train_route_with_sorting()
     }
     model->insertColumn(0,ColumnData);
     ColumnData.clear();
+    ////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////// Inserting Master Train Names //////////////////////////////
+
     for(loop_count=0;loop_count<master_trains_model->rowCount();loop_count++)
     {
 
@@ -164,52 +154,15 @@ void route_selection::select_train_route_with_sorting()
     }
     model->insertColumn(1,ColumnData);
     ColumnData.clear();
-
-    //model->insertColumn(0,ColumnData);
     model->setHorizontalHeaderLabels(labels);
-    //  rowData << new QStandardItem(QString("row %1, column %2").arg(row).arg(1));
-    //  rowData << new QStandardItem(QString("row %1, column %2").arg(row).arg(2));
-    //  rowData << new QStandardItem(QString("row %1, column %2").arg(row).arg(3));
-
-    //  }
-    //QSqlRecord dummy_record=dummy_model->record();
-    //dummy_record.setValue(0,QVariant("hello1"));
-    //dummy_model->insertRecord(0,dummy_record);
-    //dummy_model->insertRow(0);
-    //  dummy_model->insertRecord(0,)
     proxyModel->setSourceModel(model);
-    //ui->tableWidget->setModel(proxyModel);
     ui->tableView->setModel(proxyModel);
-    //item1->setText("New Delhi");
-    // ui->tableWidget->setItem(0,0,new QTableWidgetItem("Item1"));
-    // ui->tableWidget->setItem(1,1,new QTableWidgetItem("Item2"));
-    // ui->tableWidget->setItem(0,2,new QTableWidgetItem("Item3"));
-    //ui->tableWidget->setRowCount(2);
-     /*  ui->tableView->setModel(proxyModel);
     ui->tableView->setAlternatingRowColors(true);
-    ui->tableView->hideColumn(1);
-    ui->tableView->hideColumn(2);
-    ui->tableView->hideColumn(3);
-    ui->tableView->hideColumn(4);
-    ui->tableView->hideColumn(5);
-    ui->tableView->hideColumn(6);
-    ui->tableView->hideColumn(7);
-    ui->tableView->hideColumn(8);
-    ui->tableView->hideColumn(9);
-    ui->tableView->hideColumn(10);
-    ui->tableView->hideColumn(12);
-    ui->tableView->hideColumn(13);
-    ui->tableView->hideColumn(14);
-    ui->tableView->hideColumn(15);
-    ui->tableView->hideColumn(16);
-    ui->tableView->hideColumn(17);
-    ui->tableView->hideColumn(18);
-    ui->tableView->hideColumn(19);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     QHeaderView *verticalHeader = ui->tableView->verticalHeader();
     verticalHeader->sectionResizeMode(QHeaderView::Fixed);
-    verticalHeader->setDefaultSectionSize(40);*/
+    verticalHeader->setDefaultSectionSize(40);
     ui->backButton->hide();
 
 }
@@ -233,12 +186,44 @@ void route_selection::lineedit_filtering(QString value)
 
 void route_selection::on_tableView_clicked(const QModelIndex &index)
 {
-    selected_train = ui->tableView->selectionModel()->currentIndex().row();
+    QStringList source_destination_station_codes;
+    QString source_station_name;
+    QString destination_station_name;
+    QSqlRecord record_destination_station_name;
+            selected_train = ui->tableView->selectionModel()->currentIndex().row();
     qDebug() << "selected train no = " << selected_train;
-    selected_train_no = master_trains_model->data(master_trains_model->index(selected_train,0)).toString();
+    qDebug() << "NAME........" << ui->tableView->selectionModel()->currentIndex().column();
+    selected_train_no = ui->tableView->model()->data(ui->tableView->model()->index(selected_train,0)).toString();
     qDebug() << "train no. = " << selected_train_no;
-    train_name = master_trains_model->data(master_trains_model->index(selected_train,11)).toString();
+    train_name = ui->tableView->model()->data(ui->tableView->model()->index(selected_train,11)).toString();
     qDebug() << "Train name = " << train_name;
+
+    /////////////////////////////  FINDING SOURCE/DESTINATION STATIONS ///////////////////////
+    qDebug() << "SELECT `src_stn_sno`,`dest_stn_sno` FROM `tbl_TrainNumber` where `train_no`='"+ selected_train_no+"'";
+    QSqlQuery query1("SELECT `src_stn_sno`,`dest_stn_sno` FROM `tbl_TrainNumber` where `train_no`='"+ selected_train_no+"'");
+    while(query1.next()){
+        source_destination_station_codes.clear();
+        QSqlRecord record = query1.record();
+        for(int i=0; i < record.count(); i++)
+            source_destination_station_codes << record.value(i).toString();
+    }
+    qDebug() << source_destination_station_codes;
+
+    ///////////////////////////// FINDING SOURCE STATION NAME  ////////////////////
+    QSqlQuery query_find_source_station("SELECT `station_name` FROM `tbl_StationName` where `station_code`='"+ source_destination_station_codes.at(0) +"' and `stn_LangId`='English'");
+    query_find_source_station.next();
+    QSqlRecord record_source_station_name= query_find_source_station.record();
+    source_station_name = record_source_station_name.value(0).toString();
+    qDebug()  << "SOURCE STATION NAME = " << source_station_name;
+
+    /////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////// FINDING DESTINATION STATION NAME  ///////////////////
+    QSqlQuery query_find_destination_station("SELECT `station_name` FROM `tbl_StationName` where `station_code`='"+ source_destination_station_codes.at(1) +"' and `stn_LangId`='English'");
+    query_find_destination_station.next();
+    record_destination_station_name = query_find_destination_station.record();
+    destination_station_name = record_destination_station_name.value(0).toString();
+    qDebug() << "DESTINATION STATION NAME" << destination_station_name;
+    /////////////////////////////////////////////////////////////////////////////////
     ui->tableView->hide();
     ui->lineEdit->hide();
     ui->select_route_label->hide();

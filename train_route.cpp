@@ -2,13 +2,11 @@
 #include "ui_train_route.h"
 extern QString selected_train_no;
 extern int selected_train;
-train_route::train_route(QSqlDatabase *emu_database,QSqlTableModel *master_trains_model,QWidget *parent) :
+train_route::train_route(QSqlDatabase *emu_database,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::train_route)
 {
-    ui->setupUi(this);
-    master_train_model = master_trains_model;
-   // current_selected_train = selected_train_no;
+    ui->setupUi(this);  
 }
 
 train_route::~train_route()
@@ -18,15 +16,39 @@ train_route::~train_route()
 
 void train_route::current_selected_train_info()
 {
+    QStringList source_destination_station_codes;
+    QString source_station_name;
+    QString destination_station_name;
+    QSqlRecord record_destination_station_name;
 qDebug() << "Selected train in train route = " << selected_train_no;
-source_destination_name = master_train_model->data(master_train_model->index(selected_train,11)).toString();
-qDebug() << "Source Destination in train route = " << source_destination_name;
-source_destination_list = source_destination_name.split(" TO");
-qDebug() << "Source Station in train route = " << source_destination_list;
-ui->source_station_name->setText(source_destination_list[SOURCE_NAME]);
-ui->destination_station_name->setText(source_destination_list[DESTINATION_NAME]);
-/*QString query_text = "select * from stop_master_table where stop_code = '" + destination_code + "'" ;
-QSqlQuery query(query_text);
-query.first();
-ui->label_4->setText(query.value(0).toString());*/
+
+
+/////////////////////////////  FINDING SOURCE/DESTINATION STATIONS ///////////////////////
+qDebug() << "SELECT `src_stn_sno`,`dest_stn_sno` FROM `tbl_TrainNumber` where `train_no`='"+ selected_train_no+"'";
+QSqlQuery query1("SELECT `src_stn_sno`,`dest_stn_sno` FROM `tbl_TrainNumber` where `train_no`='"+ selected_train_no+"'");
+while(query1.next()){
+    source_destination_station_codes.clear();
+    QSqlRecord record = query1.record();
+    for(int i=0; i < record.count(); i++)
+        source_destination_station_codes << record.value(i).toString();
+}
+qDebug() << source_destination_station_codes;
+
+///////////////////////////// FINDING SOURCE STATION NAME  ////////////////////
+QSqlQuery query_find_source_station("SELECT `station_name` FROM `tbl_StationName` where `station_code`='"+ source_destination_station_codes.at(0) +"' and `stn_LangId`='English'");
+query_find_source_station.next();
+QSqlRecord record_source_station_name= query_find_source_station.record();
+source_station_name = record_source_station_name.value(0).toString();
+qDebug()  << "SOURCE STATION NAME = " << source_station_name;
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////// FINDING DESTINATION STATION NAME  ///////////////////
+QSqlQuery query_find_destination_station("SELECT `station_name` FROM `tbl_StationName` where `station_code`='"+ source_destination_station_codes.at(1) +"' and `stn_LangId`='English'");
+query_find_destination_station.next();
+record_destination_station_name = query_find_destination_station.record();
+destination_station_name = record_destination_station_name.value(0).toString();
+qDebug() << "DESTINATION STATION NAME" << destination_station_name;
+/////////////////////////////////////////////////////////////////////////////////
+ui->source_station_name->setText(source_station_name);
+ui->destination_station_name->setText(destination_station_name);
 }
