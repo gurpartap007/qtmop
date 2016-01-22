@@ -85,9 +85,12 @@ void route_selection::route_window()
 
 void route_selection::select_train_route_with_sorting()
 {
-    int loop_count=0;
+    int loop_count=0,
+            train_count;
     QFont header_font;
-    QStringList labels,datalist;
+    QStringList master_train_no_for_current_slave_train;
+    QStringList labels,datalist,slave_train_no,master_trains_for_slave_trains,master_train_names;
+    QSqlRecord record_master_train_for_slave_trian,record_master_train_name;
     model= new QStandardItemModel(0,0);
     header_font.setPointSize(20);
     header_font.setFamily("Garuda");
@@ -98,19 +101,6 @@ void route_selection::select_train_route_with_sorting()
     slave_trains_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     master_trains_model->select();
 
-    ///////////////////  Query //////////////////////////////
-
-    QSqlQuery query1("SELECT `train_no`,`tran_name_english` FROM `tbl_TrainNumber`");
-    while(query1.next()){
-        datalist.clear();
-        QSqlRecord record = query1.record();
-        for(int i=0; i < record.count(); i++)
-            datalist << record.value(i).toString();
-        dummy_model->insertRecord(0,record);
-
-        qDebug() << datalist;
-        loop_count++;
-    }
     labels.append("Train_no");
     labels.append("Train_name");
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -126,9 +116,9 @@ void route_selection::select_train_route_with_sorting()
 
         //ColumnData << new QStandardItem(QString("1001"));
         ColumnData << new QStandardItem(master_trains_model->data(master_trains_model->index(loop_count,TABLE_TRAIN_NUMBER::TRAIN_NO)).toString());
-        qDebug() << master_trains_model->data(master_trains_model->index(loop_count,TABLE_TRAIN_NUMBER::TRAIN_NO)).toString();
+        // qDebug() << master_trains_model->data(master_trains_model->index(loop_count,TABLE_TRAIN_NUMBER::TRAIN_NO)).toString();
     }
-    ///////////////////////////////////////////////////////////////////////////////
+    //---------------------------------------------------------------------------//
 
     //////////////////// Inserting Slave Train numbers ////////////////////////////
 
@@ -137,11 +127,36 @@ void route_selection::select_train_route_with_sorting()
 
         //ColumnData << new QStandardItem(QString("1001"));
         ColumnData << new QStandardItem(slave_trains_model->data(slave_trains_model->index(loop_count,TABLE_TRAIN_NUMBER::TRAIN_NO)).toString());
-        qDebug() << slave_trains_model->data(slave_trains_model->index(loop_count,TABLE_TRAIN_NUMBER::TRAIN_NO)).toString();
+        //qDebug() << slave_trains_model->data(slave_trains_model->index(loop_count,TABLE_TRAIN_NUMBER::TRAIN_NO)).toString();
     }
     model->insertColumn(0,ColumnData);
     ColumnData.clear();
-    ////////////////////////////////////////////////////////////////////////////////
+    //---------------------------------------------------------------------------//
+
+    ///////////////////// Finding Master Trains for Slave Trains ///////////////////
+    for(train_count=0;train_count<slave_trains_model->rowCount();train_count++)
+    {
+        slave_train_no << slave_trains_model->data(slave_trains_model->index(train_count,TABLE_TRAIN_NUMBER::TRAIN_NO)).toString();
+        QSqlQuery find_master_train("SELECT `master_route` FROM `tbl_slave_route` where `train_number`='"+ slave_train_no.at(train_count) + "'");
+        find_master_train.next();
+        record_master_train_for_slave_trian = find_master_train.record();
+        master_train_no_for_current_slave_train.append(record_master_train_for_slave_trian.value(0).toString());
+        // qDebug() << "MASTER TRAIN NAME" <<  master_train_no_for_current_slave_train << "of slave train: " << slave_train_no.at(train_count) ;
+        find_master_train.clear();
+        record_master_train_for_slave_trian.clear();
+    }
+    qDebug() << slave_train_no;
+    qDebug() << master_train_no_for_current_slave_train;
+    //-------------------------------------------------------------------------------------//
+    //////////// Extract master train Name from Master Train Number /////////////////////////
+    for(train_count=0;train_count<master_train_no_for_current_slave_train.size();train_count++)
+    {
+        QSqlQuery find_master_train_name("SELECT `tran_name_english` FROM `tbl_TrainNumber` where `train_no`='"+ master_train_no_for_current_slave_train.at(train_count) + "'");
+        find_master_train_name.next();
+        record_master_train_name = find_master_train_name.record();
+        master_train_names.append(record_master_train_name.value(0).toString());
+    }
+    //-------------------------------------------------------------------------------------//
 
     //////////////////// Inserting Master Train Names //////////////////////////////
 
@@ -150,8 +165,14 @@ void route_selection::select_train_route_with_sorting()
 
         //ColumnData << new QStandardItem(QString("1001"));
         ColumnData << new QStandardItem(master_trains_model->data(master_trains_model->index(loop_count,TABLE_TRAIN_NUMBER::TRAIN_NAME_ENG)).toString());
-        qDebug() << master_trains_model->data(master_trains_model->index(loop_count,TABLE_TRAIN_NUMBER::TRAIN_NAME_ENG)).toString();
+        // qDebug() << master_trains_model->data(master_trains_model->index(loop_count,TABLE_TRAIN_NUMBER::TRAIN_NAME_ENG)).toString();
     }
+    for(loop_count=0;loop_count<master_train_names.size();loop_count++)
+    {
+        ColumnData << new QStandardItem(master_train_names.at(loop_count));
+
+    }
+    qDebug() << "LEEENGTHHHHH...." << master_train_names;
     model->insertColumn(1,ColumnData);
     ColumnData.clear();
     model->setHorizontalHeaderLabels(labels);
@@ -190,7 +211,8 @@ void route_selection::on_tableView_clicked(const QModelIndex &index)
     QString source_station_name;
     QString destination_station_name;
     QSqlRecord record_destination_station_name;
-            selected_train = ui->tableView->selectionModel()->currentIndex().row();
+    bool train_is_slave=true;
+    selected_train = ui->tableView->selectionModel()->currentIndex().row();
     qDebug() << "selected train no = " << selected_train;
     qDebug() << "NAME........" << ui->tableView->selectionModel()->currentIndex().column();
     selected_train_no = ui->tableView->model()->data(ui->tableView->model()->index(selected_train,0)).toString();
@@ -198,6 +220,18 @@ void route_selection::on_tableView_clicked(const QModelIndex &index)
     train_name = ui->tableView->model()->data(ui->tableView->model()->index(selected_train,11)).toString();
     qDebug() << "Train name = " << train_name;
 
+    /////////////////// Determine Slave Or Master train Selected //////////////////////
+    QSqlQuery query_determine_slave_train("SELECT `tran_name_english` FROM `tbl_TrainNumber` where `train_no`='"+ selected_train_no+"'");
+    while(query_determine_slave_train.next())
+    {
+
+        train_is_slave = false;
+    }
+    qDebug() << "Train is slave -" << train_is_slave;
+
+
+
+    //------------------------------------------------------------------------------//
     /////////////////////////////  FINDING SOURCE/DESTINATION STATIONS ///////////////////////
     qDebug() << "SELECT `src_stn_sno`,`dest_stn_sno` FROM `tbl_TrainNumber` where `train_no`='"+ selected_train_no+"'";
     QSqlQuery query1("SELECT `src_stn_sno`,`dest_stn_sno` FROM `tbl_TrainNumber` where `train_no`='"+ selected_train_no+"'");
