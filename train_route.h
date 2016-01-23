@@ -29,7 +29,7 @@ public:
      QStringList source_destination_list;
     ~train_route();
 public slots:
-    void current_selected_train_info();
+    void current_selected_train_info(bool slave_train);
 
 private:
     Ui::train_route *ui;

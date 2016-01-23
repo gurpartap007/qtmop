@@ -15,9 +15,12 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <QString>
+#include <QRegExp>
+#include <QByteArray>
 #include <QStringList>
 #include <QFont>
 #include <QDebug>
+#include <QBitArray>
 #include <QLabel>
 #include <QTimerEvent>
 #include <QPushButton>
