@@ -104,7 +104,6 @@ void route_selection::select_train_route_with_sorting()
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->horizontalHeader()->setFont(header_font);
-    QList <QStandardItem *> rowData;
     QList <QStandardItem *> ColumnData;
 
 

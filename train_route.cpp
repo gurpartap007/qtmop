@@ -7,6 +7,8 @@ train_route::train_route(QSqlDatabase *emu_database,QWidget *parent) :
     ui(new Ui::train_route)
 {
     ui->setupUi(this);
+    connect(this,SIGNAL(add_stations()),this,SLOT(add_stations_for_current_train()));
+
 }
 
 train_route::~train_route()
@@ -21,7 +23,6 @@ void train_route::current_selected_train_info(bool slave_train)
     QString source_station_name;
     QString destination_station_name;
     QString coach_count;
-    QChar test = 1;
     bool slow=false;
     bool fast=false;
 
@@ -73,9 +74,15 @@ void train_route::current_selected_train_info(bool slave_train)
             ui->ladies_special_type->setText("No");
         }
         if(query_slow_fast_status.value(0).toString() == "S")
+        {
             ui->slow_fast_type->setText("Slow");
+            slow=true;
+        }
         else
+        {
             ui->slow_fast_type->setText("Fast");
+            fast=true;
+        }
     }
     else
     {
@@ -98,8 +105,39 @@ void train_route::current_selected_train_info(bool slave_train)
     }
     QSqlQuery query_find_coach_count("SELECT `no_of_coaches` FROM `tbl_TrainNumber` where `train_no`='"+ master_train_no + "'");
     query_find_coach_count.next();
-    qDebug() << query_find_coach_count.value(0).toString();
-    ui->coach_count->setText(query_find_coach_count.value(0).toString());
+    coach_count = query_find_coach_count.value(0).toString();
+    ui->coach_count->setText(coach_count);
+    emit add_stations();
+}
+
+void train_route::add_stations_for_current_train()
+{
+    int loop_count=0;
+    model= new QStandardItemModel(0,0);
+    QStringList station_codes,station_names;
+    QList <QStandardItem *> ColumnData;
+    QFont header_font;
+    header_font.setFamily("Free Sans");
+    header_font.setPointSize(30);
+    ui->station_names_list->setFont(header_font);
+    ui->station_names_list->setAlternatingRowColors(true);
+    QSqlQuery get_station_codes_for_master_train("SELECT `stn_code` FROM `tbl_RouteMaster` WHERE `train_sno`='"+ master_train_no+"' order by `distance_frm_source`");
+    while(get_station_codes_for_master_train.next())
+    {
+        station_codes.append(get_station_codes_for_master_train.value(0).toString());
+    }
+    for(loop_count=0;loop_count<station_codes.size();loop_count++)
+    {
+        QSqlQuery get_station_names("SELECT `station_name` FROM `tbl_StationName` WHERE `station_code`='"+station_codes.at(loop_count)+"' and `stn_LangId`='english' ");
+        while(get_station_names.next())
+        {
+            ColumnData << new QStandardItem((get_station_names.value(0).toString()));
+            station_names.append(get_station_names.value(0).toString());
+        }
+    }
+    model->insertColumn(0,ColumnData);
+    ui->station_names_list->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->station_names_list->setModel(model);
 }
 
 

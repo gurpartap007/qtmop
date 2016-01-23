@@ -27,12 +27,17 @@ public:
     QStringList destination_station_name;
     QString source_destination_name;
      QStringList source_destination_list;
+     QStandardItemModel *model;
     ~train_route();
+signals:
+     void add_stations();
 public slots:
     void current_selected_train_info(bool slave_train);
+    void add_stations_for_current_train();
 
 private:
     Ui::train_route *ui;
 };
+
 
 #endif // TRAIN_ROUTE_H

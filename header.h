@@ -17,6 +17,7 @@
 #include <QString>
 #include <QRegExp>
 #include <QByteArray>
+#include <QStringListModel>
 #include <QStringList>
 #include <QFont>
 #include <QDebug>

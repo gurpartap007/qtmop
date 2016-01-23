@@ -297,7 +297,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QListWidget" name="station_names_list"/>
+      <widget class="QListView" name="station_names_list"/>
      </item>
     </layout>
    </item>
