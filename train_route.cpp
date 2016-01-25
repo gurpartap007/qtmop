@@ -8,6 +8,7 @@ train_route::train_route(QSqlDatabase *emu_database,QWidget *parent) :
 {
     ui->setupUi(this);
     connect(this,SIGNAL(add_stations()),this,SLOT(add_stations_for_current_train()));
+    connect(this,SIGNAL(skip_clicked(int)),this,SLOT(current_selected_station(int)));
 
 }
 
@@ -87,9 +88,9 @@ void train_route::current_selected_train_info(bool slave_train)
     else
     {
         QSqlQuery query_ladies_train_status("SELECT `ladies_train_status` FROM `tbl_TrainNumber` where `train_no`='"+ master_train_no + "'");
-        QSqlQuery query_slow_fast_status("SELECT `train_status` FROM `tbl_slave_route` where `train_number`='"+ master_train_no + "'");
+        QSqlQuery query_slow_fast_status_master("SELECT `slow_fast` FROM `tbl_TrainNumber` where `train_no`='"+ master_train_no + "'");
         query_ladies_train_status.next();
-        query_slow_fast_status.next();
+        query_slow_fast_status_master.next();
         if(query_ladies_train_status.value(0).toString().at(0) == 1)
         {
             ui->ladies_special_type->setText("Yes");
@@ -98,7 +99,7 @@ void train_route::current_selected_train_info(bool slave_train)
         {
             ui->ladies_special_type->setText("No");
         }
-        if(query_slow_fast_status.value(0).toString() == "S")
+        if(query_slow_fast_status_master.value(0).toString() == "S")
             ui->slow_fast_type->setText("Slow");
         else
             ui->slow_fast_type->setText("Fast");
@@ -114,8 +115,9 @@ void train_route::add_stations_for_current_train()
 {
     int loop_count=0;
     model= new QStandardItemModel(0,0);
-    QStringList station_codes,station_names;
-    QList <QStandardItem *> ColumnData;
+    QList <QStandardItem*> ColumnData;
+    //item->setText("");
+    // ui->listWidget->addItem(item);
     QFont header_font;
     header_font.setFamily("Free Sans");
     header_font.setPointSize(30);
@@ -131,13 +133,44 @@ void train_route::add_stations_for_current_train()
         QSqlQuery get_station_names("SELECT `station_name` FROM `tbl_StationName` WHERE `station_code`='"+station_codes.at(loop_count)+"' and `stn_LangId`='english' ");
         while(get_station_names.next())
         {
+            // QListWidgetItem *item = new QListWidgetItem;
             ColumnData << new QStandardItem((get_station_names.value(0).toString()));
             station_names.append(get_station_names.value(0).toString());
+            //item->setText(get_station_names.value(0).toString());
+            //ui->station_names_list->addItem(item);
+
         }
     }
     model->insertColumn(0,ColumnData);
     ui->station_names_list->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->station_names_list->setModel(model);
+    ui->station_names_list->setCurrentIndex(model->index(0,0));
+    emit skip_clicked(0);
+    ui->destination_reached->hide();
 }
 
+void train_route::current_selected_station(int station_counter)
+{
+    qDebug() << model->data(model->index(station_counter,0)).toString();
+}
+
+
+
+void train_route::on_skip_station_clicked()
+{
+    static int skip_clicks=station_names.size();
+    static int station_counter=1;
+    --skip_clicks;
+    ui->station_names_list->setCurrentIndex(model->index(station_counter,0));
+    emit skip_clicked(station_counter);
+    ++station_counter;
+    ui->station_names_list->setUpdatesEnabled(true);
+    if(skip_clicks == 1)
+    {
+        ui->destination_reached->show();
+        ui->destination_reached->setText("Destination Reached");
+        ui->skip_station->setDisabled(true);
+        ui->skip_station->hide();
+    }
+}
 

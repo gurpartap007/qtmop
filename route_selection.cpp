@@ -160,8 +160,8 @@ void route_selection::select_train_route_with_sorting()
     proxyModel->setSourceModel(model);
     proxyModel->setFilterKeyColumn(0);
     ui->tableView->setModel(proxyModel);
-    ui->tableView->setSortingEnabled(true);
-    ui->tableView->sortByColumn(0, Qt::AscendingOrder);
+    //ui->tableView->setSortingEnabled(true);
+   // ui->tableView->sortByColumn(0, Qt::AscendingOrder);
     ui->tableView->setAlternatingRowColors(true);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);

@@ -26,15 +26,20 @@ public:
     QString source_station_name;
     QStringList destination_station_name;
     QString source_destination_name;
-     QStringList source_destination_list;
-     QStandardItemModel *model;
+    QStringList source_destination_list;
+    QStringList station_codes,station_names;
+    QStandardItemModel *model;
     ~train_route();
 signals:
-     void add_stations();
+    void add_stations();
+    void skip_clicked(int);
+    // void rowsRemoved(QModelIndex,int,int);
 public slots:
     void current_selected_train_info(bool slave_train);
     void add_stations_for_current_train();
-
+    void current_selected_station(int);
+private slots:
+    void on_skip_station_clicked();
 private:
     Ui::train_route *ui;
 };
