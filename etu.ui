@@ -60,7 +60,8 @@ background-color: rgba(173, 216, 230,70);
         <item>
          <widget class="QLabel" name="accept_call_label">
           <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
+           <string notr="true">background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));
+</string>
           </property>
           <property name="text">
            <string>accept call</string>

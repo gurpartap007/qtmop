@@ -25,7 +25,7 @@ public:
     QSqlTableModel *master_train_model;
     QString source_station_name;
     QStringList destination_station_name;
-    QString source_destination_name;
+    //QString source_destination_name;
     QStringList source_destination_list;
     QStringList station_codes,station_names;
     QStandardItemModel *model;
@@ -40,6 +40,10 @@ public slots:
     void current_selected_station(int);
 private slots:
     void on_skip_station_clicked();
+    void on_station_names_list_doubleClicked(const QModelIndex &index);
+
+    void on_station_names_list_clicked(const QModelIndex &index);
+
 private:
     Ui::train_route *ui;
 };

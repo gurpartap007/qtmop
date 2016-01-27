@@ -55,8 +55,8 @@
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:1, stop:0.3 rgba(0, 0, 0, 255), stop:1 rgba(100, 100, 100, 255));
-color: rgb(255, 255, 255);</string>
+          <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:0.5, x2:1, y2:0.3 stop:0 rgba(179, 179, 179, 255), stop:1 rgba(220, 220, 220, 255));
+color: rgb(0, 0,0);</string>
          </property>
          <property name="text">
           <string>SKIP</string>
@@ -624,7 +624,9 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:1, stop:0.3 rgba(0, 0, 0, 255), stop:1 rgba(100, 100, 100, 255));
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+background-color: qlineargradient(spread:pad, x1:1, y1:0.5, x2:1, y2:0.3 stop:0 rgba(179, 179, 179, 255), stop:1 rgba(220, 220, 220, 255));
+color: rgb(0, 0,0);</string>
        </property>
        <property name="text">
         <string>Next Station</string>
@@ -653,7 +655,9 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:1, stop:0.3 rgba(0, 0, 0, 255), stop:1 rgba(100, 100, 100, 255));
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+background-color: qlineargradient(spread:pad, x1:1, y1:0.5, x2:1, y2:0.3 stop:0 rgba(179, 179, 179, 255), stop:1 rgba(220, 220, 220, 255));
+color: rgb(0, 0,0);</string>
        </property>
        <property name="text">
         <string>Station Arrived</string>
@@ -682,7 +686,9 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:1, stop:0.3 rgba(0, 0, 0, 255), stop:1 rgba(100, 100, 100, 255));
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+background-color: qlineargradient(spread:pad, x1:1, y1:0.5, x2:1, y2:0.3 stop:0 rgba(179, 179, 179, 255), stop:1 rgba(220, 220, 220, 255));
+color: rgb(0, 0,0);</string>
        </property>
        <property name="text">
         <string>Platform Left</string>
@@ -711,7 +717,9 @@ color: rgb(255, 255, 255);</string>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:1, stop:0.3 rgba(0, 0, 0, 255), stop:1 rgba(100, 100, 100, 255));
-color: rgb(255, 255, 255);</string>
+color: rgb(255, 255, 255);
+background-color: qlineargradient(spread:pad, x1:1, y1:0.5, x2:1, y2:0.3 stop:0 rgba(179, 179, 179, 255), stop:1 rgba(220, 220, 220, 255));
+color: rgb(0, 0,0);</string>
        </property>
        <property name="text">
         <string>Platform Right</string>

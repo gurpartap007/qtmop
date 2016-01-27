@@ -6,18 +6,25 @@ music_streamer::music_streamer(QWidget *parent) :
     ui(new Ui::music_streamer)
 {
     ui->setupUi(this);
+    ui->next->hide();
+    ui->prev->hide();
+    ui->play->hide();
+    ui->pause->hide();
+    ui->playlist->hide();
+    ui->textEdit->hide();
+    this->setGeometry(0,0,0,0);
     /* New Sql database which hold the all details about Routes,Devices,Events and announcements.
      * * */
    // bus_database = new database;
     /* New process will be created and "/usr/bin/mp3-decoder" will run in new process
      *
      * */
-    player = new QProcess;
+    player = new QProcess(this);
     player->setProcessChannelMode(QProcess::MergedChannels);
     //////////////////// Setting player_timer to delay mplayer start  ////////////////////////
     player_timer = new QTimer;
     player_timer->setInterval(2000);
-    player_timer->start();
+    player_started = false;
     connect(player_timer,SIGNAL(timeout()),this,SLOT(mplayer_start()));
     /////////////////// player_timer start ////////////////////
 
@@ -88,8 +95,9 @@ music_streamer::~music_streamer()
 {
     delete ui;
     delete player_timer;
-    player->deleteLater();
-    system("pkill -9 mp3-decoder");
+    //player->deleteLater();
+   // system("pkill -9 mp3-decoder");
+    qDebug() << "Destructor Called";
     mpd_connection_free(conn);
 }
 void music_streamer::on_next_clicked()
@@ -126,12 +134,11 @@ void music_streamer::on_next_clicked()
 
 void music_streamer::mplayer_start()
 {
-    mpd_run_play(conn);
+    //mpd_run_play(conn);
     QString program("/usr/bin/mp3-decoder");
     QStringList arguments;
     arguments << "http://127.0.0.1:8000/mpd.mp3";
-    qDebug() << "mplayer_slot" <<   mpd_response_finish(conn);
-    //  system("mp3-decoder http://127.0.0.1:8000/mpd.mp3 &");
+    arguments << "&";
     player_timer->stop();
     player->start(program,arguments);
     qDebug() << "player Id:" << player->processId();
@@ -172,7 +179,13 @@ void music_streamer::on_prev_clicked()
 void music_streamer::on_play_clicked()
 {
     qDebug()<< "Play: " <<  mpd_run_play (conn);
+   // mpd_run_play_pos(conn,2);
     mpd_response_finish(conn);
+    if(!player_started)
+    {
+    player_timer->start();
+    player_started = true;
+    }
 }
 
 void music_streamer::on_pause_clicked()
@@ -188,5 +201,12 @@ void music_streamer::on_playlist_clicked()
     ui->textEdit->clear();
     //ui->textEdit->setText(bus_database->data_name->at(0));
     //for(int i=0;i<bus_database->data_name->size();i++)
-      //  ui->textEdit->append(bus_database->data_name->at(i));
+    //  ui->textEdit->append(bus_database->data_name->at(i));
+}
+
+void music_streamer::close_streaming()
+{
+mpd_run_stop(conn);
+player->kill();
+player_started=false;
 }

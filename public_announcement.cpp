@@ -15,7 +15,10 @@ public_announcement::public_announcement(QWidget *parent) :
     /*Music Streamer based on mpdclient API which stream through ICECAST server on LOCALHOST on 6600 port no.
      *
      * */
-    //announcement_streamer = new music_streamer(this );
+    announcement_streamer = new music_streamer(this);
+    connect(ui->start_announcement,SIGNAL(clicked()),announcement_streamer,SLOT(on_play_clicked()));
+    connect(ui->pause_announcement,SIGNAL(clicked()),announcement_streamer,SLOT(on_pause_clicked()));
+    connect(ui->end_announcement,SIGNAL(clicked()),announcement_streamer,SLOT(close_streaming()));
 }
 
 public_announcement::~public_announcement()

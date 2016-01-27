@@ -28,10 +28,10 @@ void train_route::current_selected_train_info(bool slave_train)
     bool fast=false;
 
     /////////////////////////////////////////   STYLESHEETS OF LABELS   //////////////////////////////////
-    ui->coach_count->setStyleSheet("color: rgb(0,0,255)");// BLUE COLOR
-    ui->ladies_special_type->setStyleSheet("color: rgb(0,0,255)");// BLUE COLOR
-    ui->slow_fast_type->setStyleSheet("color: rgb(0,0,255)");// BLUE COLOR
-    ui->source_station_name->setStyleSheet("color: rgb(0,0,255)");// BLUE COLOR
+    ui->coach_count->setStyleSheet("color: rgb(0,0,255)");             // BLUE COLOR
+    ui->ladies_special_type->setStyleSheet("color: rgb(0,0,255)");     // BLUE COLOR
+    ui->slow_fast_type->setStyleSheet("color: rgb(0,0,255)");          // BLUE COLOR
+    ui->source_station_name->setStyleSheet("color: rgb(0,0,255)");     // BLUE COLOR
     ui->destination_station_name->setStyleSheet("color: rgb(0,0,255)");// BLUE COLOR
     //--------------------------------------------------------------------------------------------------//
     /////////////////////////////////  FINDING SOURCE/DESTINATION STATIONS CODES /////////////////////////
@@ -59,7 +59,7 @@ void train_route::current_selected_train_info(bool slave_train)
     ui->source_station_name->setText(source_station_name);
     ui->destination_station_name->setText(destination_station_name);
 
-    //////////////////////////// FIND LADIES_SPECIAL_STATUS OF CURRENT TRAIN ///////////////////
+    //////////////////////////// FIND LADIES_SPECIAL_STATUS AND SLOW/FAST STATUS OF SLAVE TRAIN ///////////////////
     if (slave_train)
     {
         QSqlQuery query_ladies_train_status("SELECT `ladies_trn_status` FROM `tbl_slave_route` where `train_number`='"+ slave_train_no + "'");
@@ -85,6 +85,10 @@ void train_route::current_selected_train_info(bool slave_train)
             fast=true;
         }
     }
+    //**************************************************************************************************//
+
+    //////////////////////////// FIND LADIES_SPECIAL_STATUS AND SLOW/FAST STATUS OF MASTER TRAIN ///////////////////
+
     else
     {
         QSqlQuery query_ladies_train_status("SELECT `ladies_train_status` FROM `tbl_TrainNumber` where `train_no`='"+ master_train_no + "'");
@@ -104,10 +108,15 @@ void train_route::current_selected_train_info(bool slave_train)
         else
             ui->slow_fast_type->setText("Fast");
     }
+    //**************************************************************************************************//
+
+    ////////////////////////////////// FIND COACH COUNT OF CURRENT TRAIN  ////////////////////////////////
     QSqlQuery query_find_coach_count("SELECT `no_of_coaches` FROM `tbl_TrainNumber` where `train_no`='"+ master_train_no + "'");
     query_find_coach_count.next();
     coach_count = query_find_coach_count.value(0).toString();
     ui->coach_count->setText(coach_count);
+
+    //**************************************************************************************************//
     emit add_stations();
 }
 
@@ -116,37 +125,38 @@ void train_route::add_stations_for_current_train()
     int loop_count=0;
     model= new QStandardItemModel(0,0);
     QList <QStandardItem*> ColumnData;
-    //item->setText("");
-    // ui->listWidget->addItem(item);
     QFont header_font;
     header_font.setFamily("Free Sans");
     header_font.setPointSize(30);
     ui->station_names_list->setFont(header_font);
     ui->station_names_list->setAlternatingRowColors(true);
+    ui->station_names_list->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->station_names_list->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+    /////////////////////////////// EXTRACTING STATION CODES FOR CURRENT TRAIN ///////////////////////////
     QSqlQuery get_station_codes_for_master_train("SELECT `stn_code` FROM `tbl_RouteMaster` WHERE `train_sno`='"+ master_train_no+"' order by `distance_frm_source`");
     while(get_station_codes_for_master_train.next())
     {
         station_codes.append(get_station_codes_for_master_train.value(0).toString());
     }
+    //***************************************************************************************************//
+
+    /////////////////////// EXTRACTING AND FILLING STATION NAMES FOR PARTICULAR STATION CODE //////////////
     for(loop_count=0;loop_count<station_codes.size();loop_count++)
     {
         QSqlQuery get_station_names("SELECT `station_name` FROM `tbl_StationName` WHERE `station_code`='"+station_codes.at(loop_count)+"' and `stn_LangId`='english' ");
         while(get_station_names.next())
         {
-            // QListWidgetItem *item = new QListWidgetItem;
             ColumnData << new QStandardItem((get_station_names.value(0).toString()));
             station_names.append(get_station_names.value(0).toString());
-            //item->setText(get_station_names.value(0).toString());
-            //ui->station_names_list->addItem(item);
-
         }
     }
+    //****************************************************************************************************//
     model->insertColumn(0,ColumnData);
-    ui->station_names_list->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->station_names_list->setModel(model);
     ui->station_names_list->setCurrentIndex(model->index(0,0));
-    emit skip_clicked(0);
     ui->destination_reached->hide();
+
 }
 
 void train_route::current_selected_station(int station_counter)
@@ -174,3 +184,13 @@ void train_route::on_skip_station_clicked()
     }
 }
 
+
+void train_route::on_station_names_list_doubleClicked(const QModelIndex &index)
+{
+    qDebug() << model->data(index).toString();
+}
+
+void train_route::on_station_names_list_clicked(const QModelIndex &index)
+{
+    qDebug() << model->data(index).toString();
+}

@@ -32,6 +32,7 @@ public:
     const struct mpd_audio_format *audio_format;/**< Structure to store format of currently played song returned by MPD**/
     QProcess *player;/**< MP3 player used to play stream(mp3-decoder)...very fast playback with minimum latency**/
     QString mpd_music_path;/**<MPD music path for storing songs,playlists **/
+    bool player_started;
 public slots:
     void on_next_clicked();/**< Start streaming Next song in current playlist**/
     void mplayer_start();/**< start mp3-player in background after 2 seconds of delay**/
@@ -39,6 +40,7 @@ public slots:
     void on_play_clicked();/**<Start streaming Current song in current playlist **/
     void on_pause_clicked();/**<Pause stream of Current song in current playlist**/
     void on_playlist_clicked();/**<Show Playlist retrieved from Sql Database**/
+    void close_streaming();
 
 private:
     Ui::music_streamer *ui;

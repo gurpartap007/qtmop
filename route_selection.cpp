@@ -54,10 +54,9 @@ void route_selection::settext(char value)
             }
             else
             {
-               // emit train_selected();
                 break;
             }
-            ++route_count; extern QString selected_train_no;
+            ++route_count;
         }
         while(ptr != &display[0])
         {

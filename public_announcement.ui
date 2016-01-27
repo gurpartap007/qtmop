@@ -51,7 +51,7 @@ color: rgb(40, 40, 40);</string>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="start_announcement">
       <property name="text">
        <string/>
       </property>
@@ -68,7 +68,7 @@ color: rgb(40, 40, 40);</string>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton_3">
+     <widget class="QPushButton" name="pause_announcement">
       <property name="text">
        <string/>
       </property>
@@ -85,7 +85,7 @@ color: rgb(40, 40, 40);</string>
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="end_announcement">
       <property name="text">
        <string/>
       </property>
