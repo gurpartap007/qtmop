@@ -4,7 +4,7 @@ void public_announcement::paintEvent(QPaintEvent* /*event*/)
 {
     QColor backgroundColor ;
     backgroundColor.setRgb(173, 216, 230);
-    backgroundColor.setAlpha(70);
+    backgroundColor.setAlpha(180);
     QPainter customPainter(this);
     customPainter.fillRect(rect(),backgroundColor);
 }

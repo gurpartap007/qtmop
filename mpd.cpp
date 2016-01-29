@@ -75,6 +75,7 @@ void mpd::show_train_route_selection()
 
 void mpd::close_etu_popup()
 {
+    emergency_talkback->setParent(0);
     emergency_talkback->close();
     ui->settings->show();
     ui->control_room->show();
@@ -104,6 +105,7 @@ void mpd::on_settings_clicked()
 
 void mpd::close_settings_popup()
 {
+    system_settings->setParent(0);
     system_settings->close();
     ui->etu->show();
     ui->control_room->show();
@@ -133,6 +135,7 @@ void mpd::on_pa_clicked()
 
 void mpd::close_announcement_popup()
 {
+    announcement->setParent(0);
     announcement->close();
     ui->etu->show();
     ui->control_room->show();
