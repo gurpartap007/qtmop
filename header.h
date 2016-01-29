@@ -22,6 +22,7 @@
 #include <QFont>
 #include <QDebug>
 #include <QBitArray>
+#include <QPropertyAnimation>
 #include <QLabel>
 #include <QTimerEvent>
 #include <QPushButton>

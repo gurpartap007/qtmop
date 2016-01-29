@@ -164,8 +164,6 @@ void train_route::current_selected_station(int station_counter)
     qDebug() << model->data(model->index(station_counter,0)).toString();
 }
 
-
-
 void train_route::on_skip_station_clicked()
 {
     static int skip_clicks=station_names.size();
@@ -183,7 +181,6 @@ void train_route::on_skip_station_clicked()
         ui->skip_station->hide();
     }
 }
-
 
 void train_route::on_station_names_list_doubleClicked(const QModelIndex &index)
 {

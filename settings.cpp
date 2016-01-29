@@ -2,8 +2,9 @@
 #include "ui_settings.h"
 void settings::paintEvent(QPaintEvent* /*event*/)
 {
-    QColor backgroundColor = palette().light().color();
-    backgroundColor.setAlpha(150);
+    QColor backgroundColor ;
+    backgroundColor.setRgb(173, 216, 230);
+    backgroundColor.setAlpha(70);
     QPainter customPainter(this);
     customPainter.fillRect(rect(),backgroundColor);
 }

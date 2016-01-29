@@ -6,273 +6,317 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1381</width>
-    <height>649</height>
+    <width>622</width>
+    <height>589</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">
-
-background-color: rgba(173, 216, 230,70);
+   <string notr="true">background-color: rgba(173, 216, 230,50);
 </string>
   </property>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>380</x>
-     <y>30</y>
-     <width>581</width>
-     <height>551</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_6">
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QPushButton" name="accept_call_button">
-          <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item>
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_6">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="accept_call_button">
+           <property name="styleSheet">
+            <string notr="true">QPushButton:pressed{background-color: rgb(157, 255, 157); }
+QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));}
 </string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="icons.qrc">
-            <normaloff>:/images/green_call_button.png</normaloff>:/images/green_call_button.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>90</width>
-            <height>90</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="accept_call_label">
-          <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="icons.qrc">
+             <normaloff>:/images/green_call_button.png</normaloff>:/images/green_call_button.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>90</width>
+             <height>90</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="accept_call_label">
+           <property name="styleSheet">
+            <string notr="true">background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));
 </string>
-          </property>
-          <property name="text">
-           <string>accept call</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QPushButton" name="hold_call_button">
-          <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));
+           </property>
+           <property name="text">
+            <string>accept call</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="hold_call_button">
+           <property name="styleSheet">
+            <string notr="true">QPushButton:pressed{background-color: rgb(157, 255, 157); }
+QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));}
 </string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="icons.qrc">
-            <normaloff>:/images/hold_call.png</normaloff>:/images/hold_call.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>90</width>
-            <height>90</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="hold_call_label">
-          <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
-          </property>
-          <property name="text">
-           <string>hold call</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QPushButton" name="end_call_button">
-          <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="icons.qrc">
-            <normaloff>:/images/red_stop_button.png</normaloff>:/images/red_stop_button.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>90</width>
-            <height>90</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="end_call_label">
-          <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
-          </property>
-          <property name="text">
-           <string>end call</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QPushButton" name="bar_call_button">
-          <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="icons.qrc">
+             <normaloff>:/images/hold_call.png</normaloff>:/images/hold_call.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>90</width>
+             <height>90</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="hold_call_label">
+           <property name="styleSheet">
+            <string notr="true">background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
+           </property>
+           <property name="text">
+            <string>hold call</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="end_call_button">
+           <property name="styleSheet">
+            <string notr="true">QPushButton:pressed{background-color: rgb(255, 194, 192); }
+QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));}
 </string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="icons.qrc">
-            <normaloff>:/images/end_call.png</normaloff>:/images/end_call.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>90</width>
-            <height>90</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="bar_call_label">
-          <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
-          </property>
-          <property name="text">
-           <string>bar call</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_5">
-        <property name="spacing">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QPushButton" name="mute_call_button">
-          <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="icons.qrc">
+             <normaloff>:/images/red_stop_button.png</normaloff>:/images/red_stop_button.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>90</width>
+             <height>90</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="end_call_label">
+           <property name="styleSheet">
+            <string notr="true">background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
+           </property>
+           <property name="text">
+            <string>end call</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="bar_call_button">
+           <property name="styleSheet">
+            <string notr="true">QPushButton:pressed{background-color: rgb(179, 179, 179); }
+QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));}
+
 </string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="icons.qrc">
-            <normaloff>:/images/mute_call.png</normaloff>:/images/mute_call.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>90</width>
-            <height>90</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="mute_call_label">
-          <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
-          </property>
-          <property name="text">
-           <string>mute call</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QListView" name="call_queue">
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 255, 255);</string>
-      </property>
-      <property name="selectionRectVisible">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="etu_back_button">
-      <property name="font">
-       <font>
-        <pointsize>26</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: qlineargradient(spread:pad, x0:0, y0:0, x1:1, y1:1, stop:0 rgba(150, 150, 150, 150), stop:1 rgba(230, 230, 230, 200));
-color: rgb(40, 40, 40);
-background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:0 rgba(150, 150, 150, 240), stop:1 rgba(255, 255, 255, 255));
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="icons.qrc">
+             <normaloff>:/images/end_call.png</normaloff>:/images/end_call.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>90</width>
+             <height>90</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="bar_call_label">
+           <property name="styleSheet">
+            <string notr="true">background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
+           </property>
+           <property name="text">
+            <string>bar call</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="mute_call_button">
+           <property name="styleSheet">
+            <string notr="true">QPushButton:pressed{background-color: rgb(179, 179, 179); }
+QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));}
+
 </string>
-      </property>
-      <property name="text">
-       <string>Back</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="icons.qrc">
+             <normaloff>:/images/mute_call.png</normaloff>:/images/mute_call.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>90</width>
+             <height>90</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="mute_call_label">
+           <property name="styleSheet">
+            <string notr="true">background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgba(150, 150, 150, 240), stop:0 rgba(255, 255, 255, 255));</string>
+           </property>
+           <property name="text">
+            <string>mute call</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QListView" name="call_queue">
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);</string>
+       </property>
+       <property name="selectionRectVisible">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="etu_back_button">
+       <property name="font">
+        <font>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">
+QPushButton:pressed{background-color: rgb(179, 179, 179); }
+QPushButton{background-color: qlineargradient(spread:pad, x0:0, y0:0, x1:1, y1:1, stop:0 rgba(150, 150, 150, 150), stop:1 rgba(230, 230, 230, 200));}
+QPushButton{color: rgb(40, 40, 40);}
+QPushButton{background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:0 rgba(150, 150, 150, 240), stop:1 rgba(255, 255, 255, 255));}
+</string>
+       </property>
+       <property name="text">
+        <string>Back</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
  </widget>
  <resources>
   <include location="icons.qrc"/>

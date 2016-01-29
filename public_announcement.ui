@@ -6,103 +6,153 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1366</width>
-    <height>650</height>
+    <width>491</width>
+    <height>209</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="announcement_back_button">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>140</y>
-     <width>420</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>26</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="autoFillBackground">
-    <bool>false</bool>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: qlineargradient(spread:pad, x0:0, y0:0, x1:1, y1:1, stop:0 rgba(150, 150, 150, 150), stop:1 rgba(230, 230, 230, 200));
+  <property name="styleSheet">
+   <string notr="true">background-color: rgba(173, 216, 230,50);
+</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item>
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="start_announcement">
+         <property name="styleSheet">
+          <string notr="true">QPushButton:pressed{background-color: rgb(157, 255, 157); }
+QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));}
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="icons.qrc">
+           <normaloff>:/images/start_announce.png</normaloff>:/images/start_announce.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>80</width>
+           <height>80</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pause_announcement">
+         <property name="styleSheet">
+          <string notr="true">QPushButton:pressed{background-color: rgb(157, 255, 157); }
+QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));}
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../Pictures/images/hold_call.png</normaloff>../../Pictures/images/hold_call.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>80</width>
+           <height>80</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="end_announcement">
+         <property name="styleSheet">
+          <string notr="true">QPushButton:pressed{background-color: rgb(255, 192, 192); }
+QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));}
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>../../Pictures/images/stop1.png</normaloff>../../Pictures/images/stop1.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>80</width>
+           <height>80</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QPushButton" name="announcement_back_button">
+       <property name="font">
+        <font>
+         <pointsize>26</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: qlineargradient(spread:pad, x0:0, y0:0, x1:1, y1:1, stop:0 rgba(150, 150, 150, 150), stop:1 rgba(230, 230, 230, 200));
 color: rgb(40, 40, 40);</string>
-   </property>
-   <property name="text">
-    <string>Back</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>30</y>
-     <width>421</width>
-     <height>111</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QPushButton" name="start_announcement">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="icons.qrc">
-        <normaloff>:/images/start_announce.png</normaloff>:/images/start_announce.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>80</width>
-        <height>80</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pause_announcement">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../../Pictures/images/hold_call.png</normaloff>../../Pictures/images/hold_call.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>80</width>
-        <height>80</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="end_announcement">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../../Pictures/images/stop1.png</normaloff>../../Pictures/images/stop1.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>80</width>
-        <height>80</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+       </property>
+       <property name="text">
+        <string>Back</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="horizontalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
  </widget>
  <resources>
   <include location="icons.qrc"/>

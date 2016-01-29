@@ -55,7 +55,7 @@ private slots:
      */
     void on_backButton_clicked();
     void lineedit_filtering(QString value);
-    void on_tableView_clicked(const QModelIndex &index);
+    void on_tableView_clicked();
 
 signals:
     /**

@@ -29,6 +29,7 @@ public:
     QPushButton *hold_call;
     QPushButton *end_call;
     QHBoxLayout *buttons_layout;
+    QPropertyAnimation *m_animation ;
 public slots:
     void end_current_call();
 signals:

@@ -39,6 +39,7 @@ void mpd::on_select_route_clicked()
 
 void mpd::on_etu_clicked()
 {
+
     qDebug() << ui->stackedWidget->width();
     emergency_talkback->setParent(ui->stackedWidget);
     emergency_talkback->setGeometry(0,0,ui->stackedWidget->width(),ui->stackedWidget->height());
@@ -52,6 +53,11 @@ void mpd::on_etu_clicked()
     ui->control_room_label->hide();
     ui->intercom_label->hide();
     emergency_talkback->show();
+  /*  m_animation = new QPropertyAnimation(emergency_talkback, "windowOpacity",ui->stackedWidget);
+    m_animation->setDuration(2000);
+    m_animation->setEasingCurve(QEasingCurve::BezierSpline);
+    m_animation->setStartValue(0.0);
+    m_animation->setEndValue(0.8);*/
 }
 
 void mpd::show_train_route_selection()
@@ -111,7 +117,6 @@ void mpd::close_settings_popup()
 
 void mpd::on_pa_clicked()
 {
-    //announcement = new public_announcement(this);
     announcement->setParent(ui->stackedWidget);
     announcement->setGeometry(0,0,ui->stackedWidget->width(),ui->stackedWidget->height());
     announcement->setWindowFlags(Qt::WindowStaysOnTopHint);

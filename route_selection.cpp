@@ -11,14 +11,12 @@ route_selection::route_selection(QWidget *parent) :
     ui(new Ui::route_selection)
 {
     ui->setupUi(this);
-    train_selection_keyboard = new keyboard(this);
-    train_database = new database(this);
-    // current_route->hide();
-    master_trains_model = new QSqlTableModel(this,db);
-    slave_trains_model = new QSqlTableModel(this,db);
-    dummy_model = new QSqlTableModel;
-    proxyModel = new QSortFilterProxyModel;
-    current_route = new train_route(&db);
+    train_selection_keyboard =  new keyboard(this);
+    train_database           =  new database(this);
+    master_trains_model      =  new QSqlTableModel(this,db);
+    slave_trains_model       =  new QSqlTableModel(this,db);
+    proxyModel               =  new QSortFilterProxyModel;
+    current_route            =  new train_route(&db);
     ui->stackedWidget->addWidget(train_selection_keyboard);
     ui->stackedWidget->setCurrentWidget(train_selection_keyboard);
     connect(train_selection_keyboard,SIGNAL(value_changed(char)),this,SLOT(settext(char)));
@@ -160,7 +158,7 @@ void route_selection::select_train_route_with_sorting()
     proxyModel->setFilterKeyColumn(0);
     ui->tableView->setModel(proxyModel);
     //ui->tableView->setSortingEnabled(true);
-   // ui->tableView->sortByColumn(0, Qt::AscendingOrder);
+    // ui->tableView->sortByColumn(0, Qt::AscendingOrder);
     ui->tableView->setAlternatingRowColors(true);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -187,7 +185,7 @@ void route_selection::lineedit_filtering(QString value)
     proxyModel->setFilterRegExp(value);
 }
 
-void route_selection::on_tableView_clicked(const QModelIndex &index)
+void route_selection::on_tableView_clicked()
 {
     int selected_train;
     bool slave_train=false;
@@ -207,8 +205,8 @@ void route_selection::on_tableView_clicked(const QModelIndex &index)
     }
     else
     {
-    master_train_no = selected_train_no;
-    qDebug() << "Master train no " << master_train_no;
+        master_train_no = selected_train_no;
+        qDebug() << "Master train no " << master_train_no;
     }
     ui->tableView->hide();
     ui->lineEdit->hide();

@@ -33,7 +33,7 @@ public:
     etu *emergency_talkback;/**< Emergency Talkback class to handle calls in emergency conditions in Coaches**/
     settings *system_settings;
     public_announcement *announcement;
-
+    QPropertyAnimation *m_animation ;
 private slots:
 void on_select_route_clicked();
 void on_etu_clicked();
