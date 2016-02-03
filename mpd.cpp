@@ -53,17 +53,11 @@ void mpd::on_etu_clicked()
     ui->control_room_label->hide();
     ui->intercom_label->hide();
     emergency_talkback->show();
-  /*  m_animation = new QPropertyAnimation(emergency_talkback, "windowOpacity",ui->stackedWidget);
-    m_animation->setDuration(2000);
-    m_animation->setEasingCurve(QEasingCurve::BezierSpline);
-    m_animation->setStartValue(0.0);
-    m_animation->setEndValue(0.8);*/
+
 }
 
 void mpd::show_train_route_selection()
 {
-    //emergency_talkback->setParent(0);
-    //system_settings->setParent(0);
     ui->stackedWidget->setCurrentIndex(1);
     selection_timer->stop();
     ui->etu->setEnabled(true);

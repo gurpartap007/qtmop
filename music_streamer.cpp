@@ -15,7 +15,7 @@ music_streamer::music_streamer(QWidget *parent) :
     this->setGeometry(0,0,0,0);
     /* New Sql database which hold the all details about Routes,Devices,Events and announcements.
      * * */
-   // bus_database = new database;
+    // bus_database = new database;
     /* New process will be created and "/usr/bin/mp3-decoder" will run in new process
      *
      * */
@@ -96,7 +96,7 @@ music_streamer::~music_streamer()
     delete ui;
     delete player_timer;
     //player->deleteLater();
-   // system("pkill -9 mp3-decoder");
+    // system("pkill -9 mp3-decoder");
     qDebug() << "Destructor Called";
     mpd_connection_free(conn);
 }
@@ -179,12 +179,12 @@ void music_streamer::on_prev_clicked()
 void music_streamer::on_play_clicked()
 {
     qDebug()<< "Play: " <<  mpd_run_play (conn);
-   // mpd_run_play_pos(conn,2);
+    // mpd_run_play_pos(conn,2);
     mpd_response_finish(conn);
     if(!player_started)
     {
-    player_timer->start();
-    player_started = true;
+        player_timer->start();
+        player_started = true;
     }
 }
 
@@ -206,7 +206,7 @@ void music_streamer::on_playlist_clicked()
 
 void music_streamer::close_streaming()
 {
-mpd_run_stop(conn);
-player->kill();
-player_started=false;
+    mpd_run_stop(conn);
+    player->kill();
+    player_started=false;
 }

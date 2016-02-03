@@ -37,7 +37,8 @@ HEADERS  += mpd.h \
     train_route.h \
     etu.h \
     settings.h \
-    public_announcement.h
+    public_announcement.h \
+    route_struct.h
 
 FORMS    += mpd.ui \
     music_streamer.ui \

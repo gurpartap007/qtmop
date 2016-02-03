@@ -7,6 +7,7 @@ train_route::train_route(QSqlDatabase *emu_database,QWidget *parent) :
     ui(new Ui::train_route)
 {
     ui->setupUi(this);
+
     connect(this,SIGNAL(add_stations()),this,SLOT(add_stations_for_current_train()));
     connect(this,SIGNAL(skip_clicked(int)),this,SLOT(current_selected_station(int)));
 

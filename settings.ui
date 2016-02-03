@@ -33,19 +33,6 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_5">
      <item>
-      <spacer name="verticalSpacer_6">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
       <layout class="QGridLayout" name="gridLayout">
        <property name="spacing">
         <number>10</number>

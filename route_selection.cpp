@@ -131,7 +131,8 @@ void route_selection::select_train_route_with_sorting()
         find_master_train.clear();
     }
     //-------------------------------------------------------------------------------------//
-    //////////// Extract master train Name from Master Train Number /////////////////////////
+
+    //////  ////// Extract master train Name from Master Train Number /////////////////////////
     for(train_count=0;train_count<master_train_no_for_current_slave_train.size();train_count++)
     {
         QSqlQuery find_master_train_name("SELECT `tran_name_english` FROM `tbl_TrainNumber` where `train_no`='"+ master_train_no_for_current_slave_train.at(train_count) + "'");
@@ -166,7 +167,6 @@ void route_selection::select_train_route_with_sorting()
     verticalHeader->sectionResizeMode(QHeaderView::Fixed);
     verticalHeader->setDefaultSectionSize(40);
     ui->backButton->hide();
-
 }
 void route_selection::on_backButton_clicked()
 {
@@ -191,7 +191,7 @@ void route_selection::on_tableView_clicked()
     bool slave_train=false;
     selected_train = ui->tableView->selectionModel()->currentIndex().row();
     selected_train_no = ui->tableView->model()->data(ui->tableView->model()->index(selected_train,0)).toString();
-    /////////////////// Determine Slave Or Master train Selected //////////////////////
+    ///////////////////////////////// Determine Slave Or Master train Selected ///////////////////////////////
     QSqlQuery query_determine_slave_train("SELECT `tran_name_english` FROM `tbl_TrainNumber` where `train_no`='"+ selected_train_no+"'");
     if(!query_determine_slave_train.next())
     {
