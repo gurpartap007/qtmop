@@ -1,5 +1,6 @@
 #ifndef HEADER_H
 #define HEADER_H
+#include "route_struct.h"
 #include <QDebug>
 #include <QProcess>
 #include <mpd/recv.h>
@@ -19,6 +20,7 @@
 #include <QByteArray>
 #include <QStringListModel>
 #include <QStringList>
+#include <QListWidgetItem>
 #include <QFont>
 #include <QDebug>
 #include <QBitArray>
@@ -35,6 +37,7 @@
 #include <QMessageBox>
 #include <QPalette>
 #include <QPropertyAnimation>
+#include <QSpacerItem>
 #include <QPainter>
 #include <QRect>
 #include <QSqlTableModel>

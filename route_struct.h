@@ -9,6 +9,19 @@ typedef enum
     DEPARTURE,
     APPROACHING
 }ROUTE_STATES;
+struct station_name_struct
+{
+    unsigned char eng[DIG_STN_NAME];
+    unsigned char hin[DIG_STN_NAME];
+    unsigned char reg1[DIG_STN_NAME];
+};
+
+union station_name_union
+{
+    struct station_name_struct name;
+    unsigned char names[3][DIG_STN_NAME];
+};
+
 
 typedef struct gps_position
 {
@@ -22,7 +35,7 @@ typedef struct gps_position
 
 union route_status_flags
 {
-    struct route_status_flags
+    struct route_flags
     {
         bool position_identified;
         bool distance_processed;
@@ -59,49 +72,6 @@ union status_bits
     }bits;
     unsigned char flags;
 };
-
-typedef struct route_struct
-{
-    struct stn_info_struct stn[96];
-    struct train_struct train;
-    struct status_struct status;
-}route;
-
-struct stn_info_struct
-{
-    GPS_POS loc; // latitude longitude
-    unsigned long distance_from_previous_station;
-    unsigned int arrival_peri; // arrival periphery
-    unsigned int departure_peri; //departure periphery
-    unsigned int approaching_peri; //approaching periphery
-    unsigned int track_distance_from_curr_pt;
-    unsigned int stn_id;
-    unsigned char stn_code[DIG_STN_CODE];
-    unsigned char wait_time;
-    struct bits_struct
-    {
-        bool fast_train;
-        bool pf_left;
-        bool appr;
-        bool arr;
-        bool dep;
-    }bits;
-    union status_bits status;
-};
-
-struct station_name_struct
-{
-    unsigned char eng[DIG_STN_NAME];
-    unsigned char hin[DIG_STN_NAME];
-    unsigned char reg1[DIG_STN_NAME];
-};
-
-union station_name_union
-{
-    struct station_name_struct name;
-    unsigned char names[3][DIG_STN_NAME];
-};
-
 struct train_struct
 {
     unsigned int train_id;
@@ -130,6 +100,38 @@ struct train_struct
     unsigned char coach_count;
     unsigned char slow_fast;
 };
+struct stn_info_struct
+{
+    GPS_POS loc; // latitude longitude
+    unsigned long distance_from_previous_station;
+    unsigned int arrival_peri; // arrival periphery
+    unsigned int departure_peri; //departure periphery
+    unsigned int approaching_peri; //approaching periphery
+    unsigned int track_distance_from_curr_pt;
+    unsigned int stn_id;
+    unsigned char stn_code[DIG_STN_CODE];
+    unsigned char wait_time;
+    struct bits_struct
+    {
+        bool fast_train;
+        bool pf_left;
+        bool appr;
+        bool arr;
+        bool dep;
+    }bits;
+    union status_bits status;
+};
+typedef struct route_struct
+{
+    struct stn_info_struct stn[96];
+    struct train_struct train;
+    struct status_struct status;
+}route;
+
+
+
+
+
 
 #endif // ROUTE_STRUCT_H
 

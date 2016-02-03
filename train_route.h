@@ -29,6 +29,8 @@ public:
     QStringList source_destination_list;
     QStringList station_codes,station_names;
     QStandardItemModel *model;
+
+
     ~train_route();
 signals:
     void add_stations();
@@ -46,6 +48,8 @@ private slots:
 
 private:
     Ui::train_route *ui;
+
+
 };
 
 
