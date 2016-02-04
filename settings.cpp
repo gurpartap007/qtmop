@@ -13,6 +13,7 @@ settings::settings(QWidget *parent) :
     ui(new Ui::settings)
 {
     ui->setupUi(this);
+    main_screen_available=true;
 }
 
 settings::~settings()
@@ -22,5 +23,17 @@ settings::~settings()
 
 void settings::on_settings_back_button_clicked()
 {
+    if(main_screen_available)
      emit back_clicked();
+    else
+    {
+        ui->stackedWidget->setCurrentIndex(0);
+        main_screen_available=true;
+    }
+}
+
+void settings::on_system_config_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(1);
+    main_screen_available=false;
 }

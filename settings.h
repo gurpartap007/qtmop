@@ -32,8 +32,11 @@ protected:
 private slots:
     void on_settings_back_button_clicked();
 
+    void on_system_config_clicked();
+
 private:
     Ui::settings *ui;
+    bool main_screen_available;
 };
 
 #endif // SETTINGS_H
