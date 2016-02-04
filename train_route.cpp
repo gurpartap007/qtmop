@@ -24,6 +24,7 @@ void train_route::current_selected_train_info(bool slave_train)
     QString source_station_name;
     QString destination_station_name;
     QString coach_count;
+    QString via_station_code;
     bool slow=false;
     bool fast=false;
 
@@ -117,15 +118,31 @@ void train_route::current_selected_train_info(bool slave_train)
     ui->coach_count->setText(coach_count);
 
     //**************************************************************************************************//
+
+    ////////////////////////////////// FIND VIA STATION OF CURRENT TRAIN  ////////////////////////////////
+
+    QSqlQuery query_find_via_station_code("SELECT `via_stn_sno` FROM `tbl_TrainNumber` where `train_no`='"+ master_train_no + "'");
+    query_find_via_station_code.first();
+    via_station_code = query_find_via_station_code.value(0).toString();
+    QSqlQuery query_find_via_station_name("SELECT `station_name` FROM `tbl_StationName` where `station_code`='"+ via_station_code +"' and `stn_LangId`='English'");
+    query_find_via_station_name.first();
+    ui->via_name->setText(query_find_via_station_name.value(0).toString());
+    //**************************************************************************************************//
+    ui->train_name->setText(master_train_no);
+
     emit add_stations();
 }
 
 void train_route::add_stations_for_current_train()
 {
     int loop_count;
-    QFont skip_button_font;
-    skip_button_font.setFamily("Garuda");
-    skip_button_font.setPointSize(21);
+    skip_button_font = new QFont;
+    skip_button_font->setFamily("Garuda");
+    skip_button_font->setPointSize(21);
+    station_name_font = new QFont;
+    station_name_font->setFamily("Sans Serif");
+    station_name_font->setPointSize(21);
+    station_name_font->setBold(true);
 
     /////////////////////////////// EXTRACTING STATION CODES FOR CURRENT TRAIN ///////////////////////////
     QSqlQuery get_station_codes_for_master_train("SELECT `stn_code` FROM `tbl_RouteMaster` WHERE `train_sno`='"+ master_train_no+"' order by `distance_frm_source`");
@@ -139,26 +156,28 @@ void train_route::add_stations_for_current_train()
     QListWidgetItem *item[station_codes.size()];
     QWidget *widget[station_codes.size()];
     QHBoxLayout *widgetLayout[station_codes.size()];
-  //  ui->listWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    QSpacerItem *spacer_item[station_codes.size()];
+    //  ui->listWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     /////////////////////// EXTRACTING AND FILLING STATION NAMES FOR PARTICULAR STATION CODE //////////////
     for(loop_count=0;loop_count<station_codes.size();loop_count++)
     {
-
-        skip_button[loop_count] = new skipbutton("skip",loop_count,this);
-        widget[loop_count] = new QWidget(this);
-        widgetLayout[loop_count] = new QHBoxLayout;
         station_name[loop_count] = new QLabel;
+        widget[loop_count] = new QWidget(this);
+        skip_button[loop_count] = new skipbutton("skip",loop_count,station_name[loop_count],widget[loop_count],this);
+        widgetLayout[loop_count] = new QHBoxLayout;
         item[loop_count] = new QListWidgetItem;
-        skip_button[loop_count]->setFont(skip_button_font);
-        station_name[loop_count]->setFont(skip_button_font);
+        spacer_item[loop_count] = new QSpacerItem(1,1, QSizePolicy::Expanding, QSizePolicy::Fixed);
+        skip_button[loop_count]->setFont(*skip_button_font);
+        station_name[loop_count]->setFont(*station_name_font);
         skip_button[loop_count]->setStyleSheet("QPushButton{ background-color: rgb(179, 179, 179); }QPushButton:pressed{background-color: rgb(100, 100, 100); }");
         skip_button[loop_count]->setMinimumHeight(15);
         widgetLayout[loop_count]->addWidget(skip_button[loop_count]);
         widgetLayout[loop_count]->addWidget(station_name[loop_count]);
+        widgetLayout[loop_count]->addSpacerItem(spacer_item[loop_count]);
         widgetLayout[loop_count]->setAlignment(skip_button[loop_count],Qt::AlignLeft);
         widgetLayout[loop_count]->setAlignment(station_name[loop_count],Qt::AlignLeft);
         widget[loop_count]->setLayout(widgetLayout[loop_count]);
-        //widget[loop_count]->setStyleSheet("background-color: rgb(255, 148, 124);");
+        widget[loop_count]->setStyleSheet("background-color: rgb(179,179,179);");
         ui->listWidget->addItem(item[loop_count]);
         item[loop_count]->setSizeHint(skip_button[loop_count]->minimumSizeHint());
         ui->listWidget->setItemWidget(item[loop_count],widget[loop_count]);
@@ -169,8 +188,10 @@ void train_route::add_stations_for_current_train()
         {
             widget[loop_count]->setStyleSheet("background-color: rgb(200,200,200);");
             skip_button[loop_count]->setDisabled(true);
-
+            station_name[loop_count]->setStyleSheet("color: rgb(150,150,150)");
         }
+
+
         QSqlQuery get_station_names("SELECT `station_name` FROM `tbl_StationName` WHERE `station_code`='"+station_codes.at(loop_count)+"' and `stn_LangId`='english' ");
         while(get_station_names.next())
         {
@@ -179,9 +200,9 @@ void train_route::add_stations_for_current_train()
             //station_names.append(get_station_names.value(0).toString());
         }
         connect(skip_button[loop_count],SIGNAL(skip_clicked(int)),this,SLOT(on_skip_station_clicked(int)));
-    }
-    widget[0]->setStyleSheet("background-color: rgb(255, 148, 124);");
 
+         widget[0]->setStyleSheet("background-color: rgb(255, 148, 124);");
+}
     /*
     skipButton = new QPushButton("Skip");
     widgetLayout = new QHBoxLayout;
@@ -217,10 +238,10 @@ void train_route::on_skip_station_clicked(int id)
     QListWidgetItem *current_item;
     QWidget *current_widget;
     current_item = ui->listWidget->item(id);
-     current_widget =  ui->listWidget->itemWidget(current_item);
-    current_widget->setStyleSheet("background-color: rgb(180,180,180);");
+    current_widget =  ui->listWidget->itemWidget(current_item);
+    current_widget->setStyleSheet("background-color: rgb(200,200,200);");
 
-//    ui->listWidget->setCurrentItem(current_item);
+    //    ui->listWidget->setCurrentItem(current_item);
 
 }
 

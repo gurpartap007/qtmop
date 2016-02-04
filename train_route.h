@@ -30,8 +30,8 @@ public:
     QStringList source_destination_list;
     QStringList station_codes,station_names;
     QStandardItemModel *model;
-
-
+    QFont *skip_button_font;
+  QFont *station_name_font;
     ~train_route();
 signals:
     void add_stations();
