@@ -14,6 +14,7 @@
  */
 namespace Ui {
 class train_route;
+class SkipButton;
 }
 
 class train_route : public QWidget
@@ -41,7 +42,7 @@ public slots:
     void add_stations_for_current_train();
     void current_selected_station(int);
 private slots:
-    void on_skip_station_clicked();
+    void on_skip_station_clicked(int id);
     void on_station_names_list_doubleClicked(const QModelIndex &index);
 
     void on_station_names_list_clicked(const QModelIndex &index);
@@ -51,6 +52,5 @@ private:
 
 
 };
-
 
 #endif // TRAIN_ROUTE_H

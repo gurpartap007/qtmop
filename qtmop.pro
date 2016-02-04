@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     train_route.cpp \
     etu.cpp \
     settings.cpp \
-    public_announcement.cpp
+    public_announcement.cpp \
+    skipbutton.cpp
     keyboard.cpp
 
 HEADERS  += mpd.h \
@@ -38,7 +39,8 @@ HEADERS  += mpd.h \
     etu.h \
     settings.h \
     public_announcement.h \
-    route_struct.h
+    route_struct.h \
+    skipbutton.h
 
 FORMS    += mpd.ui \
     music_streamer.ui \

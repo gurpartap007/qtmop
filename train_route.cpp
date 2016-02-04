@@ -1,4 +1,5 @@
 #include "train_route.h"
+#include "skipbutton.h"
 #include "ui_train_route.h"
 extern QString master_train_no;
 extern QString slave_train_no;
@@ -133,17 +134,17 @@ void train_route::add_stations_for_current_train()
         station_codes.append(get_station_codes_for_master_train.value(0).toString());
     }
     //***************************************************************************************************//
-    QPushButton *skip_button[station_codes.size()];
+    skipbutton *skip_button[station_codes.size()];
     QLabel *station_name[station_codes.size()];
     QListWidgetItem *item[station_codes.size()];
     QWidget *widget[station_codes.size()];
     QHBoxLayout *widgetLayout[station_codes.size()];
-    ui->listWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+  //  ui->listWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     /////////////////////// EXTRACTING AND FILLING STATION NAMES FOR PARTICULAR STATION CODE //////////////
     for(loop_count=0;loop_count<station_codes.size();loop_count++)
     {
 
-        skip_button[loop_count] = new QPushButton("Skip");
+        skip_button[loop_count] = new skipbutton("skip",loop_count,this);
         widget[loop_count] = new QWidget(this);
         widgetLayout[loop_count] = new QHBoxLayout;
         station_name[loop_count] = new QLabel;
@@ -177,13 +178,12 @@ void train_route::add_stations_for_current_train()
             item[loop_count]->setText(get_station_names.value(0).toString());
             //station_names.append(get_station_names.value(0).toString());
         }
-        connect(skip_button[loop_count],SIGNAL(clicked()),ui->listWidget,SLOT());
+        connect(skip_button[loop_count],SIGNAL(skip_clicked(int)),this,SLOT(on_skip_station_clicked(int)));
     }
     widget[0]->setStyleSheet("background-color: rgb(255, 148, 124);");
 
-/*
+    /*
     skipButton = new QPushButton("Skip");
-
     widgetLayout = new QHBoxLayout;
     widgetText = new QLabel;
     //item->setText("Hello");
@@ -208,20 +208,28 @@ void train_route::add_stations_for_current_train()
 
 void train_route::current_selected_station(int station_counter)
 {
-    // qDebug() << model->data(model->index(station_counter,0)).toString();
+    qDebug() << model->data(model->index(station_counter,0)).toString();
 }
 
-void train_route::on_skip_station_clicked()
+void train_route::on_skip_station_clicked(int id)
 {
-qDebug() << "station skipped" << ui->listWidget->currentItem()->text();
+    qDebug() << "station skipped" << id;
+    QListWidgetItem *current_item;
+    QWidget *current_widget;
+    current_item = ui->listWidget->item(id);
+     current_widget =  ui->listWidget->itemWidget(current_item);
+    current_widget->setStyleSheet("background-color: rgb(180,180,180);");
+
+//    ui->listWidget->setCurrentItem(current_item);
+
 }
 
 void train_route::on_station_names_list_doubleClicked(const QModelIndex &index)
 {
-    // qDebug() << model->data(index).toString();
+    qDebug() << model->data(index).toString();
 }
 
 void train_route::on_station_names_list_clicked(const QModelIndex &index)
 {
-    // qDebug() << model->data(index).toString();
+    qDebug() << model->data(index).toString();
 }
