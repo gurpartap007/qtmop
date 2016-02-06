@@ -29,10 +29,10 @@ public:
     ~public_announcement();
 signals:
     void back_clicked();
-private slots:
-    void on_announcement_back_button_clicked();
+
 protected:
     void paintEvent(QPaintEvent* event);
+     virtual bool eventFilter( QObject * watched, QEvent * event );
 private:
     Ui::public_announcement *ui;
 };

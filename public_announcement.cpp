@@ -8,6 +8,16 @@ void public_announcement::paintEvent(QPaintEvent* /*event*/)
     QPainter customPainter(this);
     customPainter.fillRect(rect(),backgroundColor);
 }
+
+bool public_announcement::eventFilter(QObject *watched, QEvent *event)
+{
+    if ( event->type() == QEvent::MouseButtonPress )
+    {
+        emit back_clicked();
+    }
+
+    return QObject::eventFilter(watched, event);
+}
 public_announcement::public_announcement(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::public_announcement)
@@ -20,6 +30,8 @@ public_announcement::public_announcement(QWidget *parent) :
     connect(ui->start_announcement,SIGNAL(clicked()),announcement_streamer,SLOT(on_play_clicked()));
     connect(ui->pause_announcement,SIGNAL(clicked()),announcement_streamer,SLOT(on_pause_clicked()));
     connect(ui->end_announcement,SIGNAL(clicked()),announcement_streamer,SLOT(close_streaming()));
+    this->installEventFilter(this);
+
 }
 
 public_announcement::~public_announcement()
@@ -28,7 +40,4 @@ public_announcement::~public_announcement()
    // delete announcement_streamer;
 }
 
-void public_announcement::on_announcement_back_button_clicked()
-{
-emit back_clicked();
-}
+

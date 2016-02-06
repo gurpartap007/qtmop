@@ -104,27 +104,6 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
       </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="announcement_back_button">
-       <property name="font">
-        <font>
-         <pointsize>26</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: qlineargradient(spread:pad, x0:0, y0:0, x1:1, y1:1, stop:0 rgba(150, 150, 150, 150), stop:1 rgba(230, 230, 230, 200));
-color: rgb(40, 40, 40);</string>
-       </property>
-       <property name="text">
-        <string>Back</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="verticalSpacer">
        <property name="orientation">
         <enum>Qt::Vertical</enum>

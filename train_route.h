@@ -44,12 +44,15 @@ public slots:
 private slots:
     void on_skip_station_clicked(int id);
     void on_station_names_list_doubleClicked(const QModelIndex &index);
-
+    void update_date_time();
     void on_station_names_list_clicked(const QModelIndex &index);
 
 private:
     Ui::train_route *ui;
-
+    QTimer time_update;
+    QString date_time;
+    QDate current_date;
+    QTime current_time;
 
 };
 

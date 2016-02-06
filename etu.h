@@ -37,9 +37,7 @@ signals:
     void back_clicked();
 protected:
      void paintEvent(QPaintEvent* event);
-private slots:
-     void on_etu_back_button_clicked();
-
+    virtual bool eventFilter( QObject * watched, QEvent * event );
 private:
     Ui::etu *ui;
 };

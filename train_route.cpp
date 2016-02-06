@@ -10,6 +10,7 @@ train_route::train_route(QSqlDatabase *emu_database,QWidget *parent) :
     ui->setupUi(this);
     connect(this,SIGNAL(add_stations()),this,SLOT(add_stations_for_current_train()));
     connect(this,SIGNAL(skip_clicked(int)),this,SLOT(current_selected_station(int)));
+    connect(&time_update,SIGNAL(timeout()),this,SLOT(update_date_time()));
 }
 
 train_route::~train_route()
@@ -25,8 +26,13 @@ void train_route::current_selected_train_info(bool slave_train)
     QString destination_station_name;
     QString coach_count;
     QString via_station_code;
+    QString handicap_coach_no;
     bool slow=false;
     bool fast=false;
+    ///////////////////////////////////////// TIMER FOR UPDATION OF TIME /////////////////////////////////
+   time_update.setInterval(1000);
+   time_update.start();
+    //--------------------------------------------------------------------------------------------------//
 
     /////////////////////////////////////////   STYLESHEETS OF LABELS   //////////////////////////////////
     ui->coach_count->setStyleSheet("color: rgb(0,0,255)");             // BLUE COLOR
@@ -128,6 +134,16 @@ void train_route::current_selected_train_info(bool slave_train)
     query_find_via_station_name.first();
     ui->via_name->setText(query_find_via_station_name.value(0).toString());
     //**************************************************************************************************//
+
+    ////////////////////////////////// FIND HANDICAP COACH NO'S OF CURRENT TRAIN  ////////////////////////////////
+
+    QSqlQuery query_find_handicap_coaches("select `handicap_coach1`,`handicap_coach2` from `configuration`");
+    query_find_handicap_coaches.next();
+    handicap_coach_no=query_find_handicap_coaches.value(0).toString();
+    handicap_coach_no.append("/");
+    handicap_coach_no.append(query_find_handicap_coaches.value(1).toString());
+    ui->handicap_coach->setText(handicap_coach_no);
+    //**************************************************************************************************//
     ui->train_name->setText(master_train_no);
 
     emit add_stations();
@@ -138,10 +154,10 @@ void train_route::add_stations_for_current_train()
     int loop_count;
     skip_button_font = new QFont;
     skip_button_font->setFamily("Garuda");
-    skip_button_font->setPointSize(21);
+    skip_button_font->setPointSize(26);
     station_name_font = new QFont;
     station_name_font->setFamily("Sans Serif");
-    station_name_font->setPointSize(21);
+    station_name_font->setPointSize(30);
     station_name_font->setBold(true);
 
     /////////////////////////////// EXTRACTING STATION CODES FOR CURRENT TRAIN ///////////////////////////
@@ -163,14 +179,15 @@ void train_route::add_stations_for_current_train()
     {
         station_name[loop_count] = new QLabel;
         widget[loop_count] = new QWidget(this);
-        skip_button[loop_count] = new skipbutton("skip",loop_count,station_name[loop_count],widget[loop_count],this);
+        skip_button[loop_count] = new skipbutton("Skip",loop_count,station_name[loop_count],widget[loop_count],this);
         widgetLayout[loop_count] = new QHBoxLayout;
         item[loop_count] = new QListWidgetItem;
         spacer_item[loop_count] = new QSpacerItem(1,1, QSizePolicy::Expanding, QSizePolicy::Fixed);
         skip_button[loop_count]->setFont(*skip_button_font);
+        skip_button[loop_count]->setMinimumSize(QSize(400,50));
         station_name[loop_count]->setFont(*station_name_font);
         skip_button[loop_count]->setStyleSheet("QPushButton{ background-color: rgb(179, 179, 179); }QPushButton:pressed{background-color: rgb(100, 100, 100); }");
-        skip_button[loop_count]->setMinimumHeight(15);
+      //  skip_button[loop_count]->setMinimumHeight(15);
         widgetLayout[loop_count]->addWidget(skip_button[loop_count]);
         widgetLayout[loop_count]->addWidget(station_name[loop_count]);
         widgetLayout[loop_count]->addSpacerItem(spacer_item[loop_count]);
@@ -248,6 +265,17 @@ void train_route::on_skip_station_clicked(int id)
 void train_route::on_station_names_list_doubleClicked(const QModelIndex &index)
 {
     qDebug() << model->data(index).toString();
+}
+
+void train_route::update_date_time()
+{
+    date_time.clear();
+    current_date = QDate::currentDate();
+    date_time.append(current_date.toString(Qt::TextDate));
+    date_time.append("  ");
+    current_time = QTime::currentTime();
+    date_time.append(current_time.toString(Qt::TextDate));
+    ui->date_time->setText(date_time);
 }
 
 void train_route::on_station_names_list_clicked(const QModelIndex &index)

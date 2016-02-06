@@ -2,6 +2,8 @@
 #define HEADER_H
 #include "route_struct.h"
 #include <QDebug>
+#include <QDate>
+#include <QTime>
 #include <QProcess>
 #include <mpd/recv.h>
 #include <mpd/client.h>
@@ -38,6 +40,7 @@
 #include <QPalette>
 #include <QPropertyAnimation>
 #include <QSpacerItem>
+#include <QDesktopWidget>
 #include <QPainter>
 #include <QRect>
 #include <QSqlTableModel>

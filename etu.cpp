@@ -2,11 +2,23 @@
 #include "ui_etu.h"
 void etu::paintEvent(QPaintEvent* /*event*/)
 {
- QColor backgroundColor ;
- backgroundColor.setRgb(173, 216, 230);
- backgroundColor.setAlpha(180);
- QPainter customPainter(this);
- customPainter.fillRect(rect(),backgroundColor);
+    QColor backgroundColor ;
+    backgroundColor.setRgb(173, 216, 230);
+    backgroundColor.setAlpha(180);
+    QPainter customPainter(this);
+    customPainter.fillRect(rect(),backgroundColor);
+}
+
+bool etu::eventFilter(QObject *watched, QEvent *event)
+{
+
+    if (  event->type() == QEvent::MouseButtonPress )
+    {
+        emit back_clicked();
+    }
+
+
+    return QObject::eventFilter(watched, event);
 }
 etu::etu(QWidget *parent) :
     QWidget(parent),
@@ -14,7 +26,10 @@ etu::etu(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->end_call_button,SIGNAL(clicked()),this,SLOT(end_current_call()));
-
+    //this->installEventFilter(this->window());
+    ui->left_area->installEventFilter(this);
+    ui->right_area->installEventFilter(this);
+    ui->bottom_area->installEventFilter(this);
 }
 
 
@@ -28,7 +43,3 @@ void etu::end_current_call()
     emit call_ended();
 }
 
-void etu::on_etu_back_button_clicked()
-{
-    emit back_clicked();
-}
