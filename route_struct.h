@@ -97,7 +97,7 @@ struct train_struct
     unsigned char arr_time_hrs;
     unsigned char arr_time_min;
     unsigned char reg_lang1_code;
-    unsigned char coach_count;
+    unsigned char coach_count[2];
     unsigned char slow_fast;
 };
 struct stn_info_struct

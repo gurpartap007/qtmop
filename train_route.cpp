@@ -3,6 +3,7 @@
 #include "ui_train_route.h"
 extern QString master_train_no;
 extern QString slave_train_no;
+route_struct current_route_data;
 train_route::train_route(QSqlDatabase *emu_database,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::train_route)
@@ -10,6 +11,7 @@ train_route::train_route(QSqlDatabase *emu_database,QWidget *parent) :
     ui->setupUi(this);
     connect(this,SIGNAL(add_stations()),this,SLOT(add_stations_for_current_train()));
     connect(this,SIGNAL(skip_clicked(int)),this,SLOT(current_selected_station(int)));
+    connect(this,SIGNAL(fill_structure()),this,SLOT(structure_filling(bool)));
     connect(&time_update,SIGNAL(timeout()),this,SLOT(update_date_time()));
 }
 
@@ -20,18 +22,17 @@ train_route::~train_route()
 
 void train_route::current_selected_train_info(bool slave_train)
 {
-
-    QStringList source_destination_station_codes;
     QString source_station_name;
     QString destination_station_name;
     QString coach_count;
-    QString via_station_code;
+    QString via_station_code,via_station_name;
     QString handicap_coach_no;
     bool slow=false;
     bool fast=false;
+
     ///////////////////////////////////////// TIMER FOR UPDATION OF TIME /////////////////////////////////
-   time_update.setInterval(1000);
-   time_update.start();
+    time_update.setInterval(1000);
+    time_update.start();
     //--------------------------------------------------------------------------------------------------//
 
     /////////////////////////////////////////   STYLESHEETS OF LABELS   //////////////////////////////////
@@ -84,11 +85,13 @@ void train_route::current_selected_train_info(bool slave_train)
         if(query_slow_fast_status.value(0).toString() == "S")
         {
             ui->slow_fast_type->setText("Slow");
+            current_route_data.train.slow_fast = 'S';
             slow=true;
         }
         else
         {
             ui->slow_fast_type->setText("Fast");
+            current_route_data.train.slow_fast = 'F';
             fast=true;
         }
     }
@@ -122,6 +125,7 @@ void train_route::current_selected_train_info(bool slave_train)
     query_find_coach_count.next();
     coach_count = query_find_coach_count.value(0).toString();
     ui->coach_count->setText(coach_count);
+    memcpy(current_route_data.train.coach_count,coach_count.toStdString().c_str(),sizeof(coach_count));
 
     //**************************************************************************************************//
 
@@ -130,9 +134,12 @@ void train_route::current_selected_train_info(bool slave_train)
     QSqlQuery query_find_via_station_code("SELECT `via_stn_sno` FROM `tbl_TrainNumber` where `train_no`='"+ master_train_no + "'");
     query_find_via_station_code.first();
     via_station_code = query_find_via_station_code.value(0).toString();
+    memcpy(current_route_data.train.mid_stn_code,via_station_code.toStdString().c_str(),sizeof(via_station_code));
     QSqlQuery query_find_via_station_name("SELECT `station_name` FROM `tbl_StationName` where `station_code`='"+ via_station_code +"' and `stn_LangId`='English'");
     query_find_via_station_name.first();
-    ui->via_name->setText(query_find_via_station_name.value(0).toString());
+    via_station_name = query_find_via_station_name.value(0).toString();
+    ui->via_name->setText(via_station_name);
+    memcpy(current_route_data.train.mid.name.eng,via_station_name.toStdString().c_str(),sizeof(via_station_name));
     //**************************************************************************************************//
 
     ////////////////////////////////// FIND HANDICAP COACH NO'S OF CURRENT TRAIN  ////////////////////////////////
@@ -146,7 +153,7 @@ void train_route::current_selected_train_info(bool slave_train)
     //**************************************************************************************************//
     ui->train_name->setText(master_train_no);
 
-    emit add_stations();
+    emit fill_structure();
 }
 
 void train_route::add_stations_for_current_train()
@@ -173,7 +180,6 @@ void train_route::add_stations_for_current_train()
     QWidget *widget[station_codes.size()];
     QHBoxLayout *widgetLayout[station_codes.size()];
     QSpacerItem *spacer_item[station_codes.size()];
-    //  ui->listWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
     /////////////////////// EXTRACTING AND FILLING STATION NAMES FOR PARTICULAR STATION CODE //////////////
     for(loop_count=0;loop_count<station_codes.size();loop_count++)
     {
@@ -187,7 +193,6 @@ void train_route::add_stations_for_current_train()
         skip_button[loop_count]->setMinimumSize(QSize(400,50));
         station_name[loop_count]->setFont(*station_name_font);
         skip_button[loop_count]->setStyleSheet("QPushButton{ background-color: rgb(179, 179, 179); }QPushButton:pressed{background-color: rgb(100, 100, 100); }");
-      //  skip_button[loop_count]->setMinimumHeight(15);
         widgetLayout[loop_count]->addWidget(skip_button[loop_count]);
         widgetLayout[loop_count]->addWidget(station_name[loop_count]);
         widgetLayout[loop_count]->addSpacerItem(spacer_item[loop_count]);
@@ -218,36 +223,26 @@ void train_route::add_stations_for_current_train()
         }
         connect(skip_button[loop_count],SIGNAL(skip_clicked(int)),this,SLOT(on_skip_station_clicked(int)));
 
-         widget[0]->setStyleSheet("background-color: rgb(255, 148, 124);");
-}
-    /*
-    skipButton = new QPushButton("Skip");
-    widgetLayout = new QHBoxLayout;
-    widgetText = new QLabel;
-    //item->setText("Hello");
-    item->setBackgroundColor(QColor(179,179,179));
-    skipButton->setStyleSheet("QPushButton{ background-color: rgb(179, 179, 179); }QPushButton:pressed{background-color: rgb(100, 100, 100); }");
-    widgetText->setText("New Delhi");
-    skipButton->setFont(skip_button_font);
-    skipButton->setMinimumHeight(15);
-    widgetLayout->addWidget(skipButton);
-    widgetLayout->addWidget(widgetText);
-    widgetLayout->setAlignment(skipButton,Qt::AlignLeft);
-    widgetLayout->setAlignment(widgetText,Qt::AlignRight);
-    widgetLayout->addStretch(2);
-    widgetLayout->setSizeConstraint(QLayout::SetMaximumSize);
-    widget->setLayout(widgetLayout);
-    widget->setStyleSheet("background-color: rgb(255, 148, 124);");
-    ui->listWidget->addItem(item);
-    item->setSizeHint(skipButton->minimumSizeHint());
-    ui->listWidget->setItemWidget(item,widget);*/
-
+        widget[0]->setStyleSheet("background-color: rgb(255, 148, 124);");
+    }
 }
 
-void train_route::current_selected_station(int station_counter)
+///////////////////// STRUCTURE FILLING FOR SELECTED ROUTE //////////////////////
+
+void train_route::structure_filling(bool slave_train)
 {
-    qDebug() << model->data(model->index(station_counter,0)).toString();
+    QSqlQuery current_train_info("SELECT * FROM `tbl_TrainNumber` WHERE `train_no`='"+ master_train_no +"'");
+    while(current_train_info.next())
+    {
+       qDebug() << "train info..." << current_train_info.value(0).toString();
+       qDebug() << "train info..." << current_train_info.value(1).toString();
+       qDebug() << "train info..." << current_train_info.value(2).toString();
+       qDebug() << "train info..." << current_train_info.value(3).toString();
+    }
+    emit add_stations();
 }
+
+/********************************************************************************/
 
 void train_route::on_skip_station_clicked(int id)
 {
@@ -262,11 +257,6 @@ void train_route::on_skip_station_clicked(int id)
 
 }
 
-void train_route::on_station_names_list_doubleClicked(const QModelIndex &index)
-{
-    qDebug() << model->data(index).toString();
-}
-
 void train_route::update_date_time()
 {
     date_time.clear();
@@ -278,7 +268,4 @@ void train_route::update_date_time()
     ui->date_time->setText(date_time);
 }
 
-void train_route::on_station_names_list_clicked(const QModelIndex &index)
-{
-    qDebug() << model->data(index).toString();
-}
+
