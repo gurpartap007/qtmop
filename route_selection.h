@@ -61,6 +61,7 @@ signals:
     /**
      * @brief This signal is emited when train route entered by the user matched with Database and valid.
      */
+    void change_numeric_keypad();
     void train_selected(bool);
     void lineedit_filter(QString value);
 private:

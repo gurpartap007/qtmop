@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     etu.cpp \
     settings.cpp \
     public_announcement.cpp \
-    skipbutton.cpp
+    skipbutton.cpp \
+    numeric_keypad.cpp
     keyboard.cpp
 
 HEADERS  += mpd.h \
@@ -40,7 +41,8 @@ HEADERS  += mpd.h \
     settings.h \
     public_announcement.h \
     route_struct.h \
-    skipbutton.h
+    skipbutton.h \
+    numeric_keypad.h
 
 FORMS    += mpd.ui \
     music_streamer.ui \
@@ -49,7 +51,8 @@ FORMS    += mpd.ui \
     train_route.ui \
     etu.ui \
     settings.ui \
-    public_announcement.ui
+    public_announcement.ui \
+    numeric_keypad.ui
 
 RESOURCES += \
     icons.qrc

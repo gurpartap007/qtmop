@@ -1,7 +1,8 @@
 #include "keyboard.h"
 //VARIABLES
 char display[20], *ptr;
-int check;
+int check=0;
+
 char qwerty_letter[4][26] = {{'q','w','e','r','t','y','u','i','o','p','a','s','d','f','g','h','j','k','l','z','x','c','v','b','n','m'},
                              {'Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M'},
                              {'1','2','3','4','5','6','7','8','9','0','@',':',';','_','$','#','(',')','/',92,'?','!','"','+','-','='},
@@ -232,6 +233,7 @@ void keyboard::on_pushButton_31_clicked()
 {
     char change[4],*pter;
     pter = &change[0];
+    extern int check;
     change[1] = '\0';change[2] = '\0';change[3] = '\0';
     if(check == 0 || check == 1)
     {

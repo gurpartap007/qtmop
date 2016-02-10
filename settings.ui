@@ -19,11 +19,8 @@ background-color: rgba(173, 216, 230,50);
 </string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_6">
-   <property name="spacing">
-    <number>0</number>
-   </property>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_8">
+    <layout class="QVBoxLayout" name="keypad_layout_left">
      <property name="spacing">
       <number>2</number>
      </property>
@@ -138,14 +135,20 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0
                <item>
                 <widget class="QLabel" name="label">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>220</width>
+                   <height>33</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
-                   <width>16777215</width>
+                   <width>220</width>
                    <height>33</height>
                   </size>
                  </property>
@@ -222,14 +225,20 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0
                <item>
                 <widget class="QLabel" name="select_route_label_4">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>220</width>
+                   <height>33</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
-                   <width>435</width>
+                   <width>220</width>
                    <height>33</height>
                   </size>
                  </property>
@@ -321,14 +330,20 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0
                <item>
                 <widget class="QLabel" name="select_route_label_3">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>220</width>
+                   <height>33</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
-                   <width>435</width>
+                   <width>220</width>
                    <height>33</height>
                   </size>
                  </property>
@@ -426,9 +441,15 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>220</width>
+                   <height>33</height>
+                  </size>
+                 </property>
                  <property name="maximumSize">
                   <size>
-                   <width>435</width>
+                   <width>220</width>
                    <height>33</height>
                   </size>
                  </property>
@@ -532,6 +553,9 @@ background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgb
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::MinimumExpanding</enum>
+               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
@@ -541,34 +565,28 @@ background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgb
               </spacer>
              </item>
              <item>
-              <widget class="QSpinBox" name="coach_count_spinBox">
+              <widget class="QLineEdit" name="coach_count_input">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>159</width>
-                 <height>41</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>159</width>
-                 <height>16777215</height>
+                 <width>100</width>
+                 <height>0</height>
                 </size>
                </property>
                <property name="font">
                 <font>
-                 <pointsize>20</pointsize>
+                 <pointsize>16</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true"/>
+                <string notr="true">background-color: rgb(232, 232, 232);</string>
                </property>
               </widget>
              </item>
@@ -595,6 +613,9 @@ background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgb
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::MinimumExpanding</enum>
+               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
@@ -604,34 +625,28 @@ background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgb
               </spacer>
              </item>
              <item>
-              <widget class="QSpinBox" name="handicap1_spinBox">
+              <widget class="QLineEdit" name="handicap1_input">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>159</width>
+                 <width>100</width>
                  <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>159</width>
-                 <height>16777215</height>
                 </size>
                </property>
                <property name="font">
                 <font>
-                 <pointsize>20</pointsize>
+                 <pointsize>16</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true">  QScrollBar:vertical { width: 100px; }</string>
+                <string notr="true">background-color: rgb(232, 232, 232);</string>
                </property>
               </widget>
              </item>
@@ -658,6 +673,9 @@ background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgb
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
                </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::MinimumExpanding</enum>
+               </property>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>40</width>
@@ -667,34 +685,28 @@ background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgb
               </spacer>
              </item>
              <item>
-              <widget class="QSpinBox" name="handicap2_spinBox">
+              <widget class="QLineEdit" name="handicap2_input">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>159</width>
+                 <width>100</width>
                  <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>159</width>
-                 <height>16777215</height>
                 </size>
                </property>
                <property name="font">
                 <font>
-                 <pointsize>20</pointsize>
+                 <pointsize>16</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
                <property name="styleSheet">
-                <string notr="true">  QScrollBar:vertical { width: 100px; }</string>
+                <string notr="true">background-color: rgb(232, 232, 232);</string>
                </property>
               </widget>
              </item>
@@ -742,7 +754,7 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.1, y1:0, x2:1, y2
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>50</height>
+         <height>0</height>
         </size>
        </property>
        <property name="styleSheet">
@@ -757,7 +769,7 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.1, y1:0, x2:1, y2
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_9">
+    <layout class="QVBoxLayout" name="keypad_layout_right">
      <item>
       <spacer name="spacer_right">
        <property name="orientation">

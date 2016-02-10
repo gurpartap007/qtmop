@@ -48,11 +48,11 @@ class keyboard : public QWidget
 
 public:
     explicit keyboard(QWidget *parent = 0);
+
     ~keyboard();
 
 private:
     Ui::keyboard *ui;
-
 signals:
     void value_changed(char value);
 

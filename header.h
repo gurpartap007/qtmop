@@ -15,6 +15,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+#include <QLineEdit>
 #include <unistd.h>
 #include <stdlib.h>
 #include <QString>
