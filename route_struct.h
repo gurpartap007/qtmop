@@ -74,18 +74,12 @@ union status_bits
 };
 struct train_struct
 {
-    unsigned int train_id;
-    unsigned int route_add;
-    unsigned int wri_add;
+
     unsigned char train_num[DIG_TRAIN_NUM];
-    unsigned char wri_avail;
+
     union station_name_union src;
     union station_name_union des;
     union station_name_union mid;
-    unsigned int twin_train_id;
-    unsigned int src_stn_id;
-    unsigned int mid_stn_id;
-    unsigned int des_stn_id;
     unsigned int journ_dist;
     unsigned int journ__time;
     unsigned char src_stn_code[DIG_STN_CODE];
@@ -97,7 +91,7 @@ struct train_struct
     unsigned char arr_time_hrs;
     unsigned char arr_time_min;
     unsigned char reg_lang1_code;
-    unsigned char coach_count[2];
+    unsigned char coach_count;
     unsigned char slow_fast;
 };
 struct stn_info_struct

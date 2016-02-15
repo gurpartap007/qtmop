@@ -4,6 +4,7 @@
 extern QString master_train_no;
 extern QString slave_train_no;
 route_struct current_route_data;
+
 train_route::train_route(QSqlDatabase *emu_database,QWidget *parent) :
     QWidget(parent),
     ui(new Ui::train_route)
@@ -13,6 +14,25 @@ train_route::train_route(QSqlDatabase *emu_database,QWidget *parent) :
     connect(this,SIGNAL(skip_clicked(int)),this,SLOT(current_selected_station(int)));
     connect(this,SIGNAL(fill_structure()),this,SLOT(structure_filling(bool)));
     connect(&time_update,SIGNAL(timeout()),this,SLOT(update_date_time()));
+}
+
+QString train_route::getStringFromUnsignedChar(unsigned char *str)
+{
+    QString result = "";
+    int lengthOfString = strlen( reinterpret_cast<const char*>(str) );
+
+    // print string in reverse order
+    QString s;
+    for( int i = 0; i < lengthOfString; i++ ){
+        s = QString( "%1" ).arg( str[i], 0, 16 );
+
+        // account for single-digit hex values (always must serialize as two digits)
+        if( s.length() == 1 )
+            result.append( "0" );
+
+        result.append( s );
+    }
+    return result;
 }
 
 train_route::~train_route()
@@ -125,7 +145,7 @@ void train_route::current_selected_train_info(bool slave_train)
     query_find_coach_count.next();
     coach_count = query_find_coach_count.value(0).toString();
     ui->coach_count->setText(coach_count);
-    memcpy(current_route_data.train.coach_count,coach_count.toStdString().c_str(),sizeof(coach_count));
+    memcpy(&current_route_data.train.coach_count,coach_count.toStdString().c_str(),sizeof(coach_count));
 
     //**************************************************************************************************//
 
@@ -234,12 +254,29 @@ void train_route::structure_filling(bool slave_train)
     QSqlQuery current_train_info("SELECT * FROM `tbl_TrainNumber` WHERE `train_no`='"+ master_train_no +"'");
     while(current_train_info.next())
     {
-       qDebug() << "train info..." << current_train_info.value(0).toString();
-       qDebug() << "train info..." << current_train_info.value(1).toString();
-       qDebug() << "train info..." << current_train_info.value(2).toString();
-       qDebug() << "train info..." << current_train_info.value(3).toString();
+        memcpy(current_route_data.train.train_num,current_train_info.value(TrainNumber::TRAIN_NO).toString().toStdString().c_str(),sizeof(current_train_info.value(TrainNumber::TRAIN_NO).toString()));
+        memcpy(current_route_data.train.src_stn_code,current_train_info.value(TrainNumber::SRC_STN_SNO).toString().toStdString().c_str(),sizeof(current_train_info.value(TrainNumber::SRC_STN_SNO).toString()));
+        memcpy(current_route_data.train.des_stn_code,current_train_info.value(TrainNumber::DEST_STN_SNO).toString().toStdString().c_str(),sizeof(current_train_info.value(TrainNumber::DEST_STN_SNO).toString()));
+        current_route_data.train.coach_count = current_train_info.value(TrainNumber::NO_OF_COACHES).toInt();
+
     }
+    current_route_data.train.coach_count = 20;
+///////////////// CONVERTING UNSIGNED CHAR * TO CONST CHAR * FOR CONVERSION TO QSTRING   ////////////////////
+    qDebug() << "train Number" << QString::fromUtf8((const char *)current_route_data.train.train_num);
+    qDebug() << "src station code" << QString::fromUtf8((const char *)current_route_data.train.src_stn_code);
+    qDebug() << "des station code" << QString::fromUtf8((const char *)current_route_data.train.des_stn_code);
+    qDebug() << "coach count " << QString::number(current_route_data.train.coach_count);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    show_train_info();
     emit add_stations();
+}
+
+void train_route::show_train_info()
+{
+ui->coach_count->setText(QString::number(current_route_data.train.coach_count));
+ui->train_name->setText(master_train_no);
+time_update.start(1000);
 }
 
 /********************************************************************************/
@@ -252,7 +289,6 @@ void train_route::on_skip_station_clicked(int id)
     current_item = ui->listWidget->item(id);
     current_widget =  ui->listWidget->itemWidget(current_item);
     current_widget->setStyleSheet("background-color: rgb(200,200,200);");
-
     //    ui->listWidget->setCurrentItem(current_item);
 
 }

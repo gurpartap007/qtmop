@@ -55,7 +55,7 @@ private:
     Ui::keyboard *ui;
 signals:
     void value_changed(char value);
-
+    void change_to_numeric();
 public slots:
     void characterset(int number, int mode);
     void on_pushButton_3_clicked();

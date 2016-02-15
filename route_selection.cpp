@@ -23,8 +23,8 @@ route_selection::route_selection(QWidget *parent) :
     connect(this,SIGNAL(train_selected(bool)),current_route,SLOT(structure_filling(bool)));
     connect(ui->lineEdit, SIGNAL(textChanged(QString)), this, SLOT(lineedit_filtering(QString)));
     connect(this,SIGNAL(change_numeric_keypad()),train_selection_keyboard,SLOT(on_pushButton_31_clicked()));
-    emit
-    select_train_route_with_sorting();
+    emit select_train_route_with_sorting();
+    emit train_selection_keyboard->change_to_numeric();
 
 }
 route_selection::~route_selection()

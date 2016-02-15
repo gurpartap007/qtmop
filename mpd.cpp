@@ -6,7 +6,6 @@ mpd::mpd(QWidget *parent) :
     ui(new Ui::mpd)
 {
     ui->setupUi(this);
-
     select_route = new route_selection;
     emergency_talkback = new etu;
     system_settings = new settings;

@@ -23,23 +23,27 @@ class train_route : public QWidget
 
 public:
     explicit train_route(QSqlDatabase *emu_database,QWidget *parent = 0);
- //   QSqlTableModel *master_train_model;
+    //   QSqlTableModel *master_train_model;
     QStringList source_destination_list;
     QStringList station_codes,station_names;
     QStringList source_destination_station_codes;
- //   QStandardItemModel *model;
+    //   QStandardItemModel *model;
     QFont *skip_button_font;
-   QFont *station_name_font;
+    QFont *station_name_font;
+    QString getStringFromUnsignedChar( unsigned char *str );
     ~train_route();
 signals:
+
     void add_stations();
     void skip_clicked(int);
     void fill_structure();
     // void rowsRemoved(QModelIndex,int,int);
 public slots:
+    void show_train_info();
     void current_selected_train_info(bool slave_train);
     void add_stations_for_current_train();
     void structure_filling(bool);
+
 private slots:
     void on_skip_station_clicked(int id);
     void update_date_time();

@@ -199,9 +199,6 @@ void music_streamer::on_pause_clicked()
 void music_streamer::on_playlist_clicked()
 {
     ui->textEdit->clear();
-    //ui->textEdit->setText(bus_database->data_name->at(0));
-    //for(int i=0;i<bus_database->data_name->size();i++)
-    //  ui->textEdit->append(bus_database->data_name->at(i));
 }
 
 void music_streamer::close_streaming()

@@ -24,6 +24,7 @@ keyboard::keyboard(QWidget *parent) :
     else if(screen_keyboard.width() == 1366)
         this->setStyleSheet("QPushButton {font: 21pt \"Arial\"; font-weight: bold;}QPushButton{ background-color: rgb(180, 207, 207); }QPushButton:pressed{background-color: rgb(100, 100, 100); }");
 */
+    connect(this,SIGNAL(change_to_numeric()),this,SLOT(on_pushButton_31_clicked()));
     memset(display,0,sizeof(display));
     ptr = &display[0];
     check = 0;
