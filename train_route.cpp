@@ -12,7 +12,6 @@ train_route::train_route(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(this,SIGNAL(add_stations()),this,SLOT(add_stations_for_current_train()));
-    connect(this,SIGNAL(skip_clicked(int)),this,SLOT(current_selected_station(int)));
     connect(&time_update,SIGNAL(timeout()),this,SLOT(update_date_time()));
     time_update.start(1000);
 }
@@ -124,7 +123,7 @@ void train_route::show_train_info()
 
 void train_route::on_skip_station_clicked(int id)
 {
-    QListWidgetItem *current_item;
+   QListWidgetItem *current_item;
     QWidget *current_widget;
     current_item = ui->listWidget->item(id);
     current_widget =  ui->listWidget->itemWidget(current_item);
@@ -144,10 +143,6 @@ void train_route::update_date_time()
     ui->date_time->setText(date_time);
 }
 
-void train_route::current_selected_station(int station_no)
-{
-qDebug() << "Skipped Station" << station_names.at(station_no);
-}
 
 void train_route::src_mid_des_station_name_filling()
 {
@@ -240,7 +235,7 @@ void train_route::show_handicap_coaches()
 
 void train_route::fill_train_struct(bool slave_train)
 {
-    QStringList arr_time,dep_time;
+    QStringList arr_time_master,dep_time_master,arr_time_slave,dep_time_slave;
     QTime arrival_time;
     QSqlQuery current_train_info("SELECT * FROM `tbl_TrainNumber` WHERE `train_no`='"+ master_train_no +"'");
     while(current_train_info.next())
@@ -252,12 +247,27 @@ void train_route::fill_train_struct(bool slave_train)
         current_route_data.train.coach_count = current_train_info.value(TrainNumber::NO_OF_COACHES).toInt();
         current_route_data.train.no_of_stns = current_train_info.value(TrainNumber::TOTAL_STATION_ROUTE).toInt();
         current_route_data.train.journ_dist = current_train_info.value(TrainNumber::JRNY_DISTANCE).toInt();
-        arr_time = current_train_info.value((TrainNumber::ARR_TIME)).toString().split(":");
-        dep_time = current_train_info.value(TrainNumber::DEP_TIME).toString().split(":");
-        current_route_data.train.arr_time_hrs = arr_time.at(Time::HOURS).toInt();
-        current_route_data.train.arr_time_min = arr_time.at(Time::MINUTES).toInt();
-        current_route_data.train.dep_time_hrs = arr_time.at(Time::HOURS).toInt();
-        current_route_data.train.dep_time_min = arr_time.at(Time::MINUTES).toInt();
+        arr_time_master = current_train_info.value((TrainNumber::ARR_TIME)).toString().split(":");
+        dep_time_master = current_train_info.value(TrainNumber::DEP_TIME).toString().split(":");
+
+    }
+    if(!slave_train)
+    {
+        current_route_data.train.arr_time_hrs = arr_time_master.at(Time::HOURS).toInt();
+        current_route_data.train.arr_time_min = arr_time_master.at(Time::MINUTES).toInt();
+        current_route_data.train.dep_time_hrs = dep_time_master.at(Time::HOURS).toInt();
+        current_route_data.train.dep_time_min = dep_time_master.at(Time::MINUTES).toInt();
+    }
+    else
+    {
+        QSqlQuery slave_train_arr_dep_time("SELECT * FROM `tbl_slave_route` WHERE `train_number`='"+slave_train_no+"'");
+        slave_train_arr_dep_time.first();
+        arr_time_slave = slave_train_arr_dep_time.value((SlaveRoute::ARRIVAL_TIME)).toString().split(":");
+        dep_time_slave = slave_train_arr_dep_time.value(SlaveRoute::DEPARTURE_TIME).toString().split(":");
+        current_route_data.train.arr_time_hrs = arr_time_slave.at(Time::HOURS).toInt();
+        current_route_data.train.arr_time_min = arr_time_slave.at(Time::MINUTES).toInt();
+        current_route_data.train.dep_time_hrs = dep_time_slave.at(Time::HOURS).toInt();
+        current_route_data.train.dep_time_min = dep_time_slave.at(Time::MINUTES).toInt();
     }
     arrival_time.fromString(QString("15.20.2"),QString("hhmmss"));
     ///////////////// CONVERTING UNSIGNED CHAR * TO CONST CHAR * FOR CONVERSION TO QSTRING   ////////////////////
@@ -268,10 +278,10 @@ void train_route::fill_train_struct(bool slave_train)
     qDebug() << "coach count " << QString::number(current_route_data.train.coach_count);
     qDebug() << "No. of Stations " << QString::number(current_route_data.train.no_of_stns);
     qDebug() << "Journey Distance" << QString::number(current_route_data.train.journ_dist);
-    qDebug() << "Arr Time" << arr_time;
+    qDebug() << "Arr Time" << arr_time_slave;
     qDebug() << "Arr Time hrs" << QString::number(current_route_data.train.arr_time_hrs);
     qDebug() << "Arr Time minutes" << QString::number(current_route_data.train.arr_time_min);
-    qDebug() << "Departure Time" << dep_time;
+    qDebug() << "Departure Time" << dep_time_slave;
     qDebug() << "Dep Time hrs" << QString::number(current_route_data.train.dep_time_hrs);
     qDebug() << "Dep Time minutes" << QString::number(current_route_data.train.dep_time_min);
     /***********************************************************************************************************/
@@ -313,6 +323,9 @@ void train_route::fill_stn_struct(bool slave_train)
         current_route_data.stn[loop_count].wait_time = get_each_station_info.value(RouteMaster::WAIT_TIME).toInt();
         previous_distance = get_each_station_info.value(RouteMaster::DISTANCE_FRM_SOURCE).toFloat();
         current_route_data.stn[loop_count].status.bits.station_skipped = false;
+        current_route_data.stn[loop_count].arrival_peri = get_each_station_info.value(RouteMaster::ARR_TRIGGERING).toInt();
+        current_route_data.stn[loop_count].approaching_peri = get_each_station_info.value(RouteMaster::APP_TRIGGERING).toInt();
+        current_route_data.stn[loop_count].departure_peri = get_each_station_info.value(RouteMaster::DEP_TRIGGERING).toInt();
         //current_route_data.stn[loop_count].wait_time = wait_time1;
         qDebug() << "Distance from previous " << QString::number(current_route_data.stn[loop_count].distance_from_previous_station);
         qDebug() << "Wait Time ...." << QString::number(current_route_data.stn[loop_count].wait_time);
@@ -328,7 +341,7 @@ int train_route::on_next_station_clicked()
     static int current_station=0;
     if(current_station == current_route_data.train.no_of_stns)
         return 0;
-    check_again:
+check_again:
     if(current_route_data.stn[current_station].status.bits.station_skipped)
     {
         current_station ++ ;
@@ -336,30 +349,40 @@ int train_route::on_next_station_clicked()
     }
     else
     {
-    QListWidgetItem *current_item;
-    QWidget *current_widget;
-    current_item = ui->listWidget->item(current_station);
-    current_widget =  ui->listWidget->itemWidget(current_item);
-    current_widget->setStyleSheet("background-color: rgb(0, 150,0);");
-    ///////////////////////// SET AUTO SCROLLING OF VIEW //////////////////////
-    ui->listWidget->setAutoScroll(true);
-    ui->listWidget->setCurrentItem(ui->listWidget->item(current_station+3));
-    ///////////////////////////////////////////////////////////////////////////
-    if(current_route_data.stn[current_station].bits.pf_left)
-    {
-        ui->platform_left->setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:1, stop:0.3 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255)); color: rgb(0,200,0);");
-        ui->platform_right->setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:1, stop:0.3 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255)); color: rgb(179,179,179);");
-        ui->platform_right->setDisabled(true);
-        ui->platform_left->setDisabled(false);
-    }
-    else
-    {
-        ui->platform_left->setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:1, stop:0.3 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255)); color: rgb(179,179,179);");
-        ui->platform_right->setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:1, stop:0.3 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255)); color: rgb(0,200,0);");
-        ui->platform_left->setDisabled(true);
-         ui->platform_right->setDisabled(false);
-    }
-    current_station ++;
+        QListWidgetItem *current_item;
+        QWidget *current_widget;
+        current_item = ui->listWidget->item(current_station);
+        current_widget =  ui->listWidget->itemWidget(current_item);
+        current_widget->setStyleSheet("background-color: rgb(0, 150,0);");
+   /*     if(current_station>0)
+        {
+            if(!current_route_data.stn[current_station-1].status.bits.station_skipped)
+            {
+                current_item = ui->listWidget->item(current_station-1);
+                current_widget =  ui->listWidget->itemWidget(current_item);
+                //        current_widget->setStyleSheet("background-color: rgb(123,255,123);");
+                current_widget->setStyleSheet("background-color: rgb(230,255,253);");
+            }
+        }*/
+        ///////////////////////// SET AUTO SCROLLING OF VIEW //////////////////////
+        ui->listWidget->setAutoScroll(true);
+        ui->listWidget->setCurrentItem(ui->listWidget->item(current_station));
+        ///////////////////////////////////////////////////////////////////////////
+        if(current_route_data.stn[current_station].bits.pf_left)
+        {
+            ui->platform_left->setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:1, stop:0.3 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255)); color: rgb(0,200,0);");
+            ui->platform_right->setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:1, stop:0.3 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255)); color: rgb(179,179,179);");
+            ui->platform_right->setDisabled(true);
+            ui->platform_left->setDisabled(false);
+        }
+        else
+        {
+            ui->platform_left->setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:1, stop:0.3 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255)); color: rgb(179,179,179);");
+            ui->platform_right->setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:0.8, x2:1, y2:1, stop:0.3 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255)); color: rgb(0,200,0);");
+            ui->platform_left->setDisabled(true);
+            ui->platform_right->setDisabled(false);
+        }
+        current_station ++;
 
     }
     return 0;

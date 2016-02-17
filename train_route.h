@@ -27,7 +27,6 @@ public:
 
 signals:
     void add_stations();
-    void skip_clicked(int);
     void fill_structure();
 
 public slots:
@@ -38,7 +37,6 @@ public slots:
 private slots:
     void on_skip_station_clicked(int id);
     void update_date_time();
-    void current_selected_station(int station_no);
     int on_next_station_clicked();
 
 private:
