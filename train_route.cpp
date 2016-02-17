@@ -96,7 +96,7 @@ void train_route::add_stations_for_current_train()
 void train_route::structure_filling(bool slave_train)
 {
     fill_train_struct(slave_train);
-    fill_stn_struct(slave_train);
+    fill_stn_struct();
     show_train_info();
     emit add_stations();
 }
@@ -117,6 +117,9 @@ void train_route::show_train_info()
     if(slow)
         ui->slow_fast_type->setText("Slow");
     show_handicap_coaches();
+    qDebug() << "English name" << QString::fromUtf8((const char *)current_route_data.train.src.name.eng);
+    qDebug() << "Hindi Name"   << QString::fromUtf8((const char *)current_route_data.train.src.name.hin);
+    qDebug() << "Reg Name"    << QString::fromUtf8((const char *)current_route_data.train.src.name.reg1);
 }
 
 /********************************************************************************/
@@ -147,17 +150,24 @@ void train_route::update_date_time()
 void train_route::src_mid_des_station_name_filling()
 {
     //////////////////// SOURCE STAION NAME   ///////////////////////
-    QSqlQuery get_source_station_name("SELECT `station_name` FROM `tbl_StationName` WHERE `station_code`='"+QString::fromUtf8((const char *)current_route_data.train.src_stn_code)+"' and `stn_LangId`='english' ");
-    get_source_station_name.first();
-    memcpy(current_route_data.train.src.name.eng,get_source_station_name.value(0).toString().toStdString().c_str(),sizeof(get_source_station_name.value(0)));
+    QSqlQuery get_source_station_name_eng("SELECT * FROM `tbl_StationName` WHERE `station_code`='"+QString::fromUtf8((const char *)current_route_data.train.src_stn_code)+"' and `stn_LangId`='english' ");
+    get_source_station_name_eng.first();
+    memcpy(current_route_data.train.src.name.eng,get_source_station_name_eng.value(StationName::STATION_NAME).toString().toStdString().c_str(),get_source_station_name_eng.value(StationName::STATION_NAME).toString().size());
+    QSqlQuery get_source_station_name_hin("SELECT * FROM `tbl_StationName` WHERE `station_code`='"+QString::fromUtf8((const char *)current_route_data.train.src_stn_code)+"' and `stn_LangId`='Hindi' ");
+    get_source_station_name_hin.first();
+    memcpy(current_route_data.train.src.name.hin,get_source_station_name_hin.value(StationName::STATION_NAME).toString().toStdString().c_str(),get_source_station_name_hin.value(StationName::STATION_NAME).toString().size());
+    QSqlQuery get_source_station_name_reg("SELECT * FROM `tbl_StationName` WHERE `station_code`='"+QString::fromUtf8((const char *)current_route_data.train.src_stn_code)+"' and `stn_LangId`='Tamil'");
+    get_source_station_name_reg.first();
+    memcpy(current_route_data.train.src.name.reg1,get_source_station_name_reg.value(StationName::STATION_NAME).toString().toStdString().c_str(),get_source_station_name_reg.value(StationName::STATION_NAME).toString().size());
+
     //////////////////// VIA STATION NAME /////////////////////////
     QSqlQuery get_via_station_name("SELECT `station_name` FROM `tbl_StationName` WHERE `station_code`='"+QString::fromUtf8((const char *)current_route_data.train.mid_stn_code)+"' and `stn_LangId`='english' ");
     get_via_station_name.first();
-    memcpy(current_route_data.train.mid.name.eng,get_via_station_name.value(0).toString().toStdString().c_str(),sizeof(get_via_station_name.value(0)));
+    memcpy(current_route_data.train.mid.name.eng,get_via_station_name.value(0).toString().toStdString().c_str(),get_via_station_name.value(0).toString().size());
     ///////////////////// DESTINATION STATION NAME //////////////////
     QSqlQuery get_destination_station_name("SELECT `station_name` FROM `tbl_StationName` WHERE `station_code`='"+QString::fromUtf8((const char *)current_route_data.train.des_stn_code)+"' and `stn_LangId`='english' ");
     get_destination_station_name.first();
-    memcpy(current_route_data.train.des.name.eng,get_destination_station_name.value(0).toString().toStdString().c_str(),sizeof(get_destination_station_name.value(0)));
+    memcpy(current_route_data.train.des.name.eng,get_destination_station_name.value(0).toString().toStdString().c_str(),get_destination_station_name.value(0).toString().size());
 
     /***********************************************************************************************/
 
@@ -240,10 +250,10 @@ void train_route::fill_train_struct(bool slave_train)
     QSqlQuery current_train_info("SELECT * FROM `tbl_TrainNumber` WHERE `train_no`='"+ master_train_no +"'");
     while(current_train_info.next())
     {
-        memcpy(current_route_data.train.train_num,current_train_info.value(TrainNumber::TRAIN_NO).toString().toStdString().c_str(),sizeof(current_train_info.value(TrainNumber::TRAIN_NO).toString()));
-        memcpy(current_route_data.train.src_stn_code,current_train_info.value(TrainNumber::SRC_STN_SNO).toString().toStdString().c_str(),sizeof(current_train_info.value(TrainNumber::SRC_STN_SNO).toString()));
-        memcpy(current_route_data.train.mid_stn_code,current_train_info.value(TrainNumber::VIA_STN_SNO).toString().toStdString().c_str(),sizeof(current_train_info.value(TrainNumber::VIA_STN_SNO).toString()));
-        memcpy(current_route_data.train.des_stn_code,current_train_info.value(TrainNumber::DEST_STN_SNO).toString().toStdString().c_str(),sizeof(current_train_info.value(TrainNumber::DEST_STN_SNO).toString()));
+        memcpy(current_route_data.train.train_num,current_train_info.value(TrainNumber::TRAIN_NO).toString().toStdString().c_str(),current_train_info.value(TrainNumber::TRAIN_NO).toString().size());
+        memcpy(current_route_data.train.src_stn_code,current_train_info.value(TrainNumber::SRC_STN_SNO).toString().toStdString().c_str(),current_train_info.value(TrainNumber::SRC_STN_SNO).toString().size());
+        memcpy(current_route_data.train.mid_stn_code,current_train_info.value(TrainNumber::VIA_STN_SNO).toString().toStdString().c_str(),current_train_info.value(TrainNumber::VIA_STN_SNO).toString().size());
+        memcpy(current_route_data.train.des_stn_code,current_train_info.value(TrainNumber::DEST_STN_SNO).toString().toStdString().c_str(),current_train_info.value(TrainNumber::DEST_STN_SNO).toString().size());
         current_route_data.train.coach_count = current_train_info.value(TrainNumber::NO_OF_COACHES).toInt();
         current_route_data.train.no_of_stns = current_train_info.value(TrainNumber::TOTAL_STATION_ROUTE).toInt();
         current_route_data.train.journ_dist = current_train_info.value(TrainNumber::JRNY_DISTANCE).toInt();
@@ -289,9 +299,8 @@ void train_route::fill_train_struct(bool slave_train)
     find_ladies_and_slow_fast_status(slave_train);
 }
 
-void train_route::fill_stn_struct(bool slave_train)
+void train_route::fill_stn_struct()
 {
-    unsigned char wait_time1 ;
     int total_no_of_stations,loop_count;
     float previous_distance;
     previous_distance = 0;
@@ -310,7 +319,7 @@ void train_route::fill_stn_struct(bool slave_train)
         current_route_data.stn[loop_count].wait_time = '\0';
         QSqlQuery get_each_station_info("SELECT * FROM `tbl_RouteMaster` WHERE `stn_code`='"+ station_codes.at(loop_count) +"' and `train_sno`= '"+master_train_no+"'");
         get_each_station_info.first();
-        memcpy(current_route_data.stn[loop_count].stn_code,get_each_station_info.value(RouteMaster::STN_CODE).toString().toStdString().c_str(),sizeof(get_each_station_info.value(RouteMaster::STN_CODE).toString()));
+        memcpy(current_route_data.stn[loop_count].stn_code,get_each_station_info.value(RouteMaster::STN_CODE).toString().toStdString().c_str(),get_each_station_info.value(RouteMaster::STN_CODE).toString().size());
         if(get_each_station_info.value(RouteMaster::PLATFORM_DIRECTION).toString() == "L")
             current_route_data.stn[loop_count].bits.pf_left = true;
         else

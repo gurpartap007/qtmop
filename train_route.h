@@ -44,7 +44,7 @@ private:
     void find_ladies_and_slow_fast_status(bool slave_train);
     void show_handicap_coaches();
     void fill_train_struct(bool slave_train);
-    void fill_stn_struct(bool slave_train);
+    void fill_stn_struct();
     Ui::train_route *ui;
     QTimer time_update;
     QString date_time,
