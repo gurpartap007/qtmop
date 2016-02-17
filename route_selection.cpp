@@ -16,7 +16,7 @@ route_selection::route_selection(QWidget *parent) :
     master_trains_model      =  new QSqlTableModel(this,db);
     slave_trains_model       =  new QSqlTableModel(this,db);
     proxyModel               =  new QSortFilterProxyModel;
-    current_route            =  new train_route(&db);
+    current_route            =  new train_route();
     ui->stackedWidget->addWidget(train_selection_keyboard);
     ui->stackedWidget->setCurrentWidget(train_selection_keyboard);
     connect(train_selection_keyboard,SIGNAL(value_changed(char)),this,SLOT(settext(char)));

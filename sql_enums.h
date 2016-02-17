@@ -1,6 +1,12 @@
 #ifndef SQL_ENUMS_H
 #define SQL_ENUMS_H
-
+namespace Time {
+enum{
+    HOURS,
+    MINUTES,
+    SECONDS
+};
+}
 namespace  TrainNumber
 {
 enum

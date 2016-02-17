@@ -81,7 +81,7 @@ struct train_struct
     union station_name_union des;
     union station_name_union mid;
     unsigned int journ_dist;
-    unsigned int journ__time;
+    unsigned int journ_time;
     unsigned char src_stn_code[DIG_STN_CODE];
     unsigned char mid_stn_code[DIG_STN_CODE];
     unsigned char des_stn_code[DIG_STN_CODE];
@@ -121,7 +121,6 @@ typedef struct route_struct
     struct train_struct train;
     struct status_struct status;
 }route;
-
 
 
 

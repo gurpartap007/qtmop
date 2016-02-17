@@ -8,8 +8,9 @@ public:
     skipbutton();
     ~skipbutton();
 };*/
-#include<QDebug>
-#include<QPushButton>
+#include "route_struct.h"
+#include <QDebug>
+#include <QPushButton>
 #include <QObject>
 #include <QLabel>
 class skipbutton : public QPushButton

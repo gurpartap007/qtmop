@@ -1,10 +1,9 @@
 #include "skipbutton.h"
-
+extern struct route_struct current_route_data;
 skipbutton::skipbutton(const QString & text,int id,QLabel *label,QWidget *widget, QWidget* parent)
     :QPushButton(parent)
 {
 this->setText(text);
-    qDebug() << "Id = " << id;
     button_id  = id;
     station_name_label= label;
     widget_reference = widget;
@@ -22,6 +21,7 @@ void skipbutton::on_skip_clicked()
     this->setStyleSheet("background-color: rgb(0,255,0)");
     station_name_label->setStyleSheet("color: rgb(150,150,150)");
     skip_button=false;
+    current_route_data.stn[button_id].status.bits.station_skipped = true;
     }
     else
     {
@@ -30,6 +30,8 @@ void skipbutton::on_skip_clicked()
         station_name_label->setStyleSheet("color: rgb(0,0,0)");
         widget_reference->setStyleSheet("background-color: rgb(179,179,179);");
         skip_button=true;
+        current_route_data.stn[button_id].status.bits.station_skipped = false;
+
     }
 
 
