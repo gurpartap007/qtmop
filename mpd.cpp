@@ -19,7 +19,6 @@ mpd::mpd(QWidget *parent) :
     connect(system_settings,SIGNAL(back_clicked()),this,SLOT(close_settings_popup()));
     connect(selection_timer,SIGNAL(timeout()),this,SLOT(show_train_route_selection()));
     connect(announcement,SIGNAL(back_clicked()),this,SLOT(close_announcement_popup()));
-    //ui->stackedWidget->addWidget(announcement_streamer);
 }
 mpd::~mpd()
 {
@@ -38,7 +37,6 @@ void mpd::on_select_route_clicked()
 
 void mpd::on_etu_clicked()
 {
-
     qDebug() << ui->stackedWidget->width();
     emergency_talkback->setParent(ui->stackedWidget);
     emergency_talkback->setGeometry(0,0,ui->stackedWidget->width(),ui->stackedWidget->height());

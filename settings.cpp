@@ -111,7 +111,7 @@ void settings::setvalue()
         max_limit = coach_count = ui->coach_count_input->text().toInt();
         qDebug() << "Final Coach Count" << coach_count;
         ui->coach_count_input->setDisabled(true);
-         emit keypad->clear();
+        emit keypad->clear();
     }
     else if(input_box == HANDICAP_COACH1_INPUT)
     {
@@ -125,7 +125,7 @@ void settings::setvalue()
             handicap_coach1 = ui->handicap1_input->text().toInt();
             qDebug() << "Handicap_coach1" << handicap_coach1;
             ui->handicap1_input->setDisabled(true);
-             emit keypad->clear();
+            emit keypad->clear();
         }
     }
     else if (input_box == HANDICAP_COACH2_INPUT)
@@ -140,7 +140,7 @@ void settings::setvalue()
             handicap_coach2 = ui->handicap2_input->text().toInt();
             qDebug() << "handicap_coach2" << handicap_coach2;
             ui->handicap2_input->setDisabled(true);
-             emit keypad->clear();
+            emit keypad->clear();
         }
     }
 

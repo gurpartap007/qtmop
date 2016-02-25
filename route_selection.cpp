@@ -18,6 +18,7 @@ route_selection::route_selection(QWidget *parent) :
     proxyModel               =  new QSortFilterProxyModel;
     current_route            =  new train_route();
     ui->stackedWidget->addWidget(train_selection_keyboard);
+   // ui->backButton->animateClick(200);
     ui->stackedWidget->setCurrentWidget(train_selection_keyboard);
     connect(train_selection_keyboard,SIGNAL(value_changed(char)),this,SLOT(settext(char)));
     connect(this,SIGNAL(train_selected(bool)),current_route,SLOT(structure_filling(bool)));
@@ -25,7 +26,6 @@ route_selection::route_selection(QWidget *parent) :
     connect(this,SIGNAL(change_numeric_keypad()),train_selection_keyboard,SLOT(on_pushButton_31_clicked()));
     emit select_train_route_with_sorting();
     emit train_selection_keyboard->change_to_numeric();
-
 }
 route_selection::~route_selection()
 {
@@ -82,11 +82,11 @@ void route_selection::route_window()
 
 void route_selection::select_train_route_with_sorting()
 {
-    int loop_count=0,
-            train_count;
+    int loop_count=0;
+    int train_count;
     QFont header_font;
     QStringList master_train_no_for_current_slave_train;
-    QStringList labels,datalist,slave_train_no,master_trains_for_slave_trains,master_train_names;
+    QStringList labels,slave_train_no,master_train_names;
     model= new QStandardItemModel(0,0);
     header_font.setPointSize(20);
     header_font.setFamily("Garuda");
@@ -96,14 +96,12 @@ void route_selection::select_train_route_with_sorting()
     slave_trains_model->select();
     slave_trains_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     master_trains_model->select();
-
     labels.append("Train_no");
     labels.append("Train_name");
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->horizontalHeader()->setFont(header_font);
     QList <QStandardItem *> ColumnData;
-
 
     //////////////////// Inserting Master Train numbers ///////////////////////////
     for(loop_count=0;loop_count<master_trains_model->rowCount();loop_count++)
@@ -120,6 +118,7 @@ void route_selection::select_train_route_with_sorting()
     }
     model->insertColumn(0,ColumnData);
     ColumnData.clear();
+
     //---------------------------------------------------------------------------//
 
     ///////////////////// Finding Master Trains for Slave Trains ///////////////////
@@ -133,12 +132,13 @@ void route_selection::select_train_route_with_sorting()
     }
     //-------------------------------------------------------------------------------------//
 
-    //////  ////// Extract master train Name from Master Train Number /////////////////////////
+    /////////////////// Extract master train Name from Master Train Number //////////////////
     for(train_count=0;train_count<master_train_no_for_current_slave_train.size();train_count++)
     {
         QSqlQuery find_master_train_name("SELECT `tran_name_english` FROM `tbl_TrainNumber` where `train_no`='"+ master_train_no_for_current_slave_train.at(train_count) + "'");
         find_master_train_name.next();
         master_train_names.append(find_master_train_name.value(0).toString());
+        master_train_names.back();
     }
     //-------------------------------------------------------------------------------------//
 
@@ -159,8 +159,6 @@ void route_selection::select_train_route_with_sorting()
     proxyModel->setSourceModel(model);
     proxyModel->setFilterKeyColumn(0);
     ui->tableView->setModel(proxyModel);
-    //ui->tableView->setSortingEnabled(true);
-    // ui->tableView->sortByColumn(0, Qt::AscendingOrder);
     ui->tableView->setAlternatingRowColors(true);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -171,7 +169,7 @@ void route_selection::select_train_route_with_sorting()
 }
 void route_selection::on_backButton_clicked()
 {
-    while(ptr != &display[0])
+    while(ptr != &display[0] && ptr!=NULL)
     {
         ptr--;	//decrementing write pointer
         *ptr = '\0';
@@ -179,6 +177,7 @@ void route_selection::on_backButton_clicked()
     ui->lineEdit->setText(QString::fromUtf8(display));
     ui->stackedWidget->setCurrentWidget(train_selection_keyboard);
     this->close();
+
 }
 void route_selection::lineedit_filtering(QString value)
 {
@@ -202,6 +201,7 @@ void route_selection::on_tableView_clicked()
         find_master_train.next();
         master_train_no = find_master_train.value(0).toString();
         qDebug() << "Master train no " << master_train_no;
+        qDebug() << "Master Train Route" << master_trains_model->data(model->index(0,0));
         slave_train=true;
     }
     else

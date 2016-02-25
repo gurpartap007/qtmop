@@ -30,6 +30,7 @@ music_streamer::music_streamer(QWidget *parent) :
 
     mpd_music_path = "/var/lib/mpd/music";
     song = NULL;
+
     conn = mpd_connection_new("localhost",6600,1000);
     if ( mpd_connection_get_error(conn) != MPD_ERROR_SUCCESS )
     {
@@ -95,11 +96,10 @@ music_streamer::~music_streamer()
 {
     delete ui;
     delete player_timer;
-    //player->deleteLater();
-    // system("pkill -9 mp3-decoder");
     qDebug() << "Destructor Called";
     mpd_connection_free(conn);
 }
+
 void music_streamer::on_next_clicked()
 {
     qDebug() << "Next: " <<  mpd_run_next(conn);
@@ -129,12 +129,12 @@ void music_streamer::on_next_clicked()
         qDebug()  <<  "Date: " << value ;
         date=QString::fromUtf8(value);
         ui->textEdit->append(date);
+        ui->next->setText("NEXT");
     }
 }
 
 void music_streamer::mplayer_start()
 {
-    //mpd_run_play(conn);
     QString program("/usr/bin/mp3-decoder");
     QStringList arguments;
     arguments << "http://127.0.0.1:8000/mpd.mp3";
@@ -142,8 +142,8 @@ void music_streamer::mplayer_start()
     player_timer->stop();
     player->start(program,arguments);
     qDebug() << "player Id:" << player->processId();
-
 }
+
 void music_streamer::on_prev_clicked()
 {
     qDebug() << "Previous: " <<  mpd_run_previous(conn);
@@ -162,15 +162,15 @@ void music_streamer::on_prev_clicked()
         artist=QString::fromUtf8(value);
         ui->textEdit->append(artist);
         value = mpd_song_get_tag(song,MPD_TAG_TITLE ,0);
-        qDebug()  <<  "Title: " << value ;
+        qDebug()  <<  "Title: "  << value ;
         title=QString::fromUtf8(value);
         ui->textEdit->append(title);
         value = mpd_song_get_tag(song,MPD_TAG_ALBUM ,0);
-        qDebug()  <<  "Album: " << value ;
+        qDebug()  <<  "Album: "  << value ;
         album=QString::fromUtf8(value);
         ui->textEdit->append(album);
         value = mpd_song_get_tag(song,MPD_TAG_DATE ,0);
-        qDebug()  <<  "Date: " << value ;
+        qDebug()  <<  "Date:  "  << value ;
         date=QString::fromUtf8(value);
         ui->textEdit->append(date);
     }
@@ -179,7 +179,6 @@ void music_streamer::on_prev_clicked()
 void music_streamer::on_play_clicked()
 {
     qDebug()<< "Play: " <<  mpd_run_play (conn);
-    // mpd_run_play_pos(conn,2);
     mpd_response_finish(conn);
     if(!player_started)
     {
@@ -193,8 +192,6 @@ void music_streamer::on_pause_clicked()
     qDebug() << "Pause: " <<  mpd_run_pause(conn,true);
     mpd_response_finish(conn);
 }
-
-
 
 void music_streamer::on_playlist_clicked()
 {

@@ -26,7 +26,6 @@ etu::etu(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->end_call_button,SIGNAL(clicked()),this,SLOT(end_current_call()));
-    //this->installEventFilter(this->window());
     ui->left_area->installEventFilter(this);
     ui->right_area->installEventFilter(this);
     ui->bottom_area->installEventFilter(this);
