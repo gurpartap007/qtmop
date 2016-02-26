@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     settings.cpp \
     public_announcement.cpp \
     skipbutton.cpp \
-    numeric_keypad.cpp
+    numeric_keypad.cpp \
+    display_communication.cpp
     keyboard.cpp
 
 HEADERS  += mpd.h \
@@ -42,7 +43,8 @@ HEADERS  += mpd.h \
     public_announcement.h \
     route_struct.h \
     skipbutton.h \
-    numeric_keypad.h
+    numeric_keypad.h \
+    display_communication.h
 
 FORMS    += mpd.ui \
     music_streamer.ui \

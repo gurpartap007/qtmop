@@ -216,4 +216,5 @@ void route_selection::on_tableView_clicked()
     ui->stackedWidget->addWidget(current_route);
     ui->stackedWidget->setCurrentWidget(current_route);
     emit train_selected(slave_train);
+
 }

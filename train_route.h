@@ -4,6 +4,8 @@
 #include <QWidget>
 #include "header.h"
 #include "sql_enums.h"
+#include "display_communication.h"
+
 /** @brief Holds selected current route information and all related functions
     Detailed description follows here.
     @author Gurpartap Singh
@@ -23,11 +25,13 @@ class train_route : public QWidget
 
 public:
     explicit train_route(QWidget *parent = 0);
+     display_communication *udp_connection;
     ~train_route();
 
 signals:
     void add_stations();
     void fill_structure();
+    void send_route_info();
 
 public slots:
     void show_train_info();
@@ -48,18 +52,18 @@ private:
     Ui::train_route *ui;
     QTimer time_update;
     QString date_time,
-            handicap_coach_no;
+    handicap_coach_no;
     QDate current_date;
     QTime current_time;
     bool slow,
-         fast,
-         ladies_special;
+    fast,
+    ladies_special;
     QStringList station_codes,
-                station_names,
-                source_destination_list,
-                source_destination_station_codes;
+    station_names,
+    source_destination_list,
+    source_destination_station_codes;
     QFont *skip_button_font,
-          *station_name_font;
+    *station_name_font;
 };
 
 #endif // TRAIN_ROUTE_H

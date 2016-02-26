@@ -13,7 +13,6 @@ this->setText(text);
 
 void skipbutton::on_skip_clicked()
 {
-
     if(skip_button)
     {
     emit this->skip_clicked(button_id);
@@ -33,7 +32,5 @@ void skipbutton::on_skip_clicked()
         current_route_data.stn[button_id].status.bits.station_skipped = false;
 
     }
-
-
 }
 

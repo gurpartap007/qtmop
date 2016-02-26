@@ -11,6 +11,9 @@ train_route::train_route(QWidget *parent) :
     ui(new Ui::train_route)
 {
     ui->setupUi(this);
+    udp_connection           =  new display_communication();
+    connect(this,SIGNAL(send_route_info()),udp_connection,SLOT(send_train_route_info()));
+
     connect(this,SIGNAL(add_stations()),this,SLOT(add_stations_for_current_train()));
     connect(&time_update,SIGNAL(timeout()),this,SLOT(update_date_time()));
     time_update.start(1000);
@@ -76,13 +79,14 @@ void train_route::add_stations_for_current_train()
         {
             widget[loop_count]->setStyleSheet("background-color: rgb(200,200,200);");
             skip_button[loop_count]->setDisabled(true);
-            station_name[loop_count]->setStyleSheet("color: rgb(150,150,150)");
+            station_name[loop_count]->setStyleSheet("color: rgb(150,0,0)");
             current_route_data.stn[loop_count].status.bits.station_skipped = true;
         }
 
         QSqlQuery get_station_names("SELECT `station_name` FROM `tbl_StationName` WHERE `station_code`='"+station_codes.at(loop_count)+"' and `stn_LangId`='english' ");
         while(get_station_names.next())
         {
+            station_names.append(get_station_names.value(0).toString());
             station_name[loop_count]->setText(get_station_names.value(0).toString());
             item[loop_count]->setText(get_station_names.value(0).toString());
         }
@@ -403,7 +407,11 @@ check_again:
         current_item = ui->listWidget->item(current_station);
         current_widget =  ui->listWidget->itemWidget(current_item);
         current_widget->setStyleSheet("background-color: rgb(0, 150,0);");
-
+       // memcpy(current_route_data.train.current_station.name.eng,QString("AMBALA").toStdString().c_str(),6);
+       qDebug() << station_names.at(current_station);
+       memset(current_route_data.train.current_station.name.eng,'\0',50);
+        memcpy(current_route_data.train.current_station.name.eng,station_names.at(current_station).toStdString().c_str(),station_names.at(current_station).size());
+        emit send_route_info();
         ///////////////////////// SET AUTO SCROLLING OF VIEW //////////////////////
         ui->listWidget->setAutoScroll(true);
         ui->listWidget->setCurrentItem(ui->listWidget->item(current_station));

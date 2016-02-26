@@ -51,5 +51,6 @@
 #include <QtSql/QSqlRecord>
 #include <QtSql/QSqlTableModel>
 #include <QStandardItemModel>
+#include <QUdpSocket>
 #endif // HEADER_H
 

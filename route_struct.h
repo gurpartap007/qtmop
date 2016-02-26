@@ -76,10 +76,10 @@ struct train_struct
 {
 
     unsigned char train_num[DIG_TRAIN_NUM];
-
     union station_name_union src;
     union station_name_union des;
     union station_name_union mid;
+     union station_name_union current_station;
     unsigned int journ_dist;
     unsigned int journ_time;
     unsigned char src_stn_code[DIG_STN_CODE];

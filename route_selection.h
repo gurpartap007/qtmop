@@ -64,10 +64,10 @@ signals:
     void change_numeric_keypad();
     void train_selected(bool);
     void lineedit_filter(QString value);
+
 private:
     Ui::route_selection *ui;
     QString train_name;
-
 };
 
 #endif // ROUTE_SELECTION_H
