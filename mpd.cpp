@@ -15,6 +15,7 @@ mpd::mpd(QWidget *parent) :
     selection_timer->start();
     ui->stackedWidget->setCurrentIndex(0);
     ui->stackedWidget->addWidget(select_route);
+    connect(emergency_talkback,SIGNAL(new_incoming_call()),this,SLOT(on_etu_clicked()));
     connect(emergency_talkback,SIGNAL(back_clicked()),this,SLOT(close_etu_popup()));
     connect(system_settings,SIGNAL(back_clicked()),this,SLOT(close_settings_popup()));
     connect(selection_timer,SIGNAL(timeout()),this,SLOT(show_train_route_selection()));

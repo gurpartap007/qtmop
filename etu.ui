@@ -268,18 +268,16 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
       </layout>
      </item>
      <item>
-      <widget class="QListView" name="call_queue">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
+      <widget class="QPlainTextEdit" name="call_queue">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(255, 255, 255);</string>
-       </property>
-       <property name="selectionRectVisible">
-        <bool>false</bool>
        </property>
       </widget>
      </item>

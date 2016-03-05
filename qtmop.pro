@@ -58,3 +58,12 @@ FORMS    += mpd.ui \
 
 RESOURCES += \
     icons.qrc
+
+unix|win32: LIBS += -llinphone
+
+unix|win32: LIBS += -lmediastreamer_voip
+
+unix|win32: LIBS += -lmediastreamer_base
+
+unix|win32: LIBS += -lortp
+

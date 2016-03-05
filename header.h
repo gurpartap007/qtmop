@@ -52,5 +52,8 @@
 #include <QtSql/QSqlTableModel>
 #include <QStandardItemModel>
 #include <QUdpSocket>
+#include <QStandardPaths>
+#include <QMutableLinkedListIterator>
+#include "linphone/linphonecore.h"
 #endif // HEADER_H
 

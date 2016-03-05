@@ -3,7 +3,7 @@ extern route_struct current_route_data;
 display_communication::display_communication(QObject *parent) : QObject(parent)
 {
     server = new QUdpSocket(this);
-    server->bind(QHostAddress("192.168.0.20"),5000);
+    server->bind(QHostAddress("192.168.0.26"),5000);
 }
 
 display_communication::~display_communication()

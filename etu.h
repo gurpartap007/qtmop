@@ -17,6 +17,7 @@
 namespace Ui {
 class etu;
 }
+void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg);
 
 class etu : public QWidget
 {
@@ -25,21 +26,40 @@ class etu : public QWidget
 public:
     explicit etu(QWidget *parent = 0);
     ~etu();
+
     QPushButton *accept_call;
     QPushButton *hold_call;
     QPushButton *end_call;
     QHBoxLayout *buttons_layout;
     QPropertyAnimation *m_animation ;
+    LinphoneCore* lc;
+    const MSList *call_logs;
 public slots:
     void end_current_call();
+    void qlinphone_init();
+    int qlinphone_call(LinphoneCore *lc, char *ip_address);
+    void iterate();
 signals:
     void call_ended();
     void back_clicked();
+    void new_incoming_call();
 protected:
      void paintEvent(QPaintEvent* event);
     virtual bool eventFilter( QObject * watched, QEvent * event );
+private slots:
+     void on_accept_call_button_clicked();
+
+     void on_end_call_button_clicked();
+
+     void on_mute_call_button_clicked();
+
+     void on_bar_call_button_clicked();
+
 private:
     Ui::etu *ui;
+    LinphoneCall *call,*incoming_call,*new_call;
+    friend void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg);
+
 };
 
 #endif // ETU_H
