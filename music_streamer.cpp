@@ -1,4 +1,4 @@
-#include "music_streamer.h"
+﻿#include "music_streamer.h"
 #include "ui_music_streamer.h"
 
 music_streamer::music_streamer(QWidget *parent) :
@@ -8,7 +8,6 @@ music_streamer::music_streamer(QWidget *parent) :
     ui->setupUi(this);
     ui->next->hide();
     ui->prev->hide();
-    ui->play->hide();
     ui->pause->hide();
     ui->playlist->hide();
     ui->textEdit->hide();
@@ -17,20 +16,21 @@ music_streamer::music_streamer(QWidget *parent) :
      * * */
     // bus_database = new database;
     /* New process will be created and "/usr/bin/mp3-decoder" will run in new process
-     *
-     * */
+     */
+
     player = new QProcess(this);
     player->setProcessChannelMode(QProcess::MergedChannels);
     //////////////////// Setting player_timer to delay mplayer start  ////////////////////////
+
     player_timer = new QTimer;
     player_timer->setInterval(2000);
     player_started = false;
     connect(player_timer,SIGNAL(timeout()),this,SLOT(mplayer_start()));
+
     /////////////////// player_timer start ////////////////////
 
     mpd_music_path = "/var/lib/mpd/music";
     song = NULL;
-
     conn = mpd_connection_new("localhost",6600,1000);
     if ( mpd_connection_get_error(conn) != MPD_ERROR_SUCCESS )
     {
@@ -43,6 +43,7 @@ music_streamer::music_streamer(QWidget *parent) :
     }
 
     /////////////////////////////////////////////   MUSIC PATH  //////////////////////////////////////////////////
+
     if (!mpd_music_path.isEmpty())
     {
         if (!mpd_music_path.endsWith("/"))
@@ -52,23 +53,26 @@ music_streamer::music_streamer(QWidget *parent) :
         if (!dir.exists())
         {
             qDebug() << "MPD's music dir : does not exist\n";
-
         }
         else
             if (!dir.isReadable())
             {
                 qDebug() << "MPD's music dir : appears to be read-only\n";
+                qDebug() << "jehraa tutiyaan fullaan nu jorrdaa dhan baba ram asra";
             }
             else
             {
                 qDebug() << "MPD's music dir : appears to be accessible\n";
+                qDebug() << "tere charnaa ton javaan balihaar tute full laun waliyaa";
             }
     }
 
     ////////////////////////////////  mpd status and song info /////////////////////////////////////////////////
+
     status= mpd_run_status(conn);
     if (status == NULL)
-        qDebug()  << "status is NULL";
+        qDebug() << "Status is NULL";
+
     else
     {
         qDebug()  <<  "volume" << mpd_status_get_volume(status);
@@ -77,7 +81,7 @@ music_streamer::music_streamer(QWidget *parent) :
         qDebug()  <<  "queue length" << mpd_status_get_queue_length(status);
         if (mpd_status_get_state(status) == MPD_STATE_PLAY ||
                 mpd_status_get_state(status) == MPD_STATE_PAUSE) {
-            qDebug()  << "song position " << mpd_status_get_song_pos(status);
+            qDebug()  <<  "song position " << mpd_status_get_song_pos(status);
             qDebug()  <<  "elapsed time " << mpd_status_get_elapsed_time(status);
             qDebug()  <<  "elapsed ms " << mpd_status_get_elapsed_ms(status);
             qDebug()  <<  "total song time " <<  mpd_status_get_total_time(status);
@@ -85,9 +89,11 @@ music_streamer::music_streamer(QWidget *parent) :
         }
         audio_format = mpd_status_get_audio_format(status);
         if (audio_format != NULL) {
-            qDebug()  <<  "audio sample rate " <<  audio_format->sample_rate;
-            qDebug()  <<  "bits " << audio_format->bits;
-            qDebug()  <<  "audio channels " << audio_format->channels;
+            qDebug()  <<  "audio sample rate" <<  audio_format->sample_rate;
+            qDebug()  <<  "bits" << audio_format->bits;
+            qDebug()  <<  "audio channels" << audio_format->channels;
+            qDebug()  <<  "audio bit rate" << audio_format->sample_rate;
+            qDebug()  <<  "audio format type" << audio_format->reserved0;
         }
     }
 }
@@ -96,10 +102,8 @@ music_streamer::~music_streamer()
 {
     delete ui;
     delete player_timer;
-    qDebug() << "Destructor Called";
     mpd_connection_free(conn);
 }
-
 void music_streamer::on_next_clicked()
 {
     qDebug() << "Next: " <<  mpd_run_next(conn);
@@ -114,22 +118,22 @@ void music_streamer::on_next_clicked()
                 album,
                 date;
         value = mpd_song_get_tag(song,MPD_TAG_ARTIST,0);
-        qDebug()  <<  "artist: " << value ;
+        qDebug()  <<  "artist: " << value;
         artist=QString::fromUtf8(value);
         ui->textEdit->append(artist);
         value = mpd_song_get_tag(song,MPD_TAG_TITLE ,0);
-        qDebug()  <<  "Title: " << value ;
+        qDebug()  <<  "Title: " << value;
         title=QString::fromUtf8(value);
         ui->textEdit->append(title);
         value = mpd_song_get_tag(song,MPD_TAG_ALBUM ,0);
-        qDebug()  <<  "Album: " << value ;
+        qDebug()  <<  "Album: " << value;
         album=QString::fromUtf8(value);
         ui->textEdit->append(album);
         value = mpd_song_get_tag(song,MPD_TAG_DATE ,0);
-        qDebug()  <<  "Date: " << value ;
         date=QString::fromUtf8(value);
         ui->textEdit->append(date);
-        ui->next->setText("NEXT");
+        ui->next->setText("date");
+        
     }
 }
 
@@ -141,7 +145,6 @@ void music_streamer::mplayer_start()
     arguments << "&";
     player_timer->stop();
     player->start(program,arguments);
-    qDebug() << "player Id:" << player->processId();
 }
 
 void music_streamer::on_prev_clicked()
@@ -159,6 +162,9 @@ void music_streamer::on_prev_clicked()
                 date;
         value = mpd_song_get_tag(song,MPD_TAG_ARTIST,0);
         qDebug()  <<  "artist: " << value ;
+
+//<><><><><><><><><<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>|
+
         artist=QString::fromUtf8(value);
         ui->textEdit->append(artist);
         value = mpd_song_get_tag(song,MPD_TAG_TITLE ,0);
@@ -166,7 +172,7 @@ void music_streamer::on_prev_clicked()
         title=QString::fromUtf8(value);
         ui->textEdit->append(title);
         value = mpd_song_get_tag(song,MPD_TAG_ALBUM ,0);
-        qDebug()  <<  "Album: "  << value ;
+        qDebug()  <<  "Album: "  << value;
         album=QString::fromUtf8(value);
         ui->textEdit->append(album);
         value = mpd_song_get_tag(song,MPD_TAG_DATE ,0);
@@ -176,16 +182,21 @@ void music_streamer::on_prev_clicked()
     }
 }
 
+//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><
+
 void music_streamer::on_play_clicked()
 {
-    qDebug()<< "Play: " <<  mpd_run_play (conn);
+    qDebug() << "Play: " <<  mpd_run_play (conn);
     mpd_response_finish(conn);
     if(!player_started)
     {
         player_timer->start();
+        ui->play->height();
+        qDebug() << "Height of play button" << endl << ui->play->height();
         player_started = true;
     }
 }
+
 
 void music_streamer::on_pause_clicked()
 {
@@ -196,10 +207,12 @@ void music_streamer::on_pause_clicked()
 void music_streamer::on_playlist_clicked()
 {
     ui->textEdit->clear();
+    qDebug() << "playlist cleared";
 }
 
 void music_streamer::close_streaming()
 {
+    qDebug() << "yaari jattan de munde de naal laake hausle buland rakhiye";
     mpd_run_stop(conn);
     player->kill();
     player_started=false;

@@ -11,9 +11,8 @@ train_route::train_route(QWidget *parent) :
     ui(new Ui::train_route)
 {
     ui->setupUi(this);
-    udp_connection           =  new display_communication();
+    udp_connection = new display_communication();
     connect(this,SIGNAL(send_route_info()),udp_connection,SLOT(send_train_route_info()));
-
     connect(this,SIGNAL(add_stations()),this,SLOT(add_stations_for_current_train()));
     connect(&time_update,SIGNAL(timeout()),this,SLOT(update_date_time()));
     time_update.start(1000);
@@ -36,6 +35,7 @@ void train_route::add_stations_for_current_train()
     station_name_font->setFamily("Sans Serif");
     station_name_font->setPointSize(30);
     station_name_font->setBold(true);
+    station_name_font->setCapitalization(QFont::SmallCaps);
 
     /////////////////////////////// EXTRACTING STATION CODES FOR CURRENT TRAIN ///////////////////////////
     QSqlQuery get_station_codes_for_master_train("SELECT `stn_code` FROM `tbl_RouteMaster` WHERE `train_sno`='"+ master_train_no+"' order by `distance_frm_source`");
@@ -44,12 +44,14 @@ void train_route::add_stations_for_current_train()
         station_codes.append(get_station_codes_for_master_train.value(0).toString());
     }
     //***************************************************************************************************//
+
     skipbutton *skip_button[station_codes.size()];
     QLabel *station_name[station_codes.size()];
     QListWidgetItem *item[station_codes.size()];
     QWidget *widget[station_codes.size()];
     QHBoxLayout *widgetLayout[station_codes.size()];
     QSpacerItem *spacer_item[station_codes.size()];
+
     /////////////////////// EXTRACTING AND FILLING STATION NAMES FOR PARTICULAR STATION CODE //////////////
     for(loop_count=0;loop_count<station_codes.size();loop_count++)
     {
@@ -121,9 +123,9 @@ void train_route::show_train_info()
     if(slow)
         ui->slow_fast_type->setText("Slow")    ;
     show_handicap_coaches();
-    qDebug() << "English name" << QString::fromUtf8((const char *)current_route_data.train.src.name.eng);
-    qDebug() << "Hindi Name"   << QString::fromUtf8((const char *)current_route_data.train.src.name.hin);
-    qDebug() << "Reg Name"    << QString::fromUtf8((const char *)current_route_data.train.src.name.reg1);
+   // qDebug() << "English name" << QString::fromUtf8((const char *)current_route_data.train.src.name.eng);
+   // qDebug() << "Hindi Name"   << QString::fromUtf8((const char *)current_route_data.train.src.name.hin);
+   // qDebug() << "Reg Name"    << QString::fromUtf8((const char *)current_route_data.train.src.name.reg1);
 }
 
 /********************************************************************************/
@@ -151,7 +153,6 @@ void train_route::update_date_time()
     ui->coach_count->adjustSize();
 }
 
-
 void train_route::src_mid_des_station_name_filling()
 {
     /////////////////////////////////////   SOURCE STAION NAME   /////////////////////////////////
@@ -174,7 +175,6 @@ void train_route::src_mid_des_station_name_filling()
     memcpy(current_route_data.train.des.name.eng,get_destination_station_name.value(0).toString().toStdString().c_str(),get_destination_station_name.value(0).toString().size());
 
     /***********************************************************************************************/
-
 }
 
 void train_route::find_ladies_and_slow_fast_status(bool slave_train)
@@ -189,6 +189,7 @@ void train_route::find_ladies_and_slow_fast_status(bool slave_train)
         if(query_ladies_train_status.value(0).toString().at(0) == 1)
         {
             ladies_special = true;
+            qDebug() << "Ladies Special Train" << ladies_special;
         }
         else
         {
@@ -200,11 +201,13 @@ void train_route::find_ladies_and_slow_fast_status(bool slave_train)
         {
             current_route_data.train.slow_fast = 'S';
             slow=true;
+            qDebug() << "Train Slow fast Status" << current_route_data.train.slow_fast ;
         }
         else
         {
             current_route_data.train.slow_fast = 'F';
             fast=true;
+            qDebug() << "Selected Train is " << current_route_data.train.slow_fast << "ast";
         }
     }
     //**************************************************************************************************//
@@ -228,10 +231,14 @@ void train_route::find_ladies_and_slow_fast_status(bool slave_train)
         if(query_slow_fast_status_master.value(0).toString() == "S")
         {
             slow=true;
+            fast=false;
+            qDebug() << "ladies special train " << ladies_special;
         }
         else
         {
             fast=true;
+            qDebug() << "This master Train is fast train";
+            slow=false;
         }
     }
     //**************************************************************************************************//
@@ -246,8 +253,7 @@ void train_route::show_handicap_coaches()
     handicap_coach_no.append("/");
     handicap_coach_no.append(query_find_handicap_coaches.value(1).toString());
     ui->handicap_coach->setText(handicap_coach_no);
-
-    //**************************************************************************************************//
+     //**************************************************************************************************//
 }
 
 void train_route::fill_train_struct(bool slave_train)
@@ -276,8 +282,9 @@ void train_route::fill_train_struct(bool slave_train)
     }
     else
     {
+        qDebug() << "added train arrival";
         if(TrainNumber::DEP_TIME == TrainNumber::DEP_TIME)
-            qDebug() << "Train Arrived at the Station" ;
+            qDebug() << "Train Arrived at the Station";
         QSqlQuery slave_train_arr_dep_time("SELECT * FROM `tbl_slave_route` WHERE `train_number`='"+slave_train_no+"'");
         slave_train_arr_dep_time.first();
         arr_time_slave = slave_train_arr_dep_time.value((SlaveRoute::ARRIVAL_TIME)).toString().split(":");
@@ -306,7 +313,6 @@ void train_route::fill_train_struct(bool slave_train)
     qDebug() << "Dep Time MINUTES" << QString::number(current_route_data.train.dep_time_min);
     /***********************************************************************************************************/
     src_mid_des_station_name_filling();
-
     find_ladies_and_slow_fast_status(slave_train);
 }
 
@@ -365,28 +371,30 @@ int train_route::on_next_station_clicked()
     static int current_station=0;
     qDebug() << "Longitude--->" << current_route_data.stn[current_station].loc.coordintes.longitude;
     qDebug() << "Lattitude--->" << current_route_data.stn[current_station].loc.coordintes.latitude;
+
 check_again:
-
     //if(current_station == current_route_data.train.no_of_stns)
-        if(current_station == station_codes.size())
-
+    if(current_station == station_codes.size())
     {
         ui->next_station->setDisabled(true);
-        ui->next_station->setStyleSheet(" color: rgb(150,150,150);");
+        qDebug() << "Next station is disabled";
+        ui->next_station->setStyleSheet(" color: rgb(50,30,130);");
         return 0;
     }
     if(current_route_data.stn[current_station].status.bits.station_skipped)
     {
         if(current_station!=0)
         {
-        QListWidgetItem *prev_item;
-        QWidget *prev_widget;
-        prev_item = ui->listWidget->item(current_station-1);
-        // prev_item->setBackgroundColor(QColor(150,150,150,100));
-        prev_widget =  ui->listWidget->itemWidget(prev_item);
-        //prev_widget->setAutoFillBackground(true);
-        prev_widget->setStyleSheet("background-color: rgb(150,150,150);");
+            QListWidgetItem *prev_item;
+            QWidget *prev_widget;
+            prev_item = ui->listWidget->item(current_station-1);
+            // prev_item->setBackgroundColor(QColor(150,150,150,100));
+            prev_widget =  ui->listWidget->itemWidget(prev_item);
+            //prev_widget->setAutoFillBackground(true);
+            prev_widget->setStyleSheet("background-color: rgb(150,150,150);");
         }
+        current_station ++ ;
+        current_station -- ;
         current_station ++ ;
         goto check_again;
     }
@@ -394,22 +402,22 @@ check_again:
     {
         if(current_station!=0)
         {
-        QListWidgetItem *prev_item;
-        QWidget *prev_widget;
-        prev_item = ui->listWidget->item(current_station-1);
-        // prev_item->setBackgroundColor(QColor(150,150,150,100));
-        prev_widget =  ui->listWidget->itemWidget(prev_item);
-        //prev_widget->setAutoFillBackground(true);
-        prev_widget->setStyleSheet("background-color: rgb(150,150,150);");
+            QListWidgetItem *prev_item;
+            QWidget *prev_widget;
+            prev_item = ui->listWidget->item(current_station-1);
+            // prev_item->setBackgroundColor(QColor(150,150,150,100));
+            prev_widget = ui->listWidget->itemWidget(prev_item);
+            //prev_widget->setAutoFillBackground(true);
+            prev_widget->setStyleSheet("background-color: rgb(150,150,150);");
         }
         QListWidgetItem *current_item;
         QWidget *current_widget;
         current_item = ui->listWidget->item(current_station);
-        current_widget =  ui->listWidget->itemWidget(current_item);
+        current_widget = ui->listWidget->itemWidget(current_item);
         current_widget->setStyleSheet("background-color: rgb(0, 150,0);");
-       // memcpy(current_route_data.train.current_station.name.eng,QString("AMBALA").toStdString().c_str(),6);
-       qDebug() << station_names.at(current_station);
-       memset(current_route_data.train.current_station.name.eng,'\0',50);
+        // memcpy(current_route_data.train.current_station.name.eng,QString("AMBALA").toStdString().c_str(),6);
+        qDebug() << station_names.at(current_station);
+        memset(current_route_data.train.current_station.name.eng,'\0',50);
         memcpy(current_route_data.train.current_station.name.eng,station_names.at(current_station).toStdString().c_str(),station_names.at(current_station).size());
         emit send_route_info();
         ///////////////////////// SET AUTO SCROLLING OF VIEW //////////////////////

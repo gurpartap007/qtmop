@@ -7,27 +7,28 @@ bool CallStreamsRunning=false;
 bool CallEnd=false;
 bool CallError=false;
 bool isIncomingCall= false;
+
 void etu::paintEvent(QPaintEvent* /*event*/)
 {
     QColor backgroundColor ;
     backgroundColor.setRgb(173, 216, 230);
     backgroundColor.setAlpha(180);
     QPainter customPainter(this);
+    customPainter.resetMatrix();
     customPainter.fillRect(rect(),backgroundColor);
 }
 
 bool etu::eventFilter(QObject *watched, QEvent *event)
 {
-
     if (  event->type() == QEvent::MouseButtonPress )
     {
         ui->call_queue->clear();
         emit back_clicked();
+        qDebug() << "Mouse button pressed";
     }
-
-
     return QObject::eventFilter(watched, event);
 }
+
 etu::etu(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::etu)
@@ -56,7 +57,6 @@ void etu::qlinphone_init()
     QDir confDir = QDir(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation));
     confDir.mkdir("Linphone");
     QString config_file = confDir.absolutePath() + "/Linphone/.linphonerc";
-    qDebug() << "Config file:" << config_file;
     LinphoneCoreVTable vtable = {0};
     vtable.call_state_changed = qcall_state_changed;
     lc = linphone_core_new(&vtable, config_file.toStdString().c_str() , NULL, this);
@@ -69,7 +69,8 @@ int etu::qlinphone_call(LinphoneCore *lc, char *ip_address)
 {
     if ( ! ip_address || ! *ip_address )
     {
-        return 0;
+        return -1;
+
     }
     {
         LinphoneCallParams *cp=linphone_core_create_default_call_parameters (lc);
@@ -100,9 +101,9 @@ void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState
 
     switch(cstate){
     case LinphoneCallOutgoingRinging:
-        qDebug() << "It is now ringing remotely";
+       qDebug() << "It is now ringing remotely";
         CallOutgoingRinging=true;
-
+        qDebug() << "CallOutgoingRinging" << CallOutgoingRinging;
         break;
     case LinphoneCallOutgoingEarlyMedia:
         qDebug() << "Receiving some early media";
@@ -141,31 +142,37 @@ void etu::iterate()
     {
         ui->call_queue->appendPlainText("Call Connected");
         CallConnected=false;
+        qDebug() << "Current Call Connected";
     }
     else if(CallOutgoingRinging)
     {
         ui->call_queue->appendPlainText("Call Outgoing ringing");
         CallOutgoingRinging=false;
+        qDebug() << "Call Outgoing Ringing";
     }
     else if(CallOutgoingEarlyMedia)
     {
         ui->call_queue->appendPlainText(("Call Outgoing Early Media"));
         CallOutgoingEarlyMedia=false;
+        qDebug() << "Call Outgoing to remote";
     }
     else if(CallStreamsRunning)
     {
         ui->call_queue->appendPlainText("Call Streams Running");
         CallStreamsRunning=false;
+        qDebug() << "Call Streams Running";
     }
     else if(CallEnd)
     {
         ui->call_queue->appendPlainText("Call ended");
         CallEnd=false;
+        qDebug() << "Current Call Ended";
     }
     else if(CallError)
     {
        // ui->call_queue->appendPlainText("Call error");
         CallError=false;
+        qDebug() << "Error in establishing current Call";
     }
     else if(isIncomingCall)
     {
@@ -177,6 +184,7 @@ void etu::iterate()
         qDebug() << linphone_call_get_remote_address_as_string(new_call);
         ui->call_queue->appendPlainText(caller_id.at(1));
         isIncomingCall = false;
+        qDebug() << "New Incoming Call from Coach";
     }
 }
 
@@ -186,21 +194,22 @@ void etu::on_accept_call_button_clicked()
     if(nb==1)
         linphone_core_accept_call(lc,NULL);
     else
-        qlinphone_call(lc,(char *)"root@192.168.0.104");
+        qlinphone_call(lc,(char *)"");
 }
 
 void etu::on_end_call_button_clicked()
 {
     linphone_core_terminate_call(lc,NULL);
+    qDebug() << "Current Call terminated";
 }
 
 void etu::on_mute_call_button_clicked()
 {
-
+    qDebug() << "mute button clicked";
 }
 
 void etu::on_bar_call_button_clicked()
 {
-
+    qDebug() << "Current Call is barred";
 
 }

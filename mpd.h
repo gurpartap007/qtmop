@@ -43,9 +43,7 @@ void on_settings_clicked();
 void close_settings_popup();
 void on_pa_clicked();
 void close_announcement_popup();
-
 void on_intercom_clicked();
-
 private:
     Ui::mpd *ui;
 };

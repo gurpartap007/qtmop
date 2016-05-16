@@ -4,9 +4,10 @@ extern char input[20];
 int current_input=COACH_COUNT_INPUT ;
 void settings::paintEvent(QPaintEvent* /*event*/)
 {
-    QColor backgroundColor ;
+    QColor backgroundColor;
     backgroundColor.setRgb(173, 216, 230);
     backgroundColor.setAlpha(180);
+    qDebug() << backgroundColor.red();
     QPainter customPainter(this);
     customPainter.fillRect(rect(),backgroundColor);
 }
@@ -61,6 +62,7 @@ void settings::on_settings_back_button_clicked()
     ui->spacer_left->changeSize(screen_size.width()/3.5,original_size_of_spacer.height());
     ui->spacer_right->changeSize(screen_size.width()/3.5,original_size_of_spacer.height());
     this->updateGeometry();
+    qDebug() << "geometry of settings is updated";
     update_database();
     ui->stackedWidget->setCurrentIndex(0);
     ui->settings_back_button->hide();
@@ -105,7 +107,6 @@ void settings::settext_in_input()
 
 void settings::setvalue()
 {
-
     if(input_box == COACH_COUNT_INPUT)
     {
         max_limit = coach_count = ui->coach_count_input->text().toInt();
@@ -121,10 +122,11 @@ void settings::setvalue()
         }
         else
         {
-            ui->handicap1_input->setStyleSheet("background-color: rgb(232, 232, 232");
+            ui->handicap1_input->setStyleSheet("background-color: rgb(232, 232, 232);");
             handicap_coach1 = ui->handicap1_input->text().toInt();
             qDebug() << "Handicap_coach1" << handicap_coach1;
             ui->handicap1_input->setDisabled(true);
+            qDebug() << "Handicap_Coach1";
             emit keypad->clear();
         }
     }
@@ -136,14 +138,12 @@ void settings::setvalue()
         }
         else
         {
-            ui->handicap2_input->setStyleSheet("background-color: rgb(232, 232, 232");
+            ui->handicap2_input->setStyleSheet("background-color: rgb(232, 232, 232);");
             handicap_coach2 = ui->handicap2_input->text().toInt();
-            qDebug() << "handicap_coach2" << handicap_coach2;
             ui->handicap2_input->setDisabled(true);
             emit keypad->clear();
         }
     }
-
 }
 
 void settings::coach_count_input_clicked()
@@ -151,6 +151,8 @@ void settings::coach_count_input_clicked()
     if(!keypad_enabled)
     {
         emit enable_keypad();
+        qDebug() << "keypad enabled";
+        qDebug() << "jadon firge rkaane din yaar de ni tutti yaari fer rarrku";
         keypad_enabled=true;
     }
 }
@@ -158,12 +160,10 @@ void settings::coach_count_input_clicked()
 void settings::handicap_coach1_input_clicked()
 {
     input_box = HANDICAP_COACH1_INPUT;
-
 }
 
 void settings::handicap_coach2_input_clicked()
 {
     input_box = HANDICAP_COACH2_INPUT;
-
 }
 

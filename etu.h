@@ -26,33 +26,35 @@ class etu : public QWidget
 public:
     explicit etu(QWidget *parent = 0);
     ~etu();
-
-    QPushButton *accept_call;
-    QPushButton *hold_call;
-    QPushButton *end_call;
-    QHBoxLayout *buttons_layout;
+    QPushButton        *accept_call;
+    QPushButton        *hold_call;
+    QPushButton        *end_call;
+    QHBoxLayout        *buttons_layout;
     QPropertyAnimation *m_animation ;
-    LinphoneCore* lc;
-    const MSList *call_logs;
+    LinphoneCore       *lc;
+    LinphoneCall       *call2;
+    const MSList       *call_logs;
+
 public slots:
     void end_current_call();
     void qlinphone_init();
     int qlinphone_call(LinphoneCore *lc, char *ip_address);
     void iterate();
+
 signals:
     void call_ended();
     void back_clicked();
     void new_incoming_call();
+    void inialize_rabb_nu_lekha_server();
+
 protected:
      void paintEvent(QPaintEvent* event);
     virtual bool eventFilter( QObject * watched, QEvent * event );
+
 private slots:
      void on_accept_call_button_clicked();
-
      void on_end_call_button_clicked();
-
      void on_mute_call_button_clicked();
-
      void on_bar_call_button_clicked();
 
 private:

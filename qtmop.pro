@@ -67,3 +67,8 @@ unix|win32: LIBS += -lmediastreamer_base
 
 unix|win32: LIBS += -lortp
 
+
+unix:!macx: LIBS += -L$$PWD/../../OLIMEX/olimex_sd_card/usr/local/lib/ -llinphone
+
+INCLUDEPATH += $$PWD/../../OLIMEX/olimex_sd_card/usr/local/include
+DEPENDPATH += $$PWD/../../OLIMEX/olimex_sd_card/usr/local/include

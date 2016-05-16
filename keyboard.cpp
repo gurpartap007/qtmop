@@ -12,8 +12,11 @@ keyboard::keyboard(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::keyboard)
 {
-    ui->setupUi(this);
+   ui->setupUi(this);
+    //ui->pushButton_3->adjustSize();
+
     /*  QDesktopWidget screen_keyboard;
+     *
    // this->setMaximumSize(800,200);
     if(screen_keyboard.width() == 800)
         this->setStyleSheet("QPushButton {font: 16pt \"Arial\";font-weight: bold;}QPushButton{ background-color: rgb(180, 207, 207); }QPushButton:pressed{background-color: rgb(100, 100, 100); }");
@@ -25,6 +28,7 @@ keyboard::keyboard(QWidget *parent) :
         this->setStyleSheet("QPushButton {font: 21pt \"Arial\"; font-weight: bold;}QPushButton{ background-color: rgb(180, 207, 207); }QPushButton:pressed{background-color: rgb(100, 100, 100); }");
 */
     connect(this,SIGNAL(change_to_numeric()),this,SLOT(on_pushButton_31_clicked()));
+    connect(this,SIGNAL(value_changed(char)),this,SLOT(update()));
     memset(display,0,sizeof(display));
     ptr = &display[0];
     check = 0;
@@ -40,7 +44,7 @@ keyboard::~keyboard()
 //
 //	Description: Set the character in text box
 //
-//	Parameters:	number - to select the charcter from array
+//	Parameters:	number - to select the character from array
 //=============================================================================
 void keyboard::characterset(int number,int mode)
 {
@@ -52,134 +56,158 @@ void keyboard::characterset(int number,int mode)
 void keyboard::on_pushButton_3_clicked()
 {
     characterset(LETTER_Qq,check);
+    qDebug() << "Letter Qq is clicked";
     //*ptr = '\0';
     //emit value_changed(ENTER_CLICK);
 }
 
 void keyboard::on_pushButton_4_clicked()
 {
-
     characterset(LETTER_Ww,check);
+    qDebug() << "Letter Ww is clicked";
 }
-
 void keyboard::on_pushButton_5_clicked()
 {
     characterset(LETTER_Ee,check);
+    qDebug() << "Letter Ee is clicked";
 }
 
 void keyboard::on_pushButton_6_clicked()
 {
     characterset(LETTER_Rr,check);
+    qDebug() << "Letter Rr is clicked";
 }
 
 void keyboard::on_pushButton_7_clicked()
 {
     characterset(LETTER_Tt,check);
+    qDebug() << "Letter Tt is clicked";
 }
 
 void keyboard::on_pushButton_8_clicked()
 {
     characterset(LETTER_Yy,check);
+    qDebug() << "Letter Yy is clicked";
 }
 
 void keyboard::on_pushButton_9_clicked()
 {
     characterset(LETTER_Uu,check);
+    qDebug() << "Letter Uu is clicked";
 }
 
 void keyboard::on_pushButton_10_clicked()
 {
     characterset(LETTER_Ii,check);
+    qDebug() << "Letter Ii is clicked";
 }
 
 void keyboard::on_pushButton_11_clicked()
 {
     characterset(LETTER_Oo,check);
+    qDebug() << "Letter Oo is clicked";
 }
 
 void keyboard::on_pushButton_12_clicked()
 {
     characterset(LETTER_Pp,check);
+    qDebug() << "Letter Pp is clicked";
 }
 
 void keyboard::on_pushButton_13_clicked()
 {
     characterset(LETTER_Aa,check);
+    qDebug() << "Letter Aa is clicked";
 }
 
 void keyboard::on_pushButton_21_clicked()
 {
     characterset(LETTER_Ss,check);
+    qDebug() << "Letter Ss is clicked";
 }
 
 void keyboard::on_pushButton_17_clicked()
 {
     characterset(LETTER_Dd,check);
+    qDebug() << "Letter Dd is clicked";
 }
 
 void keyboard::on_pushButton_18_clicked()
 {
     characterset(LETTER_Ff,check);
+    qDebug() << "Letter Ff is clicked";
 }
 
 void keyboard::on_pushButton_16_clicked()
 {
     characterset(LETTER_Gg,check);
+    qDebug() << "Letter Gg is clicked";
 }
 
 void keyboard::on_pushButton_14_clicked()
 {
     characterset(LETTER_Hh,check);
+    qDebug() << "Letter Hh is clicked";
 }
 
 void keyboard::on_pushButton_19_clicked()
 {
     characterset(LETTER_Jj,check);
+    qDebug() << "Letter Jj is clicked";
 }
 
 void keyboard::on_pushButton_15_clicked()
 {
     characterset(LETTER_Kk,check);
+    qDebug() << "Letter Kk is clicked";
 }
 
 void keyboard::on_pushButton_20_clicked()
 {
     characterset(LETTER_Ll,check);
+    qDebug() << "Letter Ll is clicked";
 }
 
 void keyboard::on_pushButton_28_clicked()
 {
     characterset(LETTER_Zz,check);
+    qDebug() << "Letter Zz is clicked";
 }
 
 void keyboard::on_pushButton_25_clicked()
 {
     characterset(LETTER_Xx,check);
+    qDebug() << "Letter Xx is clicked";
 }
 
 void keyboard::on_pushButton_26_clicked()
 {
     characterset(LETTER_Cc,check);
+    qDebug() << "Letter Cc is clicked";
 }
 
 void keyboard::on_pushButton_24_clicked()
 {
     characterset(LETTER_Vv,check);
+    qDebug() << "Letter Vv is clicked";
 }
 
 void keyboard::on_pushButton_23_clicked()
 {
     characterset(LETTER_Bb,check);
+    qDebug() << "Letter Bb is clicked";
 }
 
 void keyboard::on_pushButton_27_clicked()
 {
     characterset(LETTER_Nn,check);
+    qDebug() << "Letter Nn is clicked";
 }
 
 void keyboard::on_pushButton_22_clicked()
 {
     characterset(LETTER_Mm,check);
+    qDebug() << "Letter Mm is clicked";
 }
 
 //Caps

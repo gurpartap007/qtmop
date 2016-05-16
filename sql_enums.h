@@ -194,5 +194,6 @@ enum
     DEP_LONG
 };
 }
+
 #endif // SQL_ENUMS_H
 

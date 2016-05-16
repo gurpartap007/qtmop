@@ -68,7 +68,7 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="icons.qrc">
+            <iconset>
              <normaloff>:/images/green_call_button.png</normaloff>:/images/green_call_button.png</iconset>
            </property>
            <property name="iconSize">
@@ -111,7 +111,7 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="icons.qrc">
+            <iconset>
              <normaloff>:/images/hold_call.png</normaloff>:/images/hold_call.png</iconset>
            </property>
            <property name="iconSize">
@@ -153,7 +153,7 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="icons.qrc">
+            <iconset>
              <normaloff>:/images/red_stop_button.png</normaloff>:/images/red_stop_button.png</iconset>
            </property>
            <property name="iconSize">
@@ -196,7 +196,7 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="icons.qrc">
+            <iconset>
              <normaloff>:/images/end_call.png</normaloff>:/images/end_call.png</iconset>
            </property>
            <property name="iconSize">
@@ -239,7 +239,7 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="icons.qrc">
+            <iconset>
              <normaloff>:/images/mute_call.png</normaloff>:/images/mute_call.png</iconset>
            </property>
            <property name="iconSize">
@@ -325,8 +325,6 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="icons.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

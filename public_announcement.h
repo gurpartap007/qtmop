@@ -25,14 +25,15 @@ class public_announcement : public QWidget
 public:
     explicit public_announcement(QWidget *parent = 0);
     music_streamer *announcement_streamer;/**< mpdclient API based music streamer on localhost,port 6600S**/
-
     ~public_announcement();
+
 signals:
     void back_clicked();
 
 protected:
     void paintEvent(QPaintEvent* event);
-     virtual bool eventFilter( QObject * watched, QEvent * event );
+    virtual bool eventFilter( QObject * watched, QEvent * event );
+
 private:
     Ui::public_announcement *ui;
 };

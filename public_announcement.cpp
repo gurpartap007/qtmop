@@ -14,8 +14,8 @@ bool public_announcement::eventFilter(QObject *watched, QEvent *event)
     if ( event->type() == QEvent::MouseButtonPress )
     {
         emit back_clicked();
+        qDebug() << "back button clicked";
     }
-
     return QObject::eventFilter(watched, event);
 }
 public_announcement::public_announcement(QWidget *parent) :
@@ -30,8 +30,9 @@ public_announcement::public_announcement(QWidget *parent) :
     connect(ui->start_announcement,SIGNAL(clicked()),announcement_streamer,SLOT(on_play_clicked()));
     connect(ui->pause_announcement,SIGNAL(clicked()),announcement_streamer,SLOT(on_pause_clicked()));
     connect(ui->end_announcement,SIGNAL(clicked()),announcement_streamer,SLOT(close_streaming()));
+    connect(ui->start_announcement,SIGNAL(clicked(bool)),announcement_streamer,SLOT(close_streaming()));
     this->installEventFilter(this);
-
+    qDebug() << "Event filter installed";
 }
 
 public_announcement::~public_announcement()

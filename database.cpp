@@ -3,7 +3,6 @@ extern QStringList train_routes;
 QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
 database::database(QObject *parent) : QObject(parent)
 {
-
     db.setHostName("localhost");
     db.setDatabaseName("emu");
     db.setUserName("root");

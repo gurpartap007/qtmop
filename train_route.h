@@ -51,19 +51,19 @@ private:
     void fill_stn_struct();
     Ui::train_route *ui;
     QTimer time_update;
-    QString date_time,
-    handicap_coach_no;
+    QString date_time;
+    QString handicap_coach_no;
     QDate current_date;
     QTime current_time;
-    bool slow,
-    fast,
-    ladies_special;
-    QStringList station_codes,
-    station_names,
-    source_destination_list,
-    source_destination_station_codes;
-    QFont *skip_button_font,
-    *station_name_font;
+    bool slow;
+    bool fast;
+    bool ladies_special;
+    QStringList station_codes;
+    QStringList station_names;
+    QStringList source_destination_list;
+    QStringList source_destination_station_codes;
+    QFont *skip_button_font;
+    QFont *station_name_font;
 };
 
 #endif // TRAIN_ROUTE_H

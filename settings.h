@@ -39,11 +39,12 @@ public:
     int handicap_coach2;
     int max_limit;
     bool keypad_enabled = false;
-
     ~settings();
+
 signals:
  void back_clicked();
  void enable_keypad();
+
 protected:
     void paintEvent(QPaintEvent* event);
     virtual bool eventFilter( QObject * watched, QEvent * event );
@@ -58,7 +59,6 @@ private slots:
     void coach_count_input_clicked();
     void handicap_coach1_input_clicked();
     void handicap_coach2_input_clicked();
-
 
 private:
     Ui::settings *ui;
