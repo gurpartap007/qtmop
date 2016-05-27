@@ -33,7 +33,8 @@ public slots:
     void send_train_route_info();
     QByteArray generate_crc(unsigned char * buffer,unsigned int buffer_length);
     void device_reset();
-    void send_display_event_messages(unsigned char func_code);
+    QString replace_eng_delimiters(QString *eng_message);
+    void send_display_event_messages(QString func_code);
     void form_packet_for_transmission(QString dest_id, unsigned char function_code,const char *packet_data, unsigned int data_length);
 private:
     QUdpSocket *server;

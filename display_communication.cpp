@@ -1,7 +1,7 @@
 #include "display_communication.h"
 extern QSqlDatabase db;
 unsigned char crc_high_lookup[] =
-    {
+{
     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81,
     0x40, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0,
     0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01,
@@ -20,7 +20,7 @@ unsigned char crc_high_lookup[] =
     0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40, 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41,
     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81,
     0x40
-    };
+};
 
 unsigned char crc_low_lookup[] =
 {
@@ -42,13 +42,13 @@ unsigned char crc_low_lookup[] =
     0x48, 0x49, 0x89, 0x4B, 0x8B, 0x8A, 0x4A, 0x4E, 0x8E, 0x8F, 0x4F, 0x8D, 0x4D, 0x4C, 0x8C,
     0x44, 0x84, 0x85, 0x45, 0x87, 0x47, 0x46, 0x86, 0x82, 0x42, 0x43, 0x83, 0x41, 0x81, 0x80,
     0x40
- };
+};
 extern route_struct current_route_data;
 display_communication::display_communication(QObject *parent) : QObject(parent)
 {
     server = new QUdpSocket(this);
     server->bind(QHostAddress("192.168.0.30"),5000);
-    send_display_event_messages('A');
+ //   send_display_event_messages('A');
 }
 
 display_communication::~display_communication()
@@ -61,22 +61,23 @@ void display_communication::send_train_route_info()
     QByteArray data;
     data.clear();
     data.append((const char *)current_route_data.train.train_num);
-     data.append('\0');
+    data.append('\0');
     data.append(',');
     data.append(QString::fromUtf8((const char *)current_route_data.train.src.name.eng));
-     data.append('\0');
+    data.append('\0');
     data.append(',');
     data.append(QString::fromUtf8((const char *)current_route_data.train.mid.name.eng));
-     data.append('\0');
+    data.append('\0');
     data.append(',');
     data.append(QString::fromUtf8((const char *)current_route_data.train.des.name.eng));
-     data.append('\0');
+    data.append('\0');
     data.append(',');
     qDebug() << QString::fromUtf8((const char *)current_route_data.train.current_station.name.eng);
     data.append(QString::fromUtf8((const char *)current_route_data.train.current_station.name.eng));
     data.append('\0');
     data.append(',');
     server->writeDatagram(data,data.size(),QHostAddress("192.168.0.25"),5001);
+    send_display_event_messages("A");
 }
 
 QByteArray display_communication::generate_crc(unsigned char *buffer, unsigned int buffer_length)
@@ -107,25 +108,84 @@ void display_communication::device_reset()
     qDebug() << "DATA written --->" << data;
 }
 
-void display_communication::send_display_event_messages(unsigned char func_code)
+QString display_communication::replace_eng_delimiters(QString *eng_message)
+{
+    QString *english_msg;
+    english_msg = eng_message;
+    QStringList delimiters,slow_fast_string_id ;
+    delimiters << "<TT>" << "<CNUM>"<< "<SSTN>";
+    slow_fast_string_id << "'STRTSE'" << "'STRTFE'";
+    int i = 0;
+
+    for(i=0;i<delimiters.length();i++)
+    {
+         if(english_msg->contains(delimiters[i]))
+         {
+             switch(i)
+             {
+                case 0:
+                        {
+                             QString query_string = "SELECT `string_msg` FROM `tbl_string` where string_id =  ";
+                             query_string += slow_fast_string_id[current_route_data.train.slow_fast == 'F'];
+                            // query_string += "'";
+                             qDebug() << query_string;
+                             QSqlQuery find_slow_fast_string(query_string);
+                            find_slow_fast_string.next();
+                            english_msg->replace(delimiters[i],find_slow_fast_string.value(0).toString());
+                        }
+                        break;
+                case 1: english_msg->replace(delimiters[i],QString::number(current_route_data.train.coach_count));
+                        break;
+                case 2: english_msg->replace(delimiters[i],QString::fromUtf8((const char *)current_route_data.train.src.name.eng));
+                        break;
+             }
+         }
+    }
+   qDebug() << english_msg;
+   return *english_msg;
+}
+
+void display_communication::send_display_event_messages(QString func_code)
 {
     QByteArray message;
     QStringList message_codes;
+        QString english_msg,hindi_msg,regional_msg;
     int message_code_index=0;
-    /*********************************check database table tbl.msg fot available function codes****************
+    bool  msg_code_not_exist = false;
+    /*********************************check database table tbl.msg for available function codes****************
     if msg code exists in database table then take the information from the table and form packet to send else return without sending.
     1. retirve string from databse table.
     2. Replace delimeters with existing route information as per the real time running of route.
     ********************************************************************************************************/
-    QSqlQuery find_msg_code("SELECT `msg_code` FROM `tbl_msg` ");
-    while(find_msg_code.size() != message_code_index )
+    QSqlQuery find_function_code("SELECT `msg_code` FROM `tbl_msg` ");
+    while(message_code_index <= find_function_code.size())
     {
-    find_msg_code.next();
-    message_codes.append(find_msg_code.value(message_code_index).toString());
-    message_code_index ++;
+        find_function_code.next();
+        if(func_code == find_function_code.value(0).toString())
+        {
+            msg_code_not_exist = true;
+            break;
+        }
+        message_codes.append(find_function_code.value(0).toString());
+        message_code_index ++;
     }
     qDebug() << "Message codes in DATABASE  ###### " << message_codes;
-   /* form_packet_for_transmission("ICD",func_code,message.toStdString().c_str(),message.length());
+    if(!msg_code_not_exist)
+        return;
+    else
+    {
+        QSqlQuery get_msg_strings("SELECT `eng_string`,`hindi_string`,`reg_string` FROM `tbl_msg` ");
+            get_msg_strings.next();
+            english_msg  = get_msg_strings.value(0).toString();
+            hindi_msg    = get_msg_strings.value(1).toString();
+            regional_msg = get_msg_strings.value(2).toString();
+            qDebug() << "English" << english_msg;
+            qDebug() << "Hindi" << hindi_msg;
+            qDebug() << "Regional" << regional_msg;
+            english_msg = replace_eng_delimiters(&english_msg);
+            qDebug() << "English Message after removing delimiters" << english_msg;
+    }
+    /* form_packet_for_transmission("ICD",func_code,message.toStdString().c_str(),message.length());
     server->writeDatagram(data,data.size(),QHostAddress("192.168.0.105"),5001);
     qDebug() << "DATA written --->" << data;
     qDebug() << "data length" << data.length();

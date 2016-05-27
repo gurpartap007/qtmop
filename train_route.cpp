@@ -232,6 +232,8 @@ void train_route::find_ladies_and_slow_fast_status(bool slave_train)
         {
             slow=true;
             fast=false;
+            current_route_data.train.slow_fast = 'S';
+
             qDebug() << "ladies special train " << ladies_special;
         }
         else
@@ -239,6 +241,7 @@ void train_route::find_ladies_and_slow_fast_status(bool slave_train)
             fast=true;
             qDebug() << "This master Train is fast train";
             slow=false;
+            current_route_data.train.slow_fast = 'F';
         }
     }
     //**************************************************************************************************//
