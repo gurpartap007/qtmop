@@ -18,5 +18,17 @@
         <file>images/green_call_button.png</file>
         <file>images/backbutton.png</file>
         <file>images/announcement_on_podium.png</file>
+        <file>images/keypad_0.png</file>
+        <file>images/keypad_1.png</file>
+        <file>images/keypad_2.png</file>
+        <file>images/keypad_3.png</file>
+        <file>images/keypad_4.png</file>
+        <file>images/keypad_5.png</file>
+        <file>images/keypad_6.png</file>
+        <file>images/keypad_7.png</file>
+        <file>images/keypad_8.png</file>
+        <file>images/keypad_9.png</file>
+        <file>images/keypad_del.png</file>
+        <file>images/keypad_enter.png</file>
     </qresource>
 </RCC>

@@ -44,7 +44,8 @@ HEADERS  += mpd.h \
     route_struct.h \
     skipbutton.h \
     numeric_keypad.h \
-    display_communication.h
+    display_communication.h \
+
 
 FORMS    += mpd.ui \
     music_streamer.ui \
@@ -59,7 +60,7 @@ FORMS    += mpd.ui \
 RESOURCES += \
     icons.qrc
 
-unix|win32: LIBS += -llinphone
+ unix|win32: LIBS += -llinphone
 
 unix|win32: LIBS += -lmediastreamer_voip
 
@@ -68,7 +69,12 @@ unix|win32: LIBS += -lmediastreamer_base
 unix|win32: LIBS += -lortp
 
 
-unix:!macx: LIBS += -L$$PWD/../../OLIMEX/olimex_sd_card/usr/local/lib/ -llinphone
+unix:!macx: LIBS += -L/usr/local/lib -llinphone -lmediastreamer_voip -lmediastreamer_base -lortp
 
-INCLUDEPATH += $$PWD/../../OLIMEX/olimex_sd_card/usr/local/include
-DEPENDPATH += $$PWD/../../OLIMEX/olimex_sd_card/usr/local/include
+INCLUDEPATH += /usr/local/include /usr/include
+DEPENDPATH += /usr/local/include
+
+unix:!macx: LIBS += -L$$PWD/../../../../mnt/a20/usr/lib/ -lmpdclient
+
+INCLUDEPATH += /usr/include
+DEPENDPATH += /usr/include

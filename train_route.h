@@ -5,6 +5,7 @@
 #include "header.h"
 #include "sql_enums.h"
 #include "display_communication.h"
+#include "database.h"
 
 /** @brief Holds selected current route information and all related functions
     Detailed description follows here.

@@ -183,18 +183,24 @@ void etu::iterate()
         qDebug() << caller_id;
         qDebug() << linphone_call_get_remote_address_as_string(new_call);
         ui->call_queue->appendPlainText(caller_id.at(1));
+        linphone_core_set_playback_device(lc,linphone_core_get_playback_device(lc));
+        linphone_core_play_local(lc,"/opt/linphone/tester/sounds/oldphone.wav");
+        qDebug() << linphone_core_get_playback_device(lc);
         isIncomingCall = false;
         qDebug() << "New Incoming Call from Coach";
+
     }
 }
 
+
 void etu::on_accept_call_button_clicked()
 {
-    int nb=ms_list_size(linphone_core_get_calls(lc));
+  int nb=ms_list_size(linphone_core_get_calls(lc));
     if(nb==1)
         linphone_core_accept_call(lc,NULL);
     else
-        qlinphone_call(lc,(char *)"");
+        qlinphone_call(lc,(char *)"root@192.168.0.25");
+   //qlinphone_call(lc,"root@192.168.0.25");
 }
 
 void etu::on_end_call_button_clicked()

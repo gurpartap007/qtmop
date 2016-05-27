@@ -56,8 +56,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../../Pictures/keypad/keypad_1.png</normaloff>../../Pictures/keypad/keypad_1.png</iconset>
+        <iconset resource="icons.qrc">
+         <normaloff>:/images/keypad_1.png</normaloff>:/images/keypad_1.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -88,8 +88,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../../Pictures/keypad/keypad_2.png</normaloff>../../Pictures/keypad/keypad_2.png</iconset>
+        <iconset resource="icons.qrc">
+         <normaloff>:/images/keypad_2.png</normaloff>:/images/keypad_2.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -120,8 +120,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../../Pictures/keypad/keypad_3.png</normaloff>../../Pictures/keypad/keypad_3.png</iconset>
+        <iconset resource="icons.qrc">
+         <normaloff>:/images/keypad_3.png</normaloff>:/images/keypad_3.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -146,8 +146,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../../Pictures/keypad/keypad_4.png</normaloff>../../Pictures/keypad/keypad_4.png</iconset>
+        <iconset resource="icons.qrc">
+         <normaloff>:/images/keypad_4.png</normaloff>:/images/keypad_4.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -172,8 +172,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../../Pictures/keypad/keypad_5.png</normaloff>../../Pictures/keypad/keypad_5.png</iconset>
+        <iconset resource="icons.qrc">
+         <normaloff>:/images/keypad_5.png</normaloff>:/images/keypad_5.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -198,8 +198,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../../Pictures/keypad/keypad_6.png</normaloff>../../Pictures/keypad/keypad_6.png</iconset>
+        <iconset resource="icons.qrc">
+         <normaloff>:/images/keypad_6.png</normaloff>:/images/keypad_6.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -224,8 +224,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../../Pictures/keypad/keypad_7.png</normaloff>../../Pictures/keypad/keypad_7.png</iconset>
+        <iconset resource="icons.qrc">
+         <normaloff>:/images/keypad_7.png</normaloff>:/images/keypad_7.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -250,8 +250,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../../Pictures/keypad/keypad_8.png</normaloff>../../Pictures/keypad/keypad_8.png</iconset>
+        <iconset resource="icons.qrc">
+         <normaloff>:/images/keypad_8.png</normaloff>:/images/keypad_8.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -276,8 +276,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../../Pictures/keypad/keypad_9.png</normaloff>../../Pictures/keypad/keypad_9.png</iconset>
+        <iconset resource="icons.qrc">
+         <normaloff>:/images/keypad_9.png</normaloff>:/images/keypad_9.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -302,8 +302,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../../Pictures/keypad/keypad_del.png</normaloff>../../Pictures/keypad/keypad_del.png</iconset>
+        <iconset resource="icons.qrc">
+         <normaloff>:/images/keypad_del.png</normaloff>:/images/keypad_del.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -328,8 +328,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../../Pictures/keypad/keypad_0.png</normaloff>../../Pictures/keypad/keypad_0.png</iconset>
+        <iconset resource="icons.qrc">
+         <normaloff>:/images/keypad_0.png</normaloff>:/images/keypad_0.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -354,8 +354,8 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset>
-         <normaloff>../../Pictures/keypad/keypad_enter.png</normaloff>../../Pictures/keypad/keypad_enter.png</iconset>
+        <iconset resource="icons.qrc">
+         <normaloff>:/images/keypad_enter.png</normaloff>:/images/keypad_enter.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -385,6 +385,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
