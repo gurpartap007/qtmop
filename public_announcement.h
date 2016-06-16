@@ -34,6 +34,11 @@ protected:
     void paintEvent(QPaintEvent* event);
     virtual bool eventFilter( QObject * watched, QEvent * event );
 
+private slots:
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+
 private:
     Ui::public_announcement *ui;
 };

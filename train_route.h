@@ -32,7 +32,7 @@ public:
 signals:
     void add_stations();
     void fill_structure();
-    void send_route_info();
+    void send_route_info(QString func_code);
 
 public slots:
     void show_train_info();
@@ -43,6 +43,8 @@ private slots:
     void on_skip_station_clicked(int id);
     void update_date_time();
     int on_next_station_clicked();
+
+    void on_station_arrived_clicked();
 
 private:
     void src_mid_des_station_name_filling();
@@ -60,7 +62,6 @@ private:
     bool fast;
     bool ladies_special;
     QStringList station_codes;
-    QStringList station_names;
     QStringList source_destination_list;
     QStringList source_destination_station_codes;
     QFont *skip_button_font;

@@ -89,7 +89,7 @@ void route_selection::select_train_route_with_sorting()
     QStringList master_train_no_for_current_slave_train;
     QStringList labels,slave_train_no,master_train_names;
     model= new QStandardItemModel(0,0);
-    header_font.setPointSize(20);
+    header_font.setPointSize(14);
     header_font.setFamily("Garuda");
     master_trains_model->setTable("tbl_TrainNumber");
     slave_trains_model->setTable("tbl_slave_route");
@@ -182,6 +182,21 @@ void route_selection::route_data_to_relevant_channels()
     ui->lineEdit->fontInfo();
     ui->lineEdit->blockSignals(false);
     route_lines_depth = ui->lineEdit->depth();
+
+  /*  "khuda bhi aasmaan se jab zameen par dekhta hoga"
+    "mere mehboob ko kisne bnayaa sochtaa hoga"
+
+    "musavir khud pareshaan hai ke yeh tasveer kiski hai"
+    "banogi jis ki tum aisi  haseen taqdeer kiski hai"
+    "kabhi wo jal raha hoga kabhi khush ho raha hoga"
+
+    "zamaane bhar ki masti ko nigahon mein sameta hai"
+    "kali se jism ko kitni baharon me lapeta hai"
+    "hua tum sa koi pehle na koi doosra hoga"
+
+    "farishte bhi jahaan raaton ko aakar ghumte honge"
+    "jahan rakhti ho tum paoon jageh wo chumte honge"
+    "kiske dil pe kya guzari ye wohi jaantaa hoga"*/
 }
 
 

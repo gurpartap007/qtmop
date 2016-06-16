@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     qDebug() << "Main Application Executed";
     mpd w;
     qDebug() << "Calling Constructor of mpd class";
-    w.showFullScreen();
+    w.show();
     qDebug() << "Now showing Application as Fullscreen";
     return a.exec();
     qDebug() << "Enters the main Event loop and waits until exit() is called";

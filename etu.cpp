@@ -196,6 +196,8 @@ void etu::iterate()
 void etu::on_accept_call_button_clicked()
 {
   int nb=ms_list_size(linphone_core_get_calls(lc));
+        linphone_core_enable_echo_cancellation(lc,1);
+        linphone_core_enable_echo_limiter(lc,1);
     if(nb==1)
         linphone_core_accept_call(lc,NULL);
     else

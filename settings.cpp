@@ -31,9 +31,9 @@ settings::settings(QWidget *parent) :
     keypad = new numeric_keypad;
     keypad->hide();
     original_size_of_spacer = ui->spacer_left->sizeHint();
-    ui->coach_count_input->setMinimumHeight(screen_size.height()/6);
-    ui->handicap1_input->setMinimumHeight(screen_size.height()/6);
-    ui->handicap2_input->setMinimumHeight(screen_size.height()/6);
+    ui->coach_count_input->setMinimumHeight(480/5);
+    ui->handicap1_input->setMinimumHeight(480/5);
+    ui->handicap2_input->setMinimumHeight(480/5);
     connect(ui->coach_count_input,SIGNAL(cursorPositionChanged(int,int)),this,SLOT(coach_count_input_clicked()));
     connect(ui->handicap1_input,SIGNAL(cursorPositionChanged(int,int)),this,SLOT(handicap_coach1_input_clicked()));
     connect(ui->handicap2_input,SIGNAL(cursorPositionChanged(int,int)),this,SLOT(handicap_coach2_input_clicked()));
@@ -46,9 +46,9 @@ settings::settings(QWidget *parent) :
     ui->handicap1_input->installEventFilter(this);
     ui->handicap2_input->installEventFilter(this);
     ui->settings_back_button->hide();
-    ui->coach_count_input->setMaximumWidth(screen_size.width()/4);
-    ui->handicap1_input->setMaximumWidth(screen_size.width()/4);
-    ui->handicap2_input->setMaximumWidth(screen_size.width()/4);
+    ui->coach_count_input->setMaximumWidth(800/5.5);
+    ui->handicap1_input->setMaximumWidth(800/5.5);
+    ui->handicap2_input->setMaximumWidth(800/5.5);
     connect(keypad,SIGNAL(value_changed()),this,SLOT(settext_in_input()));
 }
 
@@ -59,8 +59,8 @@ settings::~settings()
 
 void settings::on_settings_back_button_clicked()
 {
-    ui->spacer_left->changeSize(screen_size.width()/3.5,original_size_of_spacer.height());
-    ui->spacer_right->changeSize(screen_size.width()/3.5,original_size_of_spacer.height());
+    ui->spacer_left->changeSize(800/4,original_size_of_spacer.height());
+    ui->spacer_right->changeSize(800/4,original_size_of_spacer.height());
     this->updateGeometry();
     qDebug() << "geometry of settings is updated";
     update_database();
@@ -152,7 +152,6 @@ void settings::coach_count_input_clicked()
     {
         emit enable_keypad();
         qDebug() << "keypad enabled";
-        qDebug() << "jadon firge rkaane din yaar de ni tutti yaari fer rarrku";
         keypad_enabled=true;
     }
 }

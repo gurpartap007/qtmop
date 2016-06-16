@@ -50,11 +50,12 @@ union route_status_flags
 struct status_struct
 {
     union route_status_flags flags;
-    unsigned char next_halting_stn;
+    int next_halting_stn;
     unsigned char next_stn;
     float prev_dist;
     unsigned long distance_to_next_halt;
     unsigned char state;
+    unsigned char hcd_frame_number;
     unsigned char distance[6];
 };
 
@@ -79,7 +80,7 @@ struct train_struct
     union station_name_union src;
     union station_name_union des;
     union station_name_union mid;
-     union station_name_union current_station;
+//  union station_name_union current_station;
     unsigned int journ_dist;
     unsigned int journ_time;
     unsigned char src_stn_code[DIG_STN_CODE];
@@ -92,6 +93,7 @@ struct train_struct
     unsigned char arr_time_min;
     unsigned char reg_lang1_code;
     unsigned char coach_count;
+    unsigned char ladies_special;
     unsigned char slow_fast;
 };
 struct stn_info_struct
@@ -104,6 +106,7 @@ struct stn_info_struct
     unsigned int track_distance_from_curr_pt;
     unsigned int stn_id;
     unsigned char stn_code[DIG_STN_CODE];
+    unsigned char stn_name[3][DIG_STN_NAME];
     unsigned char wait_time;
     struct bits_struct
     {

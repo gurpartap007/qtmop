@@ -64,7 +64,7 @@ background-color: rgba(173, 216, 230,50);
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="page">
         <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -98,14 +98,14 @@ background-color: rgba(173, 216, 230,50);
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>220</width>
-                     <height>170</height>
+                     <width>150</width>
+                     <height>100</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>220</width>
-                     <height>170</height>
+                     <width>150</width>
+                     <height>100</height>
                     </size>
                    </property>
                    <property name="autoFillBackground">
@@ -124,8 +124,8 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0
                    </property>
                    <property name="iconSize">
                     <size>
-                     <width>180</width>
-                     <height>150</height>
+                     <width>140</width>
+                     <height>100</height>
                     </size>
                    </property>
                   </widget>
@@ -135,25 +135,37 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0
                <item>
                 <widget class="QLabel" name="label">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>220</width>
-                   <height>33</height>
+                   <width>150</width>
+                   <height>23</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>220</width>
-                   <height>33</height>
+                   <width>250</width>
+                   <height>23</height>
                   </size>
                  </property>
+                 <property name="font">
+                  <font>
+                   <family>Sans Serif</family>
+                   <pointsize>12</pointsize>
+                   <weight>50</weight>
+                   <italic>false</italic>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="layoutDirection">
+                  <enum>Qt::LeftToRight</enum>
+                 </property>
                  <property name="styleSheet">
-                  <string notr="true">font: 20pt &quot;Sans Serif&quot;;
+                  <string notr="true">font: 12pt &quot;Sans Serif&quot;;
 color: rgb(0, 0, 0);
 background-color: rgb(230, 230, 230);
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:1 rgba(150, 150, 150, 255), stop:0 rgba(255, 255, 255, 255));
@@ -162,6 +174,9 @@ background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgb
                  </property>
                  <property name="text">
                   <string>Volume Control</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
                  </property>
                 </widget>
                </item>
@@ -187,14 +202,14 @@ background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgb
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>220</width>
-                     <height>170</height>
+                     <width>150</width>
+                     <height>100</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>220</width>
-                     <height>170</height>
+                     <width>150</width>
+                     <height>100</height>
                     </size>
                    </property>
                    <property name="autoFillBackground">
@@ -214,8 +229,8 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0
                    </property>
                    <property name="iconSize">
                     <size>
-                     <width>180</width>
-                     <height>150</height>
+                     <width>140</width>
+                     <height>100</height>
                     </size>
                    </property>
                   </widget>
@@ -232,18 +247,18 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>220</width>
-                   <height>33</height>
+                   <width>100</width>
+                   <height>23</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>220</width>
-                   <height>33</height>
+                   <width>250</width>
+                   <height>23</height>
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">font: 20pt &quot;Sans Serif&quot;;
+                  <string notr="true">font: 12pt &quot;Sans Serif&quot;;
 color: rgb(0, 0, 0);
 background-color: rgb(230, 230, 230);
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:1 rgba(150, 150, 150, 255), stop:0 rgba(255, 255, 255, 255));
@@ -293,14 +308,14 @@ background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgb
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>220</width>
-                     <height>170</height>
+                     <width>150</width>
+                     <height>100</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>220</width>
-                     <height>170</height>
+                     <width>150</width>
+                     <height>100</height>
                     </size>
                    </property>
                    <property name="autoFillBackground">
@@ -319,8 +334,8 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0
                    </property>
                    <property name="iconSize">
                     <size>
-                     <width>180</width>
-                     <height>150</height>
+                     <width>140</width>
+                     <height>100</height>
                     </size>
                    </property>
                   </widget>
@@ -330,25 +345,25 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0
                <item>
                 <widget class="QLabel" name="select_route_label_3">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>220</width>
-                   <height>33</height>
+                   <width>100</width>
+                   <height>23</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>220</width>
-                   <height>33</height>
+                   <width>250</width>
+                   <height>23</height>
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">font: 20pt &quot;Sans Serif&quot;;
+                  <string notr="true">font: 12pt &quot;Sans Serif&quot;;
 color: rgb(0, 0, 0);
 background-color: rgb(230, 230, 230);
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));
@@ -398,14 +413,14 @@ background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgb
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>220</width>
-                     <height>170</height>
+                     <width>150</width>
+                     <height>100</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>220</width>
-                     <height>170</height>
+                     <width>150</width>
+                     <height>100</height>
                     </size>
                    </property>
                    <property name="autoFillBackground">
@@ -425,8 +440,8 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0
                    </property>
                    <property name="iconSize">
                     <size>
-                     <width>180</width>
-                     <height>150</height>
+                     <width>140</width>
+                     <height>100</height>
                     </size>
                    </property>
                   </widget>
@@ -436,25 +451,25 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0
                <item>
                 <widget class="QLabel" name="select_route_label_2">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>220</width>
-                   <height>33</height>
+                   <width>100</width>
+                   <height>23</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>220</width>
-                   <height>33</height>
+                   <width>250</width>
+                   <height>23</height>
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">font: 20pt &quot;Sans Serif&quot;;
+                  <string notr="true">font: 12pt &quot;Sans Serif&quot;;
 color: rgb(0, 0, 0);
 background-color: rgb(230, 230, 230);
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:1 rgba(150, 150, 150, 255), stop:0 rgba(255, 255, 255, 255));
@@ -538,7 +553,7 @@ background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgb
               <widget class="QLabel" name="label_2">
                <property name="font">
                 <font>
-                 <pointsize>10</pointsize>
+                 <pointsize>11</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -598,7 +613,7 @@ background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgb
               <widget class="QLabel" name="label_3">
                <property name="font">
                 <font>
-                 <pointsize>10</pointsize>
+                 <pointsize>11</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>
@@ -658,7 +673,7 @@ background-color: qlineargradient(spread:pad, x2:1, y1:1, x1:1, y2:0, stop:1 rgb
               <widget class="QLabel" name="label_4">
                <property name="font">
                 <font>
-                 <pointsize>10</pointsize>
+                 <pointsize>11</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
                 </font>

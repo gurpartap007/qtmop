@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network sql
+QT       += core gui network sql serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -44,8 +44,7 @@ HEADERS  += mpd.h \
     route_struct.h \
     skipbutton.h \
     numeric_keypad.h \
-    display_communication.h \
-
+    display_communication.h
 
 FORMS    += mpd.ui \
     music_streamer.ui \
@@ -74,7 +73,7 @@ unix:!macx: LIBS += -L/usr/local/lib -llinphone -lmediastreamer_voip -lmediastre
 INCLUDEPATH += /usr/local/include /usr/include
 DEPENDPATH += /usr/local/include
 
-unix:!macx: LIBS += -L$$PWD/../../../../mnt/a20/usr/lib/ -lmpdclient
+#unix:!macx: LIBS += -L/usr/lib/ -lmpdclient
 
 INCLUDEPATH += /usr/include
 DEPENDPATH += /usr/include
