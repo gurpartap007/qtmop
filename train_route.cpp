@@ -435,6 +435,7 @@ check_again:
                     prev_item = ui->listWidget->item(current_route_data.status.next_halting_stn+1);
                   prev_widget = ui->listWidget->itemWidget(prev_item);
                 prev_widget->setDisabled(true);
+
                 prev_widget->setStyleSheet("background-color: rgba(150,150,150,255);");
             second_prev_item = ui->listWidget->item(current_route_data.status.next_halting_stn);
             second_prev_widget = ui->listWidget->itemWidget(second_prev_item);
@@ -491,9 +492,9 @@ void train_route::on_station_arrived_clicked()
     }
     else
     {
-        current_route_data.status.next_halting_stn = current_station;
-        //  current_route_data.status.next_halting_stn -- ;
+          current_route_data.status.next_halting_stn = current_station;
+         // current_route_data.status.next_halting_stn -- ;
         emit send_route_info(FC_SAF);
-        //  current_route_data.status.next_halting_stn ++ ;
+          current_route_data.status.next_halting_stn ++ ;
     }
 }
