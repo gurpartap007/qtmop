@@ -65,6 +65,7 @@ void train_route::add_stations_for_current_train()
     {
         station_name[loop_count] = new QLabel ;
         widget[loop_count] = new QWidget(this);
+        widget[loop_count]->blockSignals(true);
         skip_button[loop_count] = new skipbutton("Skip",loop_count,station_name[loop_count],widget[loop_count],this);
         widgetLayout[loop_count] = new QHBoxLayout;
         widgetLayout[loop_count]->setMargin(3);

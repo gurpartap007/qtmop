@@ -18,7 +18,7 @@ void skipbutton::on_skip_clicked()
     emit this->skip_clicked(button_id);
     this->setText("Add");
     this->setStyleSheet("background-color: rgba(179,179,179,100)");
-    widget_reference->setStyleSheet("background-color: rgba(0,0,179,100);");
+    widget_reference->setStyleSheet("background-color: rgba(0,0,179,150);");
     station_name_label->setStyleSheet("background-color: none");
     skip_button = false;
     current_route_data.stn[button_id].status.bits.station_skipped = true;
