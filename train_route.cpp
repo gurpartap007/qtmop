@@ -95,7 +95,7 @@ void train_route::add_stations_for_current_train()
             current_route_data.stn[loop_count].status.bits.station_skipped = true;
         }
         station_name[loop_count]->setText(QString::fromUtf8((const char *)current_route_data.stn[loop_count].stn_name[0]));
-        item[loop_count]->setText(QString::fromUtf8((const char *)current_route_data.stn[loop_count].stn_name[0]));
+       // item[loop_count]->setText(QString::fromUtf8((const char *)current_route_data.stn[loop_count].stn_name[0]));
         connect(skip_button[loop_count],SIGNAL(skip_clicked(int)),this,SLOT(on_skip_station_clicked(int)));
         widget[0]->setStyleSheet("background-color: rgb(150,0,0);");
     }
@@ -139,7 +139,7 @@ void train_route::on_skip_station_clicked(int id)
     QWidget *current_widget;
     current_item = ui->listWidget->item(id);
     current_widget =  ui->listWidget->itemWidget(current_item);
-    current_item->setForeground(QBrush(QColor(200,0,0,100)));
+ //   current_item->setForeground(QBrush(QColor(200,0,0,100)));
 }
 
 void train_route::update_date_time()
@@ -395,7 +395,7 @@ int train_route::on_next_station_clicked()
 check_again:
     if(current_route_data.stn[current_route_data.status.next_halting_stn].status.bits.station_skipped)
     {
-        if(current_route_data.status.next_halting_stn!=0)
+       /* if(current_route_data.status.next_halting_stn!=0)
         {
             QListWidgetItem *prev_item;
             QWidget *prev_widget;
@@ -403,8 +403,8 @@ check_again:
             prev_item = ui->listWidget->item(current_station);
             prev_widget =  ui->listWidget->itemWidget(prev_item);
             prev_widget->setDisabled(true);
-            prev_widget->setStyleSheet("background-color: rgba(150,150,150,255);");
-        }
+            prev_widget->setStyleSheet("background-color: rgba(150,150,150,255);color: rgb(0,0,0);");
+        }*/
         current_route_data.status.next_halting_stn ++ ;
         goto check_again;
     }
@@ -416,14 +416,14 @@ check_again:
             QWidget *prev_widget,*second_prev_widget;
             prev_item = ui->listWidget->item(current_route_data.status.next_halting_stn);
             prev_widget = ui->listWidget->itemWidget(prev_item);
-            //prev_widget->setDisabled(true);
+            prev_widget->setDisabled(true);
             prev_widget->setStyleSheet("background-color: rgb(150,0,0);");
           //  second_prev_item = ui->listWidget->item(current_route_data.status.next_halting_stn-1);
             second_prev_item = ui->listWidget->item(current_station);
 
             second_prev_widget = ui->listWidget->itemWidget(second_prev_item);
            second_prev_widget->setDisabled(true);
-             second_prev_widget->setStyleSheet("background-color: rgba(150,150,150,255);");
+            second_prev_widget->setStyleSheet("background-color: rgba(150,150,150,255);color: rgb(190,190,190);");
         }
         QListWidgetItem *current_item;
         QWidget *current_widget;
@@ -451,7 +451,7 @@ check_again:
         //  emit send_route_info(FC_REF);
         ///////////////////////// SET AUTO SCROLLING OF VIEW //////////////////////
         ui->listWidget->setAutoScroll(true);
-        ui->listWidget->setCurrentItem(ui->listWidget->item(current_route_data.status.next_halting_stn));
+        ui->listWidget->setCurrentItem(ui->listWidget->item(current_route_data.status.next_halting_stn+1));
         ///////////////////////////////////////////////////////////////////////////
         if(current_route_data.stn[current_route_data.status.next_halting_stn].bits.pf_left)
         {
