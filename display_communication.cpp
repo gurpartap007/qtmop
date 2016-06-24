@@ -463,7 +463,7 @@ void display_communication::send_display_event_messages(QString func_code)
     server->writeDatagram(data,data.size(),QHostAddress::Broadcast,RS485_DATA_PORT);
     Sleeper::msleep(1000);
     emit create_playlist(func_code);
-   // qDebug() << "DATA written --->" << data;
+    qDebug() << "DATA written --->" << data;
    // qDebug() << "data length" << data.length();
     data.clear();
 }

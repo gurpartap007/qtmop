@@ -1,5 +1,6 @@
 #include "public_announcement.h"
 #include "ui_public_announcement.h"
+#define COMMAND_PORT 4000
 bool idle_mode = false;
 void public_announcement::paintEvent(QPaintEvent* /*event*/)
 {
@@ -24,14 +25,13 @@ public_announcement::public_announcement(QWidget *parent) :
     ui(new Ui::public_announcement)
 {
     ui->setupUi(this);
+    gstreamer = new QProcess(this);
+    command_channel = new QUdpSocket(this);
+    command_channel->bind(QHostAddress::Broadcast,COMMAND_PORT);
     /*Music Streamer based on mpdclient API which stream through ICECAST server on LOCALHOST on 6600 port no.
      *
-     * */
-   // announcement_streamer = new music_streamer(this);
-   // connect(ui->start_announcement,SIGNAL(clicked()),announcement_streamer,SLOT(on_play_clicked()));
-   // connect(ui->pause_announcement,SIGNAL(clicked()),announcement_streamer,SLOT(on_pause_clicked()));
-   // connect(ui->end_announcement,SIGNAL(clicked()),announcement_streamer,SLOT(close_streaming()));
-   // connect(ui->start_announcement,SIGNAL(clicked(bool)),announcement_streamer,SLOT(close_streaming()));
+   //  * */
+
     this->installEventFilter(this);
     qDebug() << "Event filter installed";
 }
@@ -46,17 +46,35 @@ public_announcement::~public_announcement()
 
 void public_announcement::on_pushButton_clicked()
 {
-    if( !(mpd_run_next(announcement_streamer->conn)))
-    {
-        announcement_streamer->conn = mpd_connection_new("localhost",6600,0);
-        mpd_run_next(announcement_streamer->conn);
-    }
+
+}
+
+void public_announcement::start_gstreamer()
+{
+    QByteArray command_data ;
+    command_data.append(QString::number(GSTREAMER_START));
+    command_channel->writeDatagram(command_data.data(),QHostAddress::Broadcast,4000);
+    //QString program("/usr/bin/gst-launch-1.0");
+    //QStringList arguments;
+    //arguments << " alsasrc ! audioconvert ! audio/x-raw,channels=1,depth=16,width=16,rate=44100 ! rtpL16pay  ! udpsink host=224.0.0.1 port=5555";
+    //arguments << "&";
+    gstreamer->start("/usr/bin/gst-launch-1.0 alsasrc ! audioconvert ! audio/x-raw,channels=1,depth=16,width=16,rate=44100 ! rtpL16pay  ! udpsink host=224.0.0.1 port=5555");
+
 }
 void public_announcement::on_pushButton_2_clicked()
 {
-    if( !(mpd_run_previous(announcement_streamer->conn)))
-    {
-        announcement_streamer->conn = mpd_connection_new("localhost",6600,0);
-        mpd_run_previous(announcement_streamer->conn);
-    }
+
+}
+
+void public_announcement::on_start_announcement_clicked()
+{
+  start_gstreamer();
+}
+
+void public_announcement::on_end_announcement_clicked()
+{
+    QByteArray command_data ;
+    command_data.append(QString::number(GSTREAMER_STOP));
+    command_channel->writeDatagram(command_data.data(),QHostAddress::Broadcast,4000);
+    gstreamer->kill();
 }

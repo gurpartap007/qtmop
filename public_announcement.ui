@@ -58,28 +58,6 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pause_announcement">
-         <property name="styleSheet">
-          <string notr="true">QPushButton:pressed{background-color: rgb(157, 255, 157); }
-QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, y1:0, stop:0 rgba(240, 240, 240, 150), stop:1 rgba(255, 255, 255, 255));}
-</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="icons.qrc">
-           <normaloff>:/images/hold_call.png</normaloff>:/images/hold_call.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>80</width>
-           <height>80</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QPushButton" name="end_announcement">
          <property name="styleSheet">
           <string notr="true">QPushButton:pressed{background-color: rgb(255, 192, 192); }
@@ -102,20 +80,6 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
         </widget>
        </item>
       </layout>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>NEXT</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="text">
-        <string>PREV</string>
-       </property>
-      </widget>
      </item>
      <item>
       <spacer name="verticalSpacer">

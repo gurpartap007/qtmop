@@ -8,6 +8,8 @@
 #include "settings.h"
 #include "public_announcement.h"
 
+
+
 /** @brief Main MOP Device CLASS
 
     Detailed description follows here.
@@ -31,8 +33,8 @@ public:
     ~mpd();
     route_selection *select_route;/**< Route Selection of train based on database and User input**/
     etu *emergency_talkback;/**< Emergency Talkback class to handle calls in emergency conditions in Coaches**/
-    settings *system_settings;
     public_announcement *announcement;
+    settings *system_settings;
     QPropertyAnimation *m_animation ;
 private slots:
 void on_select_route_clicked();

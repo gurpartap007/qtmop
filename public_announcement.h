@@ -14,6 +14,11 @@
 /** @file
  *
  */
+enum
+{
+    GSTREAMER_START,
+    GSTREAMER_STOP
+};
 namespace Ui {
 class public_announcement;
 }
@@ -24,7 +29,9 @@ class public_announcement : public QWidget
 
 public:
     explicit public_announcement(QWidget *parent = 0);
-    music_streamer *announcement_streamer;/**< mpdclient API based music streamer on localhost,port 6600S**/
+   // music_streamer *announcement_streamer;/**< mpdclient API based music streamer on localhost,port 6600S**/
+    QProcess *gstreamer;
+     QUdpSocket *command_channel;
     ~public_announcement();
 
 signals:
@@ -36,8 +43,12 @@ protected:
 
 private slots:
     void on_pushButton_clicked();
-
+    void start_gstreamer();
     void on_pushButton_2_clicked();
+
+    void on_start_announcement_clicked();
+
+    void on_end_announcement_clicked();
 
 private:
     Ui::public_announcement *ui;
