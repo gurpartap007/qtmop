@@ -56,13 +56,6 @@ public:
     QByteArray playlists_data;
 
 public slots:
-    void on_next_clicked();    /**< Start streaming Next song in current playlist********/
-    void mplayer_start();      /**< start mp3-player in background  2 seconds of delay**/
-    void on_prev_clicked();    /**< Start streaming Previous song in current playlist */
-    void on_play_clicked();    /**<Start streaming Current song in current playlist **/
-    void on_pause_clicked();   /**<Pause stream of Current song in current playlist**/
-    void on_playlist_clicked();/**<Show Playlist retrieved from Sql Database********/
-    void close_streaming();
     void create_announcement_playlist(QString func_code);
     void check_mpd_status();
     void send_command_to_player(int command);

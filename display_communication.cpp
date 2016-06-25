@@ -128,6 +128,7 @@ void display_communication::open_serialport()
 
 QString display_communication::replace_eng_delimiters(QString *eng_message)
 {
+    qDebug() << "ENGLISH Original :::" << *eng_message;
     QString *english_msg;
     QTime current_time;
     current_time = QTime::currentTime();
@@ -256,6 +257,7 @@ QString display_communication::replace_hindi_delimiters(QString *hindi_message)
             }
         }
     }
+    qDebug() << "HINDI MESSAGE:::" << hindi_msg;
     return *hindi_msg;
 }
 

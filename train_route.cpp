@@ -283,12 +283,16 @@ void train_route::fill_train_struct(bool slave_train)
         memcpy(current_route_data.train.src_stn_code,current_train_info.value(TrainNumber::SRC_STN_SNO).toString().toStdString().c_str(),current_train_info.value(TrainNumber::SRC_STN_SNO).toString().size());
         memcpy(current_route_data.train.mid_stn_code,current_train_info.value(TrainNumber::VIA_STN_SNO).toString().toStdString().c_str(),current_train_info.value(TrainNumber::VIA_STN_SNO).toString().size());
         memcpy(current_route_data.train.des_stn_code,current_train_info.value(TrainNumber::DEST_STN_SNO).toString().toStdString().c_str(),current_train_info.value(TrainNumber::DEST_STN_SNO).toString().size());
-        current_route_data.train.coach_count = current_train_info.value(TrainNumber::NO_OF_COACHES).toInt();
         current_route_data.train.no_of_stns = current_train_info.value(TrainNumber::TOTAL_STATION_ROUTE).toInt();
         current_route_data.train.journ_dist = current_train_info.value(TrainNumber::JRNY_DISTANCE).toInt();
         arr_time_master = current_train_info.value((TrainNumber::ARR_TIME)).toString().split(":");
         dep_time_master = current_train_info.value(TrainNumber::DEP_TIME).toString().split(":");
     }
+    QSqlQuery find_coach_count("SELECT `coach_count` FROM `configuration`");
+    find_coach_count.first();
+    //current_route_data.train.coach_count = current_train_info.value(TrainNumber::NO_OF_COACHES).toInt();
+
+    current_route_data.train.coach_count = find_coach_count.value(0).toInt();
     if(!slave_train)
     {
         current_route_data.train.arr_time_hrs = arr_time_master.at(Time::HOURS).toInt();

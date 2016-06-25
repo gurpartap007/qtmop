@@ -10,10 +10,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = mpd_api
 TEMPLATE = app
-CONFIG += link_pkgconfig
-PKGCONFIG = libmpdclient
-
-
 
 SOURCES += main.cpp\
         mpd.cpp \
@@ -59,21 +55,10 @@ FORMS    += mpd.ui \
 RESOURCES += \
     icons.qrc
 
- unix|win32: LIBS += -llinphone
-
-unix|win32: LIBS += -lmediastreamer_voip
-
-unix|win32: LIBS += -lmediastreamer_base
-
-unix|win32: LIBS += -lortp
-
-
 unix:!macx: LIBS += -L/usr/local/lib -llinphone -lmediastreamer_voip -lmediastreamer_base -lortp
 
 INCLUDEPATH += /usr/local/include /usr/include
 DEPENDPATH += /usr/local/include
-
-#unix:!macx: LIBS += -L/usr/lib/ -lmpdclient
 
 INCLUDEPATH += /usr/include
 DEPENDPATH += /usr/include
