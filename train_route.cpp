@@ -290,8 +290,6 @@ void train_route::fill_train_struct(bool slave_train)
     }
     QSqlQuery find_coach_count("SELECT `coach_count` FROM `configuration`");
     find_coach_count.first();
-    //current_route_data.train.coach_count = current_train_info.value(TrainNumber::NO_OF_COACHES).toInt();
-
     current_route_data.train.coach_count = find_coach_count.value(0).toInt();
     if(!slave_train)
     {

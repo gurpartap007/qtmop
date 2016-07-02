@@ -80,6 +80,7 @@ QStringList  music_streamer::replace_voice_delimiters_eng(QString original_strin
             {
                 QString coach_count;
                 coach_count = QString::number(current_route_data.train.coach_count);
+                coach_count.prepend('0');
                 coach_count.prepend("M_");
                 coach_count.append("E");
                 original_string.replace(voice_delimiters[i],coach_count);
@@ -160,6 +161,7 @@ QStringList  music_streamer::replace_voice_delimiters_hindi(QString original_str
             {
                 QString coach_count;
                 coach_count = QString::number(current_route_data.train.coach_count);
+                coach_count.prepend('0');
                 coach_count.prepend("M_");
                 coach_count.append("H");
                 original_string.replace(voice_delimiters[i],coach_count);
@@ -361,9 +363,7 @@ case english:
 void music_streamer::send_command_to_player(int command)
 {
     command_data.append(QString::number(command));
- // command_channel->writeDatagram(command_data.data(),QHostAddress::Broadcast,4000);
     qDebug() << "COMMAND SENT ::::  " << command_data;
-
     command_data.clear();
 }
 
