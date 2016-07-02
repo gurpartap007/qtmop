@@ -16,6 +16,13 @@
 /** @file
  *
  */
+
+enum
+{
+    PLAY,
+    GSTREAMER_START,
+    GSTREAMER_STOP
+};
 class Sleeper : public QThread
 {
 public:

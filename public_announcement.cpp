@@ -54,10 +54,6 @@ void public_announcement::start_gstreamer()
     QByteArray command_data ;
     command_data.append(QString::number(GSTREAMER_START));
     command_channel->writeDatagram(command_data.data(),QHostAddress::Broadcast,4000);
-    //QString program("/usr/bin/gst-launch-1.0");
-    //QStringList arguments;
-    //arguments << " alsasrc ! audioconvert ! audio/x-raw,channels=1,depth=16,width=16,rate=44100 ! rtpL16pay  ! udpsink host=224.0.0.1 port=5555";
-    //arguments << "&";
     gstreamer->start("/usr/bin/gst-launch-1.0 alsasrc ! audioconvert ! audio/x-raw,channels=1,depth=16,width=16,rate=44100 ! rtpL16pay  ! udpsink host=224.0.0.1 port=5555");
 
 }

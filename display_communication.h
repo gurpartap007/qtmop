@@ -11,9 +11,9 @@
 #include <QThread>
 #include <QSerialPort>
 #include <QTimer>
-#define English "00"
-#define Hindi   "01"
-#define Telugu  "00"
+#define English '0'
+#define Hindi   '1'
+#define Telugu  '4'
 /*class Sleeper : public QThread
 {
 public:

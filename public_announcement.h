@@ -14,11 +14,6 @@
 /** @file
  *
  */
-enum
-{
-    GSTREAMER_START,
-    GSTREAMER_STOP
-};
 namespace Ui {
 class public_announcement;
 }

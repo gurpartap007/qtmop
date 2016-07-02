@@ -2,6 +2,7 @@
 #define RS485_DATA_PORT 5000
 extern QSqlDatabase db;
 extern int current_station;
+int aau_repeat_count,icd_repeat_count;
 unsigned char crc_high_lookup[] =
 {
     0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0, 0x80, 0x41, 0x00, 0xC1, 0x81,
@@ -353,7 +354,7 @@ void display_communication::send_headcode_frame()
     QByteArray message;
     /**************fill pkt for headcode as per communication protocol*****************************/
     message.clear();
-    current_route_data.train.reg_lang1_code = 1;
+    current_route_data.train.reg_lang1_code = Telugu;
     message.append(QString::number(current_route_data.train.reg_lang1_code));
     message.append(',');
     QSqlQuery update_configuration_table("SELECT  `head_code_scheme`,`handicap_coach1`,`handicap_coach2` from `configuration`");
@@ -446,12 +447,14 @@ void display_communication::send_display_event_messages(QString func_code)
     }
     else
         return;
+    aau_repeat_count = 2;
+    icd_repeat_count = 2;
     current_route_data.train.reg_lang1_code = 4;
     message.append(QString::number(current_route_data.train.reg_lang1_code).rightJustified(2,'0'));
     message.append(',');
-    message.append("02");   //TO DO Take the value from Database Configuration table
+    message.append(QString::number(aau_repeat_count));   //TO DO Take the value from Database Configuration table
     message.append(',');
-    message.append("02");   //TO DO Take the value from Database Configuration table
+    message.append(QString::number(icd_repeat_count));   //TO DO Take the value from Database Configuration table
     message.append(',');
     message.append(get_msg_strings.value(8).toString());
     message.append(',');
@@ -462,11 +465,9 @@ void display_communication::send_display_event_messages(QString func_code)
     message.append(regional_msg.toLatin1());
     message.append(7);
     form_packet_for_transmission("ICD1              ",func_code,message.toStdString().c_str(),message.length());
-    server->writeDatagram(data,data.size(),QHostAddress::Broadcast,RS485_DATA_PORT);
-    Sleeper::msleep(1000);
+   server->writeDatagram(data,data.size(),QHostAddress::Broadcast,RS485_DATA_PORT);
     emit create_playlist(func_code);
     qDebug() << "DATA written --->" << data;
-   // qDebug() << "data length" << data.length();
     data.clear();
 }
 

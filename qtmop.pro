@@ -56,7 +56,7 @@ RESOURCES += \
     icons.qrc
 
 unix:!macx: LIBS += -L/usr/local/lib -llinphone -lmediastreamer_voip -lmediastreamer_base -lortp
-
+LIBS += -L/usr/lib -lmpdclient
 INCLUDEPATH += /usr/local/include /usr/include
 DEPENDPATH += /usr/local/include
 
