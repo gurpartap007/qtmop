@@ -68,7 +68,7 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="icons.qrc">
              <normaloff>:/images/green_call_button.png</normaloff>:/images/green_call_button.png</iconset>
            </property>
            <property name="iconSize">
@@ -111,7 +111,7 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="icons.qrc">
              <normaloff>:/images/hold_call.png</normaloff>:/images/hold_call.png</iconset>
            </property>
            <property name="iconSize">
@@ -153,7 +153,7 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="icons.qrc">
              <normaloff>:/images/red_stop_button.png</normaloff>:/images/red_stop_button.png</iconset>
            </property>
            <property name="iconSize">
@@ -196,7 +196,7 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="icons.qrc">
              <normaloff>:/images/end_call.png</normaloff>:/images/end_call.png</iconset>
            </property>
            <property name="iconSize">
@@ -239,7 +239,7 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="icons.qrc">
              <normaloff>:/images/mute_call.png</normaloff>:/images/mute_call.png</iconset>
            </property>
            <property name="iconSize">
@@ -268,18 +268,7 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
       </layout>
      </item>
      <item>
-      <widget class="QPlainTextEdit" name="call_queue">
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(255, 255, 255);</string>
-       </property>
-      </widget>
+      <widget class="QListWidget" name="call_queue"/>
      </item>
      <item>
       <widget class="QLabel" name="bottom_area">
@@ -325,6 +314,8 @@ QPushButton{background-color: qlineargradient(spread:pad, x1:0.5, y0.8:0, x2:1, 
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

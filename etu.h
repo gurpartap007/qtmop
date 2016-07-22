@@ -38,7 +38,7 @@ public:
 public slots:
     void end_current_call();
     void qlinphone_init();
-    int qlinphone_call(LinphoneCore *lc, char *ip_address);
+    void incoming_call_handler();
     void iterate();
 
 signals:
@@ -60,6 +60,8 @@ private slots:
 private:
     Ui::etu *ui;
     LinphoneCall *call,*incoming_call,*new_call;
+    QFont *answer_button_font;
+    QFont *station_name_font;
     friend void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg);
 
 };
