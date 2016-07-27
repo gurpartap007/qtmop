@@ -26,6 +26,7 @@ class etu : public QWidget
 public:
     explicit etu(QWidget *parent = 0);
     ~etu();
+    void check_call_state(LinphoneCall *call);
     QPushButton        *accept_call;
     QPushButton        *hold_call;
     QPushButton        *end_call;
@@ -40,25 +41,28 @@ public slots:
     void qlinphone_init();
     void incoming_call_handler();
     void iterate();
+    void accept_call_slot(long call_id);
+    void end_call_slot(long call_id);
+    void hold_call_slot(long call_id);
+    LinphoneCall *get_call_id(long call_id);
 
 signals:
     void call_ended();
     void back_clicked();
     void new_incoming_call();
     void inialize_rabb_nu_lekha_server();
+    void call_status(bool,bool,long);
 
 protected:
      void paintEvent(QPaintEvent* event);
     virtual bool eventFilter( QObject * watched, QEvent * event );
 
 private slots:
-     void on_accept_call_button_clicked();
-     void on_end_call_button_clicked();
-     void on_mute_call_button_clicked();
-     void on_bar_call_button_clicked();
+
 
 private:
     Ui::etu *ui;
+    QTimer *call_state_timer;
     LinphoneCall *call,*incoming_call,*new_call;
     QFont *answer_button_font;
     QFont *station_name_font;

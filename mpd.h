@@ -36,6 +36,7 @@ public:
     public_announcement *announcement;
     settings *system_settings;
     QPropertyAnimation *m_animation ;
+    QTimer *timer_fade_in,*timer_fade_out;
 private slots:
 void on_select_route_clicked();
 void on_etu_clicked();
@@ -46,6 +47,9 @@ void close_settings_popup();
 void on_pa_clicked();
 void close_announcement_popup();
 void on_intercom_clicked();
+void incoming_call_notification();
+void fade_in();
+void fade_out();
 private:
     Ui::mpd *ui;
 };

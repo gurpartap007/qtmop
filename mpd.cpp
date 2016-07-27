@@ -10,12 +10,17 @@ mpd::mpd(QWidget *parent) :
     emergency_talkback = new etu;
     system_settings = new settings;
     selection_timer = new QTimer;
+    timer_fade_in = new QTimer;
+    timer_fade_out = new QTimer;
+    timer_fade_in->setInterval(3000);
+    timer_fade_out->setInterval(1000);
     announcement = new public_announcement;
+    connect(timer_fade_in,SIGNAL(timeout()),this,SLOT(fade_in()));
     selection_timer->setInterval(1000);
     selection_timer->start();
     ui->stackedWidget->setCurrentIndex(0);
     ui->stackedWidget->addWidget(select_route);
-    connect(emergency_talkback,SIGNAL(new_incoming_call()),this,SLOT(on_etu_clicked()));
+    connect(emergency_talkback,SIGNAL(new_incoming_call()),this,SLOT(incoming_call_notification()));
     connect(emergency_talkback,SIGNAL(back_clicked()),this,SLOT(close_etu_popup()));
     connect(system_settings,SIGNAL(back_clicked()),this,SLOT(close_settings_popup()));
     connect(selection_timer,SIGNAL(timeout()),this,SLOT(show_train_route_selection()));
@@ -38,7 +43,7 @@ void mpd::on_select_route_clicked()
 
 void mpd::on_etu_clicked()
 {
-    emergency_talkback->setParent(ui->stackedWidget);
+   emergency_talkback->setParent(ui->stackedWidget);
     emergency_talkback->setGeometry(0,0,ui->stackedWidget->width(),ui->stackedWidget->height());
     emergency_talkback->setWindowFlags(Qt::WindowStaysOnTopHint);
     ui->settings->hide();
@@ -50,6 +55,7 @@ void mpd::on_etu_clicked()
     ui->control_room_label->hide();
     ui->intercom_label->hide();
     emergency_talkback->show();
+    //incoming_call_notification();
 }
 
 void mpd::show_train_route_selection()
@@ -65,6 +71,7 @@ void mpd::show_train_route_selection()
 
 void mpd::close_etu_popup()
 {
+    timer_fade_in->stop();
     emergency_talkback->setParent(0);
     emergency_talkback->close();
     ui->settings->show();
@@ -75,6 +82,8 @@ void mpd::close_etu_popup()
     ui->settings_label->show();
     ui->control_room_label->show();
     ui->intercom_label->show();
+    ui->etu->setStyleSheet("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(150, 150, 150, 255), stop:1 rgba(255, 255, 255, 255));"
+                           "");
 }
 
 void mpd::on_settings_clicked()
@@ -140,4 +149,38 @@ void mpd::close_announcement_popup()
 void mpd::on_intercom_clicked()
 {
     close();
+}
+
+void mpd::incoming_call_notification()
+{
+    ui->etu->setStyleSheet("background-color: rgba(79,141,176,100);");
+    /*
+timer_fade_in->start();
+fade_in();*/
+}
+
+void mpd::fade_in()
+{
+   /* QGraphicsOpacityEffect *eff = new QGraphicsOpacityEffect(this);
+    ui->etu->setGraphicsEffect(eff);
+    QPropertyAnimation *a = new QPropertyAnimation(eff,"opacity");
+    a->setDuration(1000);
+    a->setStartValue(0);
+    a->setEndValue(1);
+    a->setEasingCurve(QEasingCurve::InCirc);
+    a->start(QPropertyAnimation::DeleteWhenStopped);*/
+
+}
+
+void mpd::fade_out()
+{
+    QGraphicsOpacityEffect *eff = new QGraphicsOpacityEffect(this);
+    ui->etu->setGraphicsEffect(eff);
+    QPropertyAnimation *a = new QPropertyAnimation(eff,"opacity");
+    a->setDuration(1000);
+    a->setStartValue(1);
+    a->setEndValue(0);
+    a->setEasingCurve(QEasingCurve::OutBack);
+    a->start(QPropertyAnimation::DeleteWhenStopped);
+
 }

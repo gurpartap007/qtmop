@@ -54,6 +54,7 @@
 #include <QUdpSocket>
 #include <QStandardPaths>
 #include <QMutableLinkedListIterator>
+#include <QGraphicsOpacityEffect>
 #include "linphone/linphonecore.h"
 #endif // HEADER_H
 
