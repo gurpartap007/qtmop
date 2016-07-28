@@ -26,25 +26,16 @@ class etu : public QWidget
 public:
     explicit etu(QWidget *parent = 0);
     ~etu();
-    void check_call_state(LinphoneCall *call);
-    QPushButton        *accept_call;
-    QPushButton        *hold_call;
-    QPushButton        *end_call;
-    QHBoxLayout        *buttons_layout;
-    QPropertyAnimation *m_animation ;
-    LinphoneCore       *lc;
-    LinphoneCall       *call2;
-    const MSList       *call_logs;
 
 public slots:
-    void end_current_call();
     void qlinphone_init();
     void incoming_call_handler();
     void iterate();
     void accept_call_slot(long call_id);
     void end_call_slot(long call_id);
     void hold_call_slot(long call_id);
-    LinphoneCall *get_call_id(long call_id);
+    LinphoneCall *get_call_pointer(long call_id);
+    void mute_microphone(bool mic_mute);
 
 signals:
     void call_ended();
@@ -52,20 +43,20 @@ signals:
     void new_incoming_call();
     void inialize_rabb_nu_lekha_server();
     void call_status(bool,bool,long);
+    void mute_mic(bool);
 
 protected:
      void paintEvent(QPaintEvent* event);
     virtual bool eventFilter( QObject * watched, QEvent * event );
 
-private slots:
-
-
 private:
     Ui::etu *ui;
     QTimer *call_state_timer;
-    LinphoneCall *call,*incoming_call,*new_call;
-    QFont *answer_button_font;
+    LinphoneCall *call;
     QFont *station_name_font;
+    LinphoneCore       *lc;
+    const MSList       *call_logs;
+    void check_call_state(LinphoneCall *call);
     friend void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg);
 
 };

@@ -25,6 +25,8 @@ mpd::mpd(QWidget *parent) :
     connect(system_settings,SIGNAL(back_clicked()),this,SLOT(close_settings_popup()));
     connect(selection_timer,SIGNAL(timeout()),this,SLOT(show_train_route_selection()));
     connect(announcement,SIGNAL(back_clicked()),this,SLOT(close_announcement_popup()));
+    connect(ui->volume_control,SIGNAL(clicked()),this,SLOT(volume_control_slot()));
+    volume_muted = false;
 }
 mpd::~mpd()
 {
@@ -153,6 +155,7 @@ void mpd::on_intercom_clicked()
 
 void mpd::incoming_call_notification()
 {
+    volume_muted = false;
     ui->etu->setStyleSheet("background-color: rgba(79,141,176,100);");
     /*
 timer_fade_in->start();
@@ -182,5 +185,25 @@ void mpd::fade_out()
     a->setEndValue(0);
     a->setEasingCurve(QEasingCurve::OutBack);
     a->start(QPropertyAnimation::DeleteWhenStopped);
+
+}
+
+void mpd::volume_control_slot()
+{
+if(!volume_muted)
+{
+    emit emergency_talkback->mute_mic(true);
+    QPixmap pix_unmute_button(":/images/vol_control_black.png");
+    QIcon unmute_button_icon(pix_unmute_button);
+    ui->volume_control->setIcon(unmute_button_icon);
+}
+else
+{
+    emit emergency_talkback->mute_mic(false);
+    QPixmap pix_mute_button(":/images/mute_call.png");
+    QIcon mute_button_icon(pix_mute_button);
+    ui->volume_control->setIcon(mute_button_icon);
+}
+volume_muted = !volume_muted;
 
 }

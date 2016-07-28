@@ -9,7 +9,8 @@ enum
  {
     answer,
     terminate,
-    hold
+    hold,
+    bar
  };
 
 class EtuButton : public QPushButton

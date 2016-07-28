@@ -50,8 +50,10 @@ void on_intercom_clicked();
 void incoming_call_notification();
 void fade_in();
 void fade_out();
+void volume_control_slot();
 private:
     Ui::mpd *ui;
+    bool volume_muted;
 };
 
 

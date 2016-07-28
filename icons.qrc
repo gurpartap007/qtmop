@@ -30,5 +30,6 @@
         <file>images/keypad_9.png</file>
         <file>images/keypad_del.png</file>
         <file>images/keypad_enter.png</file>
+        <file>images/bar_call.png</file>
     </qresource>
 </RCC>
