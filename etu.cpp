@@ -1,15 +1,16 @@
 #include "etu.h"
 #include "ui_etu.h"
 #include "etubutton.h"
-bool CallOutgoingRinging=false;
-bool CallOutgoingEarlyMedia=false;
-bool CallConnected=false;
-bool CallStreamsRunning=false;
-bool CallEnd=false;
-bool CallError=false;
-bool isIncomingCall= false;
-bool call_connected=false;
-bool call_paused   =false;
+bool CallOutgoingRinging    = false;
+bool CallOutgoingEarlyMedia = false;
+bool CallConnected          = false;
+bool CallStreamsRunning     = false;
+bool CallEnd                = false;
+bool CallError              = false;
+bool isIncomingCall         = false;
+bool call_connected         = false;
+bool call_paused            = false;
+bool call_running           = false;
 long unique_call_id;
 LinphoneCall *active_call;
 QList <QListWidgetItem *> call_reference; // List of Call Notification widget item which includes call control buttons and caller name
@@ -28,7 +29,6 @@ bool etu::eventFilter(QObject *watched, QEvent *event)
 {
     if (  event->type() == QEvent::MouseButtonPress )
     {
-        //   ui->call_queue->clear();
         emit back_clicked();
     }
     return QObject::eventFilter(watched, event);
@@ -47,6 +47,11 @@ etu::etu(QWidget *parent) :
     ui->bottom_area->installEventFilter(this);
 }
 
+void etu::hello()
+{
+
+}
+
 
 etu::~etu()
 {
@@ -57,15 +62,30 @@ etu::~etu()
 //******************************************************************************************************************/
 void etu::qlinphone_init()
 {
+    const char **dev;
+    int i=0;
     QDir confDir = QDir(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation));
     confDir.mkdir("Linphone");
     QString config_file = confDir.absolutePath() + "/Linphone/.linphonerc";
     LinphoneCoreVTable vtable = {0};
     vtable.call_state_changed = qcall_state_changed; // Calls State Call Back function
+    vtable.text_received = qlinphone_text_recieved;
     lc = linphone_core_new(&vtable, config_file.toStdString().c_str() , NULL, this);
     QTimer *iteration_timer = new QTimer(); // Timer to iterate linphone core and check call states at interval of 50 milli-seconds
     connect(iteration_timer, &QTimer::timeout, this, &etu::iterate);
     iteration_timer->start(50);
+
+    dev=linphone_core_get_sound_devices(lc);
+    for(i=0; dev[i]!=NULL; ++i)
+    {
+        qDebug() << i << dev[i];
+    }
+    linphone_core_set_ringer_device(lc,dev[1]);
+    linphone_core_set_playback_device(lc,dev[1]);
+    linphone_core_set_capture_device(lc,dev[1]);
+    qDebug() << "Ringer device: " << linphone_core_get_ringer_device(lc);
+    qDebug() << "Playback device: " << linphone_core_get_playback_device(lc);
+    qDebug() << "Capture device: " << linphone_core_get_capture_device(lc);
     linphone_core_enable_echo_cancellation(lc,1);// Enable Echo Cancellation
     linphone_core_enable_echo_limiter(lc,1);// Enable Echo Limiter
     linphone_core_set_inc_timeout(lc,60);// Set automatic termination of incoming Call to 1 minute
@@ -113,6 +133,7 @@ void etu::incoming_call_handler()
     connect(terminate_button,SIGNAL(EtuButton_clicked(long)),this,SLOT(end_call_slot(long)));
     connect(this,SIGNAL(call_status(bool,bool,long)),hold_button,SLOT(check_call_status(bool,bool,long)));
     connect(hold_button,SIGNAL(EtuButton_clicked(long)),this,SLOT(hold_call_slot(long)));
+    connect(bar_button,SIGNAL(EtuButton_clicked(long)),this,SLOT(bar_call_slot(long)));
     spacer_left       = new QSpacerItem(1,1, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     spacer_right      = new QSpacerItem(1,1, QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     widgetLayout     -> setMargin(3);
@@ -129,9 +150,15 @@ void etu::incoming_call_handler()
     bar_button       -> setIcon(bar_button_icon);
     bar_button       -> setIconSize(QSize(50,50));
     station_name     -> setFont(*station_name_font) ;
+    answer_button   -> setStyleSheet("QPushButton{ background-color: rgba(0,230,0,50); }QPushButton:pressed{background-color: rgb(100,0,0); }");
     terminate_button -> setStyleSheet("QPushButton{ background-color: rgba(179,0,0,50); }QPushButton:pressed{background-color: rgb(100,0,0); }");
     bar_button       -> setStyleSheet("QPushButton{ background-color: rgba(230,230,230,50); }QPushButton:pressed{background-color: rgb(100,0,0); }");
     station_name     -> setStyleSheet("color: rgb(255,255,255)");
+    if(call_running)
+    {
+        answer_button-> setDisabled(true);
+        answer_button   -> setStyleSheet("QPushButton{ background-color: rgba(230,230,230,50); }QPushButton:pressed{background-color: rgb(100,0,0); }");
+    }
     widgetLayout     -> addWidget(answer_button);
     widgetLayout     -> addWidget(terminate_button);
     widgetLayout     -> addWidget(hold_button);
@@ -211,10 +238,10 @@ void etu::iterate()
         const MSList *multiple_calls;
         unique_call_id = ms_list_size(linphone_core_get_calls(lc));// get calls total count, it will be unique_id for new call
         multiple_calls = linphone_core_get_calls(lc); // get all calls from linphone core
-            for (;multiple_calls!=NULL;multiple_calls=multiple_calls->next)
-            {
-                call=(LinphoneCall*)multiple_calls->data;
-            }
+        for (;multiple_calls!=NULL;multiple_calls=multiple_calls->next)
+        {
+            call=(LinphoneCall*)multiple_calls->data;
+        }
         linphone_call_set_user_pointer (call,(void*)unique_call_id);// set unique_id to last call found in linklist, it is our new incoming call
         isIncomingCall = false;
         emit new_incoming_call();// signal to incoming_call_handler() function
@@ -226,7 +253,10 @@ void etu::iterate()
 void etu::accept_call_slot(long call_id)
 {
     if(!linphone_core_accept_call(lc,get_call_pointer(call_id)))//accept call with call_id
+    {
         emit this->call_status(true,false,call_id);// signal to set disable accept buttons of all other calls
+        call_running = true;
+    }
 }
 
 //**********************************************************************************************/
@@ -240,6 +270,8 @@ void etu::end_call_slot(long call_id)
         emit this->call_status(false,false,call_id);// signal to set states of buttons accordingly
     }
     linphone_core_terminate_call(lc,get_call_pointer(call_id));// terminate call with call_id
+    call_running = false;
+
 }
 //**********************************************************************************************/
 //                                HOLD CURRENT CALL IF IT IS CONNECTED                          /
@@ -288,6 +320,13 @@ void etu::check_call_state(LinphoneCall *call)
         unique_call_id = 0;
     }
 }
+
+void qlinphone_text_recieved(LinphoneCore *lc, LinphoneChatRoom *cr, const LinphoneAddress *from, const char *msg)
+{
+
+   //     qDebug() <<  "Message received from " << linphone_address_as_string(from) <<  recieved_msg;
+
+}
 //********************************************************************************************* */
 // GET CALL REFERENCE POINTER REQUESTED BY ANSWER,TERMINATE,HOLD OR BAR BUTTON                   /
 // PARAMETER:                                                                                    /          /
@@ -317,6 +356,8 @@ LinphoneCall *etu::get_call_pointer(long call_id)
 //*************************************************************************************************************/
 void etu::mute_microphone(bool mic_mute)
 {
+    LinphoneInfoMessage *msg;
+    msg = linphone_core_create_info_message(lc);
     if(mic_mute)
         linphone_core_mute_mic(lc,true);// Mute MicroPhone
     else
@@ -324,6 +365,15 @@ void etu::mute_microphone(bool mic_mute)
 
 }
 
+void etu::bar_call_slot(long call_id)
+{
+    LinphoneChatRoom *cr;
+    cr = linphone_core_get_chat_room(lc,linphone_call_get_remote_address(get_call_pointer(call_id)));
+    linphone_chat_room_send_message(cr,"barred,30");
+    usleep(1000);
+    end_call_slot(call_id);
+
+}
 
 
 

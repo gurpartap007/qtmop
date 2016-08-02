@@ -18,13 +18,14 @@ namespace Ui {
 class etu;
 }
 void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg);
-
+void qlinphone_text_recieved(LinphoneCore *lc, LinphoneChatRoom *cr,const LinphoneAddress *from, const char *msg);
 class etu : public QWidget
 {
     Q_OBJECT
 
 public:
     explicit etu(QWidget *parent = 0);
+    void hello();
     ~etu();
 
 public slots:
@@ -36,6 +37,7 @@ public slots:
     void hold_call_slot(long call_id);
     LinphoneCall *get_call_pointer(long call_id);
     void mute_microphone(bool mic_mute);
+    void bar_call_slot(long call_id);
 
 signals:
     void call_ended();
@@ -58,6 +60,7 @@ private:
     const MSList       *call_logs;
     void check_call_state(LinphoneCall *call);
     friend void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg);
+    friend void qlinphone_text_recieved(LinphoneCore *lc, LinphoneChatRoom *cr,const LinphoneAddress *from, const char *msg);
 
 };
 
