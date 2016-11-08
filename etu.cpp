@@ -80,6 +80,7 @@ void etu::qlinphone_init()
     {
         qDebug() << i << dev[i];
     }
+
     linphone_core_set_ringer_device(lc,dev[1]);
     linphone_core_set_playback_device(lc,dev[1]);
     linphone_core_set_capture_device(lc,dev[1]);

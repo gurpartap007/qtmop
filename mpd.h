@@ -7,6 +7,8 @@
 #include "route_selection.h"
 #include "settings.h"
 #include "public_announcement.h"
+#include "webserver.h"
+
 
 
 
@@ -29,7 +31,7 @@ class mpd : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit mpd(QWidget *parent = 0);
+    explicit mpd(QApplication *app_ptr,QWidget *parent = 0);
     ~mpd();
     route_selection *select_route;/**< Route Selection of train based on database and User input**/
     etu *emergency_talkback;/**< Emergency Talkback class to handle calls in emergency conditions in Coaches**/
@@ -37,6 +39,7 @@ public:
     settings *system_settings;
     QPropertyAnimation *m_animation ;
     QTimer *timer_fade_in,*timer_fade_out;
+    webserver *WebServer;
 private slots:
 void on_select_route_clicked();
 void on_etu_clicked();

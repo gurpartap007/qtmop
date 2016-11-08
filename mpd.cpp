@@ -1,10 +1,12 @@
 #include "mpd.h"
 #include "ui_mpd.h"
 QTimer *selection_timer;
-mpd::mpd(QWidget *parent) :
+mpd::mpd(QApplication *app_ptr ,QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::mpd)
 {
+    qDebug() << "ADDRESS of App in mpd()" << app_ptr;
+
     ui->setupUi(this);
     select_route = new route_selection;
     emergency_talkback = new etu;
@@ -15,6 +17,7 @@ mpd::mpd(QWidget *parent) :
     timer_fade_in->setInterval(3000);
     timer_fade_out->setInterval(1000);
     announcement = new public_announcement;
+    WebServer = new  webserver() ;
     connect(timer_fade_in,SIGNAL(timeout()),this,SLOT(fade_in()));
     selection_timer->setInterval(1000);
     selection_timer->start();
@@ -45,7 +48,7 @@ void mpd::on_select_route_clicked()
 
 void mpd::on_etu_clicked()
 {
-   emergency_talkback->setParent(ui->stackedWidget);
+    emergency_talkback->setParent(ui->stackedWidget);
     emergency_talkback->setGeometry(0,0,ui->stackedWidget->width(),ui->stackedWidget->height());
     emergency_talkback->setWindowFlags(Qt::WindowStaysOnTopHint);
     ui->settings->hide();
@@ -164,7 +167,7 @@ fade_in();*/
 
 void mpd::fade_in()
 {
-   /* QGraphicsOpacityEffect *eff = new QGraphicsOpacityEffect(this);
+    /* QGraphicsOpacityEffect *eff = new QGraphicsOpacityEffect(this);
     ui->etu->setGraphicsEffect(eff);
     QPropertyAnimation *a = new QPropertyAnimation(eff,"opacity");
     a->setDuration(1000);
@@ -190,20 +193,20 @@ void mpd::fade_out()
 
 void mpd::volume_control_slot()
 {
-if(!volume_muted)
-{
-    emit emergency_talkback->mute_mic(true);
-    QPixmap pix_unmute_button(":/images/vol_control_black.png");
-    QIcon unmute_button_icon(pix_unmute_button);
-    ui->volume_control->setIcon(unmute_button_icon);
-}
-else
-{
-    emit emergency_talkback->mute_mic(false);
-    QPixmap pix_mute_button(":/images/mute_call.png");
-    QIcon mute_button_icon(pix_mute_button);
-    ui->volume_control->setIcon(mute_button_icon);
-}
-volume_muted = !volume_muted;
+    if(!volume_muted)
+    {
+        emit emergency_talkback->mute_mic(true);
+        QPixmap pix_unmute_button(":/images/vol_control_black.png");
+        QIcon unmute_button_icon(pix_unmute_button);
+        ui->volume_control->setIcon(unmute_button_icon);
+    }
+    else
+    {
+        emit emergency_talkback->mute_mic(false);
+        QPixmap pix_mute_button(":/images/mute_call.png");
+        QIcon mute_button_icon(pix_mute_button);
+        ui->volume_control->setIcon(mute_button_icon);
+    }
+    volume_muted = !volume_muted;
 
 }

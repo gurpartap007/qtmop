@@ -24,8 +24,10 @@ SOURCES += main.cpp\
     skipbutton.cpp \
     numeric_keypad.cpp \
     display_communication.cpp \
-    etubutton.cpp
-    keyboard.cpp
+    etubutton.cpp \
+    requesthandler.cpp \
+    webserver.cpp
+
 
 HEADERS  += mpd.h \
     header.h \
@@ -42,7 +44,10 @@ HEADERS  += mpd.h \
     skipbutton.h \
     numeric_keypad.h \
     display_communication.h \
-    etubutton.h
+    etubutton.h \
+    logging/filelogger.h \
+    requesthandler.h \
+    webserver.h
 
 FORMS    += mpd.ui \
     music_streamer.ui \
@@ -53,14 +58,18 @@ FORMS    += mpd.ui \
     settings.ui \
     public_announcement.ui \
     numeric_keypad.ui
-
+OTHER_FILES += etc/*  logs/*
 RESOURCES += \
     icons.qrc
+CONFIG(debug, debug|release) {
+    unix:!mac:  LIBS += -L$$PWD/libs             -lQtWebApp
+    unix:!macx: LIBS += -L/usr/local/lib -llinphone -lmediastreamer_voip -lmediastreamer_base -lortp
+    unix:!macx: LIBS += -L/usr/lib -lmpdclient
+}
 
-unix:!macx: LIBS += -L/usr/local/lib -llinphone -lmediastreamer_voip -lmediastreamer_base -lortp
-LIBS += -L/usr/lib -lmpdclient
-INCLUDEPATH += /usr/local/include /usr/include
-DEPENDPATH += /usr/local/include
+
+INCLUDEPATH += /usr/local/include /usr/include $$PWD/headers/*
+DEPENDPATH += /usr/local/include ./logging/*     $$PWD/headers/*
 
 INCLUDEPATH += /usr/include
 DEPENDPATH += /usr/include
