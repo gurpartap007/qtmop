@@ -18,6 +18,7 @@ mpd::mpd(QApplication *app_ptr ,QWidget *parent) :
     timer_fade_out->setInterval(1000);
     announcement = new public_announcement;
     WebServer = new  webserver() ;
+    xmlWriter = new xml_writer ;
     connect(timer_fade_in,SIGNAL(timeout()),this,SLOT(fade_in()));
     selection_timer->setInterval(1000);
     selection_timer->start();

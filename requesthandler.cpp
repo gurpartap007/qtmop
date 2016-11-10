@@ -8,7 +8,7 @@
 
 
 /** Logger class */
-//extern FileLogger* logger;
+extern FileLogger* logger;
 
 
 RequestHandler::RequestHandler(QObject* parent)
@@ -38,8 +38,8 @@ void RequestHandler::service(HttpRequest& request, HttpResponse& response)
     qDebug("RequestHandler: finished request");
 
     // Clear the log buffer
-  //  if (logger)
-   // {
-    //   logger->clear();
-    //}
+    if (logger)
+   {
+       logger->clear();
+    }
 }

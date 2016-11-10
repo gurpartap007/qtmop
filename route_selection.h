@@ -6,7 +6,7 @@
 #include "keyboard.h"
 #include "train_route.h"
 #include "database.h"
-
+#include <QXmlStreamWriter>
 
 /** @brief Route selection window to provide input from keyboard and select train route.
     Detailed description follows here.

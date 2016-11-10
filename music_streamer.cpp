@@ -35,8 +35,8 @@ music_streamer::music_streamer(QWidget *parent) :
     player_timer->setInterval(1000);
     mpd_timer = new QTimer;
     player_started = false;
-    connect(player_timer,SIGNAL(timeout()),this,SLOT(mplayer_start()));
-    connect(mpd_timer,SIGNAL(timeout()),this,SLOT(check_mpd_status()));
+  //  connect(player_timer,SIGNAL(timeout()),this,SLOT(mplayer_start()));
+  //  connect(mpd_timer,SIGNAL(timeout()),this,SLOT(check_mpd_status()));
 }
 
 music_streamer::~music_streamer()
@@ -309,10 +309,10 @@ void music_streamer::create_announcement_playlist(QString func_code)
         hindi_playlist = replace_voice_delimiters_hindi(hindi_string);
         reg_playlist   = replace_voice_delimiters_reg(reg_string);
 
-        if(!(status= mpd_run_status(conn)))
-           conn = mpd_connection_new("localhost",6600,1000);
-        mpd_run_status(conn);
-        mpd_run_clear(conn);
+        //if(!(status= mpd_run_status(conn)))
+        //   conn = mpd_connection_new("localhost",6600,1000);
+    //    mpd_run_status(conn);
+  //      mpd_run_clear(conn);
        QTextStream stream_eng( &english_playlist_file );
        QTextStream stream_hin( &hindi_playlist_file );
        QTextStream stream_reg( &regional_playlist_file );

@@ -86,7 +86,7 @@ void route_selection::select_train_route_with_sorting()
     int loop_count=0;
     int train_count;
     QFont header_font;
-    QStringList master_train_no_for_current_slave_train;
+    QStringList master_train_no_for_current_slave_train,all_trains_no_list;
     QStringList labels,slave_train_no,master_train_names;
     model= new QStandardItemModel(0,0);
     header_font.setPointSize(14);
@@ -99,7 +99,17 @@ void route_selection::select_train_route_with_sorting()
     master_trains_model->select();
     labels.append("Train_no");
     labels.append("Train_name");
+    QXmlStreamWriter xmlWriter;
+    QFile file("/home/apaul/Documents/train_route.xml");
 
+    if (!file.open(QIODevice::WriteOnly))
+    {
+        QMessageBox::warning(0, "Error!", "Error opening file");
+    }
+        xmlWriter.setDevice(&file);
+        xmlWriter.writeStartDocument();
+        xmlWriter.setAutoFormatting(true);
+        xmlWriter.writeStartElement("CATALOG");
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->horizontalHeader()->setFont(header_font);
@@ -109,6 +119,7 @@ void route_selection::select_train_route_with_sorting()
     for(loop_count=0;loop_count<master_trains_model->rowCount();loop_count++)
     {
         ColumnData << new QStandardItem(master_trains_model->data(master_trains_model->index(loop_count,TrainNumber::TRAIN_NO)).toString());
+        all_trains_no_list.append(master_trains_model->data(master_trains_model->index(loop_count,TrainNumber::TRAIN_NO)).toString());
     }
     //---------------------------------------------------------------------------//
 
@@ -117,8 +128,8 @@ void route_selection::select_train_route_with_sorting()
     for(loop_count=0;loop_count<slave_trains_model->rowCount();loop_count++)
     {
         ColumnData << new QStandardItem(slave_trains_model->data(slave_trains_model->index(loop_count,TrainNumber::TRAIN_NO)).toString());
+        all_trains_no_list.append((slave_trains_model->data(slave_trains_model->index(loop_count,TrainNumber::TRAIN_NO)).toString()));
     }
-
     model->insertColumn(0,ColumnData);
     ColumnData.clear();
 
@@ -135,6 +146,16 @@ void route_selection::select_train_route_with_sorting()
 
     //-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --//
 
+
+    //-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --//
+
+    ///////////////////////////////////////// Inserting Master Train Names ////////////////////////////////////////
+    for(loop_count=0;loop_count<master_trains_model->rowCount();loop_count++)
+    {
+        ColumnData << new QStandardItem(master_trains_model->data(master_trains_model->index(loop_count,TrainNumber::TRAN_NAME_ENGLISH)).toString());
+          master_train_names.append(master_trains_model->data(master_trains_model->index(loop_count,TrainNumber::TRAN_NAME_ENGLISH)).toString());
+    }
+
     //////////////////////////// Extract master train Name from Master Train Number //////////////////////////////
     for(train_count=0;train_count<master_train_no_for_current_slave_train.size();train_count++)
     {
@@ -143,22 +164,19 @@ void route_selection::select_train_route_with_sorting()
         master_train_names.append(find_master_train_name.value(0).toString());
     }
 
-    //-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --//
-
-    ///////////////////////////////////////// Inserting Master Train Names ////////////////////////////////////////
-
-    for(loop_count=0;loop_count<master_trains_model->rowCount();loop_count++)
-    {
-        ColumnData << new QStandardItem(master_trains_model->data(master_trains_model->index(loop_count,TrainNumber::TRAN_NAME_ENGLISH)).toString());
-    }
-
     for(loop_count=0;loop_count<master_train_names.size();loop_count++)
     {
         ColumnData << new QStandardItem(master_train_names.at(loop_count));
+        xmlWriter.writeStartElement("CD");
+        xmlWriter.writeAttribute("name",master_train_names.at(loop_count));
+       // xmlWriter.writeEndElement();
+        xmlWriter.writeAttribute("TRAIN",all_trains_no_list.at(loop_count));
+         xmlWriter.writeEndElement();
     }
-
-    //-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --//
-
+qDebug() << "TOTAL TRAIN NAMES --------> " << master_train_names.size();
+     //-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --//
+ xmlWriter.writeEndElement();
+   xmlWriter.writeEndDocument();
     model->insertColumn(1,ColumnData);
     ColumnData.clear();
     model->setHorizontalHeaderLabels(labels);

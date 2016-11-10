@@ -8,6 +8,7 @@
 #include "settings.h"
 #include "public_announcement.h"
 #include "webserver.h"
+#include "xml_writer.h"
 
 
 
@@ -40,6 +41,7 @@ public:
     QPropertyAnimation *m_animation ;
     QTimer *timer_fade_in,*timer_fade_out;
     webserver *WebServer;
+    xml_writer *xmlWriter;
 private slots:
 void on_select_route_clicked();
 void on_etu_clicked();

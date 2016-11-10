@@ -50,7 +50,7 @@ extern route_struct current_route_data;
 display_communication::display_communication(QObject *parent) : QObject(parent)
 {
     server = new QUdpSocket(this);
-    announcements_streamer = new music_streamer();
+//    announcements_streamer = new music_streamer();
     server->bind(QHostAddress::Broadcast,RS485_DATA_PORT);
     hcd_timer = new QTimer;
     QSqlQuery update_configuration_table("SELECT  `head_code_scheme`,`handicap_coach1`,`handicap_coach2` from `configuration`");
@@ -60,7 +60,7 @@ display_communication::display_communication(QObject *parent) : QObject(parent)
     hcd_timer->setInterval(get_schemes.value(2).toInt() * 1000);
    // qDebug() << "HCD TIMER INTERVAL" << QString::number(((get_schemes.value(2).toInt()) * 1000));
     connect(hcd_timer,SIGNAL(timeout()),this,SLOT(send_headcode_frame()));
-    connect(this,SIGNAL(create_playlist(QString)),announcements_streamer,SLOT(create_announcement_playlist(QString)));
+  //  connect(this,SIGNAL(create_playlist(QString)),announcements_streamer,SLOT(create_announcement_playlist(QString)));
     connect(server,SIGNAL(readyRead()),this,SLOT(start_player()));
     port = new QSerialPort;
     open_serialport();

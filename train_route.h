@@ -6,6 +6,7 @@
 #include "sql_enums.h"
 #include "display_communication.h"
 #include "database.h"
+#include <QXmlStreamWriter>
 
 /** @brief Holds selected current route information and all related functions
     Detailed description follows here.
@@ -27,6 +28,8 @@ class train_route : public QWidget
 public:
     explicit train_route(QWidget *parent = 0);
      display_communication *udp_connection;
+     QXmlStreamWriter *xmlWriter;
+     QFile *file;
     ~train_route();
 
 signals:

@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     display_communication.cpp \
     etubutton.cpp \
     requesthandler.cpp \
-    webserver.cpp
+    webserver.cpp \
+    xml_writer.cpp
 
 
 HEADERS  += mpd.h \
@@ -47,7 +48,8 @@ HEADERS  += mpd.h \
     etubutton.h \
     logging/filelogger.h \
     requesthandler.h \
-    webserver.h
+    webserver.h \
+    xml_writer.h
 
 FORMS    += mpd.ui \
     music_streamer.ui \

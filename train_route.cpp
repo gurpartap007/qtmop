@@ -19,6 +19,8 @@ train_route::train_route(QWidget *parent) :
 {
     ui->setupUi(this);
     udp_connection = new display_communication();
+   xmlWriter = new  QXmlStreamWriter  ;
+    file = new QFile("/home/apaul/Documents/running_route.xml");
     connect(this,SIGNAL(send_route_info(QString)),udp_connection,SLOT(send_train_route_info(QString)));
     connect(this,SIGNAL(add_stations()),this,SLOT(add_stations_for_current_train()));
     connect(&time_update,SIGNAL(timeout()),this,SLOT(update_date_time()));
@@ -44,6 +46,7 @@ void train_route::add_stations_for_current_train()
     station_name_font->setPointSize(14);
     station_name_font->setBold(true);
     station_name_font->setCapitalization(QFont::SmallCaps);
+
 
     /////////////////////////////// EXTRACTING STATION CODES FOR CURRENT TRAIN ///////////////////////////
     QSqlQuery get_station_codes_for_master_train("SELECT `stn_code` FROM `tbl_RouteMaster` WHERE `train_sno`='"+ master_train_no+"' order by `distance_frm_source`");
@@ -96,10 +99,26 @@ void train_route::add_stations_for_current_train()
             current_route_data.stn[loop_count].status.bits.station_skipped = true;
         }
         station_name[loop_count]->setText(QString::fromUtf8((const char *)current_route_data.stn[loop_count].stn_name[0]));
-       // item[loop_count]->setText(QString::fromUtf8((const char *)current_route_data.stn[loop_count].stn_name[0]));
+        qDebug() << "address of xmlwriter" ;
+
+        xmlWriter->writeStartElement("STOPS");
+        xmlWriter->writeAttribute("STOP",QString::fromUtf8((const char *)current_route_data.stn[loop_count].stn_name[0]));
+        if(current_route_data.stn[current_route_data.status.next_halting_stn].bits.pf_left)
+            xmlWriter->writeAttribute("PFD","RIGHT");
+        else
+            xmlWriter->writeAttribute("PFD","LEFT");
+        if(  current_route_data.stn[loop_count].status.bits.station_skipped)
+            xmlWriter->writeAttribute("ADD","0");
+        else
+            xmlWriter->writeAttribute("ADD","1");
+        xmlWriter->writeEndElement();
+        // item[loop_count]->setText(QString::fromUtf8((const char *)current_route_data.stn[loop_count].stn_name[0]));
         connect(skip_button[loop_count],SIGNAL(skip_clicked(int)),this,SLOT(on_skip_station_clicked(int)));
         widget[0]->setStyleSheet("background-color: rgb(150,0,0);");
     }
+    xmlWriter->writeEndElement();
+    xmlWriter->writeEndDocument();
+       delete file;
 }
 
 ///////////////////// STRUCTURE FILLING FOR SELECTED ROUTE //////////////////////
@@ -114,22 +133,55 @@ void train_route::structure_filling(bool slave_train)
 
 void train_route::show_train_info()
 {
-    ui->coach_count->setText(QString::number(current_route_data.train.coach_count));
+ //   QFile file("/home/apaul/Documents/running_route.xml");
+
+    if (!file->open(QIODevice::WriteOnly))
+    {
+        QMessageBox::warning(0, "Error!", "Error opening file");
+    }
+    qDebug() << "address of xmlwriter" << xmlWriter;
+    xmlWriter->setDevice(file);
+    xmlWriter->writeStartDocument();
+    xmlWriter->setAutoFormatting(true);
+    xmlWriter->writeStartElement("CATALOG");
+    xmlWriter->writeStartElement("ROUTEHEADER");
     ui->train_name->setText(master_train_no);
+    xmlWriter->writeAttribute("ROUTE",master_train_no);
     ui->source_station_name->setText(QString::fromUtf8((const char *)current_route_data.train.src.name.eng));
+    xmlWriter->writeAttribute("SOURCE",QString::fromUtf8((const char *)current_route_data.train.src.name.eng));
     ui->via_name->setText(QString::fromUtf8((const char *)current_route_data.train.mid.name.eng));
+    xmlWriter->writeAttribute("VIA",QString::fromUtf8((const char *)current_route_data.train.mid.name.eng));
     ui->destination_station_name->setText(QString::fromUtf8((const char *)current_route_data.train.des.name.eng));
+    xmlWriter->writeAttribute("DESTINATION",QString::fromUtf8((const char *)current_route_data.train.des.name.eng));
+    ui->coach_count->setText(QString::number(current_route_data.train.coach_count));
+    xmlWriter->writeAttribute("COACHCOUNT",QString::number(current_route_data.train.coach_count));
     if(ladies_special)
+    {
         ui->ladies_special_type->setText("Yes");
+        xmlWriter->writeAttribute("LS","YES");
+    }
     else
+    {
         ui->ladies_special_type->setText("No") ;
+        xmlWriter->writeAttribute("LS","NO");
+    }
     if(fast)
+    {
         ui->slow_fast_type->setText("Fast")    ;
+        xmlWriter->writeAttribute("TRAINTYPE","FAST");
+    }
     if(slow)
+    {
         ui->slow_fast_type->setText("Slow")    ;
+        xmlWriter->writeAttribute("TRAINTYPE","SLOW");
+    }
     show_handicap_coaches();
+    xmlWriter->writeAttribute("DISTANCE",  QString::number(current_route_data.train.journ_dist));
     emit send_route_info(FC_RSF);
     udp_connection->hcd_timer->start();
+    xmlWriter->writeEndElement();
+
+
 }
 
 /********************************************************************************/
@@ -140,7 +192,7 @@ void train_route::on_skip_station_clicked(int id)
     QWidget *current_widget;
     current_item = ui->listWidget->item(id);
     current_widget =  ui->listWidget->itemWidget(current_item);
- //   current_item->setForeground(QBrush(QColor(200,0,0,100)));
+    //   current_item->setForeground(QBrush(QColor(200,0,0,100)));
 }
 
 void train_route::update_date_time()
@@ -269,6 +321,7 @@ void train_route::show_handicap_coaches()
     handicap_coach_no.append("/");
     handicap_coach_no.append(query_find_handicap_coaches.value(1).toString());
     ui->handicap_coach->setText(handicap_coach_no);
+    xmlWriter->writeAttribute("HC",handicap_coach_no);
     //**************************************************************************************************//
 }
 
@@ -398,7 +451,7 @@ int train_route::on_next_station_clicked()
 check_again:
     if(current_route_data.stn[current_route_data.status.next_halting_stn].status.bits.station_skipped)
     {
-       /* if(current_route_data.status.next_halting_stn!=0)
+        /* if(current_route_data.status.next_halting_stn!=0)
         {
             QListWidgetItem *prev_item;
             QWidget *prev_widget;
@@ -421,11 +474,11 @@ check_again:
             prev_widget = ui->listWidget->itemWidget(prev_item);
             prev_widget->setDisabled(true);
             prev_widget->setStyleSheet("background-color: rgb(150,0,0);");
-          //  second_prev_item = ui->listWidget->item(current_route_data.status.next_halting_stn-1);
+            //  second_prev_item = ui->listWidget->item(current_route_data.status.next_halting_stn-1);
             second_prev_item = ui->listWidget->item(current_station);
 
             second_prev_widget = ui->listWidget->itemWidget(second_prev_item);
-           second_prev_widget->setDisabled(true);
+            second_prev_widget->setDisabled(true);
             second_prev_widget->setStyleSheet("background-color: rgba(150,150,150,255);color: rgb(190,190,190);");
         }
         QListWidgetItem *current_item;
@@ -435,15 +488,15 @@ check_again:
         {
             QListWidgetItem *prev_item,*second_prev_item;
             QWidget *prev_widget,*second_prev_widget;
-                    prev_item = ui->listWidget->item(current_route_data.status.next_halting_stn+1);
-                  prev_widget = ui->listWidget->itemWidget(prev_item);
-                prev_widget->setDisabled(true);
+            prev_item = ui->listWidget->item(current_route_data.status.next_halting_stn+1);
+            prev_widget = ui->listWidget->itemWidget(prev_item);
+            prev_widget->setDisabled(true);
 
-                prev_widget->setStyleSheet("background-color: rgba(150,150,150,255);");
+            prev_widget->setStyleSheet("background-color: rgba(150,150,150,255);");
             second_prev_item = ui->listWidget->item(current_route_data.status.next_halting_stn);
             second_prev_widget = ui->listWidget->itemWidget(second_prev_item);
-         //   second_prev_widget->setDisabled(true);
-           // second_prev_widget->setStyleSheet("background-color: rgb(150,150,150);");
+            //   second_prev_widget->setDisabled(true);
+            // second_prev_widget->setStyleSheet("background-color: rgb(150,150,150);");
             current_route_data.status.next_halting_stn = current_route_data.status.next_halting_stn + 1;
         }
         current_item = ui->listWidget->item(current_route_data.status.next_halting_stn+1);
@@ -495,9 +548,9 @@ void train_route::on_station_arrived_clicked()
     }
     else
     {
-          current_route_data.status.next_halting_stn = current_station;
-         // current_route_data.status.next_halting_stn -- ;
+        current_route_data.status.next_halting_stn = current_station;
+        // current_route_data.status.next_halting_stn -- ;
         emit send_route_info(FC_SAF);
-          current_route_data.status.next_halting_stn ++ ;
+        current_route_data.status.next_halting_stn ++ ;
     }
 }

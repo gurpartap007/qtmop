@@ -6,6 +6,7 @@
 #include <QDir>
 #include "requesthandler.h"
 #include "headers/httplistener.h"
+#include "logging/filelogger.h"
 
 class webserver : public QObject
 {
@@ -14,6 +15,7 @@ public:
     explicit webserver(QObject *parent = 0);
      RequestHandler *httpserver;
          HttpListener* listener;
+
 signals:
 
 public slots:

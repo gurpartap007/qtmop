@@ -7,9 +7,8 @@ int main(int argc, char *argv[])
     qDebug() << "Main Application Executed";
     w = new mpd(app);
     qDebug() << "Calling Constructor of mpd class";
-    w->show();
+    w->showFullScreen();
     qDebug() << "Now showing Application as Fullscreen";
-
     /**************************************************************/
 /*    qDebug() << "ADDRESS of App in webserver()" << app;
     QString configFileName="/home/apaul/apaul_projects/qtmop/etc/Demo2.ini";
