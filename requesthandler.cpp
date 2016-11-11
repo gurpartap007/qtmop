@@ -38,6 +38,21 @@ void RequestHandler::service(HttpRequest& request, HttpResponse& response)
         emit  write_train_routes(QString::fromLatin1(train_number));
         routeRunFlag = false;
     }
+    else if(path.startsWith("/RouteRunResponse"))
+    {
+        QByteArray pfd = request.getParameter("PF");
+        QByteArray Nxt = request.getParameter("Next");
+        QByteArray peri = request.getParameter("Peri");
+        QByteArray skip = request.getParameter("Skip");
+        if(pfd.length())
+            emit change_pf_direction(QChar(pfd[0]));
+        if(Nxt.length())
+            emit change_next_stop(Nxt,peri);
+        if(skip.length())
+            emit skip_stop(skip);
+        response.write("Success");
+        return;
+    }
     else if(path.startsWith("/SelectRoute"))
     {
         emit route_selection_menu();

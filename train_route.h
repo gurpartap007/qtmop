@@ -8,7 +8,7 @@
 #include "database.h"
 #include <QXmlStreamWriter>
 #include <QDomDocument>
-
+#include "skipbutton.h"
 /** @brief Holds selected current route information and all related functions
     Detailed description follows here.
     @author Gurpartap Singh
@@ -32,17 +32,18 @@ public:
      QXmlStreamWriter *xmlWriter;
      QFile *file,*updating_file;
     ~train_route();
+     skipbutton *skip_button[128];
 
 signals:
     void add_stations();
     void fill_structure();
     void send_route_info(QString func_code);
-
+    void emulate_skip_click(int);
 public slots:
     void show_train_info();
     void add_stations_for_current_train();
     void structure_filling(bool);
-
+    void emulate_skip(int);
 private slots:
     void on_skip_station_clicked(int id);
     void update_date_time();

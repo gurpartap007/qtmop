@@ -40,6 +40,7 @@ public:
 
     database *train_database;/**< mysql database of train routes and trains numbers and their types **/
     train_route *current_route;/**< All information about current selected train route like trains,types of messages**/
+
     ~route_selection();
 
 public slots:
@@ -52,6 +53,9 @@ public slots:
      * @brief Shows the current route selected by user which exist in main database.
      */
     void route_window();
+    void select_next(QByteArray next_stop,QByteArray IN_OUT);
+    void change_pf(QChar);
+    void skip_station(QByteArray);
     void select_train_route_with_sorting();
     void route_data_to_relevant_channels();
     void write_route_data_to_xml(QString selected_train_no);
@@ -70,6 +74,9 @@ signals:
      * @brief This signal is emited when train route entered by the user matched with Database and valid.
      */
     void train_selected(bool);
+    void station_skipped(int);
+    void halt_clicked();
+    void next_clicked();
     void change_numeric_keypad();
     void lineedit_filter(QString value);
 

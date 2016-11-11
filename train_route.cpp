@@ -1,5 +1,5 @@
 #include "train_route.h"
-#include "skipbutton.h"
+
 #include "ui_train_route.h"
 #define FC_SDF "C"
 #define FC_SAF "D"
@@ -57,7 +57,6 @@ void train_route::add_stations_for_current_train()
     }
     //***************************************************************************************************//
 
-    skipbutton *skip_button[station_codes.size()];
     QLabel *station_name[station_codes.size()];
     QListWidgetItem *item[station_codes.size()];
     QWidget *widget[station_codes.size()];
@@ -115,6 +114,7 @@ void train_route::add_stations_for_current_train()
         connect(skip_button[loop_count],SIGNAL(skip_clicked(int)),this,SLOT(on_skip_station_clicked(int)));
         widget[0]->setStyleSheet("background-color: rgb(150,0,0);");
     }
+    connect(this,SIGNAL(emulate_skip_click(int)),this,SLOT(emulate_skip(int)));
     xmlWriter->writeEndElement();
     xmlWriter->writeEndDocument();
     file->close();
@@ -129,7 +129,10 @@ void train_route::structure_filling(bool slave_train)
     show_train_info();
     emit add_stations();
 }
-
+void train_route::emulate_skip(int id)
+{
+    emit skip_button[id]->click();
+}
 void train_route::show_train_info()
 {
  //   QFile file("/home/apaul/Documents/running_route.xml");
@@ -175,6 +178,10 @@ void train_route::show_train_info()
     }
     show_handicap_coaches();
     xmlWriter->writeAttribute("DISTANCE",  QString::number(current_route_data.train.journ_dist));
+    xmlWriter->writeAttribute("NEXT","0");
+    xmlWriter->writeAttribute("GPSSTAT","NC");
+    xmlWriter->writeAttribute("SPEED","NC");
+    xmlWriter->writeAttribute("PERIPHERY","IN");
     emit send_route_info(FC_RSF);
     udp_connection->hcd_timer->start();
     xmlWriter->writeEndElement();
@@ -188,6 +195,8 @@ void train_route::on_skip_station_clicked(int id)
     QWidget *current_widget;
     current_item = ui->listWidget->item(id);
     current_widget =  ui->listWidget->itemWidget(current_item);
+    current_route_data.stn[id].status.bits.station_skipped = !current_route_data.stn[id].status.bits.station_skipped;
+
     //   current_item->setForeground(QBrush(QColor(200,0,0,100)));
 }
 
@@ -451,10 +460,14 @@ int train_route::on_next_station_clicked()
     }
     QByteArray xmlData(updating_file->readAll());
     QDomDocument doc("route_stat");
+     QDomNodeList n;
     doc.setContent(xmlData);
     QDomElement root = doc.firstChildElement("CATALOG");
     QDomElement routeheader = root.firstChildElement("ROUTEHEADER");
-    routeheader.setAttribute("ROUTE","66666");
+    routeheader.setAttribute("NEXT","1");
+    n = root.childNodes();
+    qDebug()<<n.length();
+
 
 /*********************** Replacing XML CONTENT ********************************************************/
 check_again:
@@ -507,14 +520,12 @@ check_again:
             //   second_prev_widget->setDisabled(true);
             // second_prev_widget->setStyleSheet("background-color: rgb(150,150,150);");
             current_route_data.status.next_halting_stn = current_route_data.status.next_halting_stn + 1;
-            QDomElement current_stop = root.firstChildElement("STOPS");
-            QDomNodeList n = root.childNodes();
-            qDebug()<<n.length();
             QDomElement cs = n.at(current_route_data.status.next_halting_stn + 1).toElement();
-            routeheader.setAttribute("ROUTE","66666");
             qDebug() << "SKIPPED STOP  NAME" << cs.attribute("STOP");
             cs.setAttribute("ADD","0");
+            cs.setAttribute("PFD","LEFT");
         }
+
         current_item = ui->listWidget->item(current_route_data.status.next_halting_stn+1);
         current_widget = ui->listWidget->itemWidget(current_item);
         current_widget->setStyleSheet("background-color: rgb(0, 150,0);");
@@ -542,6 +553,7 @@ check_again:
 
 
         current_route_data.status.next_halting_stn ++;
+
         emit send_route_info(FC_SDF);
         if(((current_route_data.status.next_halting_stn)+1) == (station_codes.size()))
         {

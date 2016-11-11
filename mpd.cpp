@@ -26,6 +26,9 @@ mpd::mpd(QApplication *app_ptr ,QWidget *parent) :
     ui->stackedWidget->setCurrentIndex(0);
     ui->stackedWidget->addWidget(select_route);
     connect(WebServer->requestHandler,SIGNAL(route_selection_menu()),this,SLOT(on_select_route_clicked()));
+    connect(WebServer->requestHandler,SIGNAL(skip_stop(QByteArray)),select_route,SLOT(skip_station(QByteArray)));
+    connect(WebServer->requestHandler,SIGNAL(change_next_stop(QByteArray,QByteArray)),select_route,SLOT(select_next(QByteArray,QByteArray)));
+    connect(WebServer->requestHandler,SIGNAL(change_pf_direction(QChar)),select_route,SLOT(change_pf(QChar)));
     connect(emergency_talkback,SIGNAL(new_incoming_call()),this,SLOT(incoming_call_notification()));
     connect(emergency_talkback,SIGNAL(back_clicked()),this,SLOT(close_etu_popup()));
     connect(system_settings,SIGNAL(back_clicked()),this,SLOT(close_settings_popup()));

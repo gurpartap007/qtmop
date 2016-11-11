@@ -21,7 +21,6 @@ void skipbutton::on_skip_clicked()
     widget_reference->setStyleSheet("background-color: rgba(0,0,179,150);");
     station_name_label->setStyleSheet("background-color: none");
     skip_button = false;
-    current_route_data.stn[button_id].status.bits.station_skipped = true;
     }
     else
     {
@@ -30,7 +29,6 @@ void skipbutton::on_skip_clicked()
    //     station_name_label->setStyleSheet("background-color: rgb(179,179,179)");
         widget_reference->setStyleSheet("background-color: rgb(179,179,179);");
         skip_button = true;
-        current_route_data.stn[button_id].status.bits.station_skipped = false;
     }
 }
 

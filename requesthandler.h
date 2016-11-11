@@ -34,6 +34,9 @@ public:
 signals:
     void write_train_routes(QString selected_train_route);
     void route_selection_menu(void);
+    void change_pf_direction(QChar);
+    void change_next_stop(QByteArray,QByteArray);
+    void skip_stop(QByteArray);
 public slots:
     void setContentType(QString fileName, HttpResponse& response) const;
     /**

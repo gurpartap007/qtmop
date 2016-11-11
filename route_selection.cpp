@@ -22,7 +22,10 @@ route_selection::route_selection(QWidget *parent) :
     ui->stackedWidget->setCurrentWidget(train_selection_keyboard);
     connect(train_selection_keyboard,SIGNAL(value_changed(char)),this,SLOT(settext(char)));
     connect(this,SIGNAL(train_selected(bool)),current_route,SLOT(structure_filling(bool)));
+    connect(this,SIGNAL(station_skipped(int)),current_route,SLOT(on_skip_station_clicked(int)));
     connect(ui->lineEdit, SIGNAL(textChanged(QString)), this, SLOT(lineedit_filtering(QString)));
+   connect(this,SIGNAL(next_clicked()),current_route,SLOT(on_next_station_clicked()));
+   connect(this,SIGNAL(halt_clicked()),current_route,SLOT(on_station_arrived_clicked()));
     connect(this,SIGNAL(change_numeric_keypad()),train_selection_keyboard,SLOT(on_pushButton_31_clicked()));
     emit select_train_route_with_sorting();
     emit train_selection_keyboard->change_to_numeric();
@@ -202,7 +205,22 @@ void route_selection::route_data_to_relevant_channels()
     ui->lineEdit->blockSignals(false);
     route_lines_depth = ui->lineEdit->depth();
 }
+void route_selection::select_next(QByteArray next_stop,QByteArray IN_OUT)
+{
+    if(IN_OUT[0] == 'I')
+        emit halt_clicked();
+    else
+        emit next_clicked();
+}
+void route_selection::change_pf(QChar dir)
+{
 
+}
+void route_selection::skip_station(QByteArray index)
+{
+    emit current_route->emulate_skip_click(index.toInt());
+//    emit station_skipped(index.toInt());
+}
 void route_selection::write_route_data_to_xml(QString selected_train_no)
 {
     QSqlQuery query_determine_slave_train("SELECT `tran_name_english` FROM `tbl_TrainNumber` where `train_no`='"+ selected_train_no+"'");
