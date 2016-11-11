@@ -20,8 +20,8 @@ train_route::train_route(QWidget *parent) :
     ui->setupUi(this);
     udp_connection = new display_communication();
     xmlWriter = new  QXmlStreamWriter  ;
-    file = new QFile("/home/apaul/QtWebApp/Demo1/etc/docroot/route_stat.xml");
-    updating_file = new QFile("/home/apaul/QtWebApp/Demo1/etc/docroot/route_stat.xml");
+    file = new QFile("/home/apaul/apaul_projects/qtmop/etc/docroot/route_stat.xml");
+    updating_file = new QFile("/home/apaul/apaul_projects/qtmop/etc/docroot/route_stat.xml");
     connect(this,SIGNAL(send_route_info(QString)),udp_connection,SLOT(send_train_route_info(QString)));
     connect(this,SIGNAL(add_stations()),this,SLOT(add_stations_for_current_train()));
     connect(&time_update,SIGNAL(timeout()),this,SLOT(update_date_time()));

@@ -10,6 +10,7 @@
 /** Logger class */
 extern FileLogger* logger;
 extern QString configFileName;
+bool routeRunFlag = true;
 RequestHandler::RequestHandler(QObject* parent)
     :HttpRequestHandler(parent)
 {
@@ -19,24 +20,29 @@ RequestHandler::RequestHandler(QObject* parent)
     docroot = docroot + "/docroot";
     file.setFileName(docroot);
     encoding = "UTF-8";
-}
 
+}
 
 RequestHandler::~RequestHandler()
 {
     qDebug("RequestHandler: deleted");
 }
 
-
 void RequestHandler::service(HttpRequest& request, HttpResponse& response)
 {
     QByteArray path=request.getPath();
-    if (path.startsWith("/RouteRun"))
+    if (path.startsWith("/RouteRun") && routeRunFlag)
     {
         QByteArray train_number = request.getParameter("trainumber");
         qDebug() << "Selected route" << train_number ;
+        emit  write_train_routes(QString::fromLatin1(train_number));
+        routeRunFlag = false;
     }
-    if (QFileInfo(docroot+path).isDir())
+    else if(path.startsWith("/SelectRoute"))
+    {
+        emit route_selection_menu();
+    }
+    else if (QFileInfo(docroot+path).isDir())
     {
         path+="/index.html";
     }
@@ -53,6 +59,7 @@ void RequestHandler::service(HttpRequest& request, HttpResponse& response)
         }
     }
 }
+
 void RequestHandler::setContentType(QString fileName, HttpResponse& response) const
 {
     if (fileName.endsWith(".png"))
@@ -78,6 +85,10 @@ void RequestHandler::setContentType(QString fileName, HttpResponse& response) co
     else if (fileName.endsWith(".html") || fileName.endsWith(".htm"))
     {
         response.setHeader("Content-Type", qPrintable("text/html; charset="+encoding));
+    }
+    else if (fileName.endsWith(".xml") )
+    {
+        response.setHeader("Content-Type", qPrintable("text/xml; charset="+encoding));
     }
     else if (fileName.endsWith(".css"))
     {

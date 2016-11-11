@@ -6,6 +6,7 @@
 #include "keyboard.h"
 #include "train_route.h"
 #include "database.h"
+#include "webserver.h"
 #include <QXmlStreamWriter>
 
 /** @brief Route selection window to provide input from keyboard and select train route.
@@ -29,7 +30,7 @@ class route_selection : public QWidget
     Q_OBJECT
 
 public:
-    explicit route_selection(QWidget *parent = 0);
+    explicit route_selection( QWidget *parent = 0);
     keyboard *train_selection_keyboard;/**<android style qwerty keyboard to input train route info. **/
     QSqlTableModel *master_trains_model;
     QSqlTableModel *slave_trains_model;
@@ -53,6 +54,7 @@ public slots:
     void route_window();
     void select_train_route_with_sorting();
     void route_data_to_relevant_channels();
+    void write_route_data_to_xml(QString selected_train_no);
 
 private slots:
     /**

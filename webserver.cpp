@@ -15,9 +15,9 @@ webserver::webserver(QObject *parent) : QObject(parent)
     qDebug("ServiceHelper: Starting service");
     QSettings* listenerSettings=new QSettings(configFileName,QSettings::IniFormat);
     listenerSettings->beginGroup("listener");
-    new HttpListener(listenerSettings,new RequestHandler());
-
-}
+    requestHandler = new RequestHandler;
+    new HttpListener(listenerSettings,requestHandler);
+ }
 
 QString webserver::searchConfigFile()
 {
@@ -47,5 +47,6 @@ QString webserver::searchConfigFile()
             qDebug("Using config file %s",qPrintable(fileName));
             return fileName;
         }
+    }
 }
-}
+

@@ -3,6 +3,7 @@
 QString selected_train_no,master_train_no,slave_train_no;
 QStringList train_routes;
 QString filter_string;
+static  bool slave_train = false;
 extern char display[20];
 extern char *ptr;
 extern QSqlDatabase db;
@@ -202,6 +203,35 @@ void route_selection::route_data_to_relevant_channels()
     route_lines_depth = ui->lineEdit->depth();
 }
 
+void route_selection::write_route_data_to_xml(QString selected_train_no)
+{
+    QSqlQuery query_determine_slave_train("SELECT `tran_name_english` FROM `tbl_TrainNumber` where `train_no`='"+ selected_train_no+"'");
+    slave_train = false;
+    if(!query_determine_slave_train.next())
+    {
+        slave_train_no = selected_train_no;
+        qDebug() << "Slave train no " << slave_train_no;
+        QSqlQuery find_master_train("SELECT `master_route` FROM `tbl_slave_route` where `train_number`='"+ selected_train_no + "'");
+        find_master_train.next();
+        master_train_no = find_master_train.value(0).toString();
+        qDebug() << "Master train no " << master_train_no;
+        qDebug() << "Master Train Route" << master_trains_model->data(model->index(0,0));
+        slave_train=true;
+    }
+    else
+    {
+        master_train_no = selected_train_no;
+        qDebug() << "Master train no " << master_train_no;
+    }
+    ui->tableView->hide();
+    ui->lineEdit->hide();
+    ui->select_route_label->hide();
+    ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidget->addWidget(current_route);
+    ui->stackedWidget->setCurrentWidget(current_route);
+    emit train_selected(slave_train);
+}
+
 
 void route_selection::on_backButton_clicked()
 {
@@ -234,7 +264,6 @@ void route_selection::lineedit_filtering(QString value)
 void route_selection::on_tableView_clicked()
 {
     int selected_train;
-    bool slave_train = false;
 
     selected_train = ui->tableView->selectionModel()->currentIndex().row();
     selected_train_no = ui->tableView->model()->data(ui->tableView->model()->index(selected_train,0)).toString();

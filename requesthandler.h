@@ -31,6 +31,9 @@ public:
       Destructor
     */
     ~RequestHandler();
+signals:
+    void write_train_routes(QString selected_train_route);
+    void route_selection_menu(void);
 public slots:
     void setContentType(QString fileName, HttpResponse& response) const;
     /**

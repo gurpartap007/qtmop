@@ -8,7 +8,8 @@ mpd::mpd(QApplication *app_ptr ,QWidget *parent) :
     qDebug() << "ADDRESS of App in mpd()" << app_ptr;
 
     ui->setupUi(this);
-    select_route = new route_selection;
+    WebServer = new  webserver() ;
+    select_route = new route_selection();
     emergency_talkback = new etu;
     system_settings = new settings;
     selection_timer = new QTimer;
@@ -17,13 +18,14 @@ mpd::mpd(QApplication *app_ptr ,QWidget *parent) :
     timer_fade_in->setInterval(3000);
     timer_fade_out->setInterval(1000);
     announcement = new public_announcement;
-    WebServer = new  webserver() ;
-    xmlWriter = new xml_writer ;
+ //   xmlWriter = new xml_writer ;
+    connect(WebServer->requestHandler,SIGNAL(write_train_routes(QString)),select_route,SLOT(write_route_data_to_xml(QString)));
     connect(timer_fade_in,SIGNAL(timeout()),this,SLOT(fade_in()));
     selection_timer->setInterval(1000);
     selection_timer->start();
     ui->stackedWidget->setCurrentIndex(0);
     ui->stackedWidget->addWidget(select_route);
+    connect(WebServer->requestHandler,SIGNAL(route_selection_menu()),this,SLOT(on_select_route_clicked()));
     connect(emergency_talkback,SIGNAL(new_incoming_call()),this,SLOT(incoming_call_notification()));
     connect(emergency_talkback,SIGNAL(back_clicked()),this,SLOT(close_etu_popup()));
     connect(system_settings,SIGNAL(back_clicked()),this,SLOT(close_settings_popup()));
