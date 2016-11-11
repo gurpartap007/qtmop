@@ -79,3 +79,21 @@ Note: If you don't see new messages here, then the logger might be commented out
 09.11.2016 16:19:33.744 0 DEBUG    140737131407296 ServiceHelper: Starting service
 09.11.2016 16:19:33.745 0 DEBUG    140737131407296 RequestHandler: created
 09.11.2016 16:19:33.745 2 CRITICAL 140737131407296 HttpListener: Cannot bind on port 8080: The bound address is already in use
+10.11.2016 12:38:50.670 0 DEBUG    140019701331904 ServiceHelper: Starting service
+10.11.2016 12:38:50.670 0 DEBUG    140019701331904 RequestHandler: created
+10.11.2016 12:38:50.670 2 CRITICAL 140019701331904 HttpListener: Cannot bind on port 8080: The bound address is already in use
+10.11.2016 14:52:01.265 0 DEBUG    139882740819904 ServiceHelper: Starting service
+10.11.2016 14:52:01.265 0 DEBUG    139882740819904 RequestHandler: created
+10.11.2016 14:52:01.266 2 CRITICAL 139882740819904 HttpListener: Cannot bind on port 8080: The bound address is already in use
+10.11.2016 14:53:47.621 0 DEBUG    139817856206784 ServiceHelper: Starting service
+10.11.2016 14:53:47.621 0 DEBUG    139817856206784 RequestHandler: created
+10.11.2016 14:53:47.621 2 CRITICAL 139817856206784 HttpListener: Cannot bind on port 8080: The bound address is already in use
+10.11.2016 14:55:02.153 0 DEBUG    139733494941632 ServiceHelper: Starting service
+10.11.2016 14:55:02.153 0 DEBUG    139733494941632 RequestHandler: created
+10.11.2016 14:55:02.154 2 CRITICAL 139733494941632 HttpListener: Cannot bind on port 8080: The bound address is already in use
+10.11.2016 15:02:31.607 0 DEBUG    140708201682880 ServiceHelper: Starting service
+10.11.2016 15:02:31.607 0 DEBUG    140708201682880 RequestHandler: created
+10.11.2016 15:02:31.607 2 CRITICAL 140708201682880 HttpListener: Cannot bind on port 8080: The bound address is already in use
+10.11.2016 15:14:02.033 0 DEBUG    139784439900096 ServiceHelper: Starting service
+10.11.2016 15:14:02.033 0 DEBUG    139784439900096 RequestHandler: created
+10.11.2016 15:14:02.033 2 CRITICAL 139784439900096 HttpListener: Cannot bind on port 8080: The bound address is already in use

@@ -100,7 +100,7 @@ void route_selection::select_train_route_with_sorting()
     labels.append("Train_no");
     labels.append("Train_name");
     QXmlStreamWriter xmlWriter;
-    QFile file("/home/apaul/Documents/train_route.xml");
+    QFile file("/home/apaul/QtWebApp/Demo1/etc/docroot/train_route.xml");
 
     if (!file.open(QIODevice::WriteOnly))
     {

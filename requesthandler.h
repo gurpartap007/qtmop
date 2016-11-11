@@ -7,6 +7,7 @@
 #define REQUESTHANDLER_H
 
 #include <headers/httprequesthandler.h>
+#include <QFileInfo>
 
 /**
   The request handler receives incoming HTTP requests and generates responses.
@@ -22,12 +23,16 @@ public:
       @param parent Parent object
     */
     RequestHandler(QObject* parent=0);
+    QString docroot;
+    QFile file;
+    QString encoding;
 
     /**
       Destructor
     */
     ~RequestHandler();
-
+public slots:
+    void setContentType(QString fileName, HttpResponse& response) const;
     /**
       Process an incoming HTTP request.
       @param request The received HTTP request

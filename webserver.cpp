@@ -1,15 +1,15 @@
 #include "webserver.h"
-FileLogger *logger;
+//FileLogger *logger;
+   QString configFileName;
 webserver::webserver(QObject *parent) : QObject(parent)
 {
-
-    QString configFileName="/home/apaul/apaul_projects/qtmop/etc/Demo2.ini";
+    configFileName="/home/apaul/apaul_projects/qtmop/etc/Demo2.ini";
     qDebug() << "CONFIG FILE " << configFileName;
     // Configure logging into a file
-    QSettings* logSettings=new QSettings(configFileName,QSettings::IniFormat);
-    logSettings->beginGroup("logging");
-    logger=new FileLogger(logSettings,10000);
-    logger->installMsgHandler();
+  //  QSettings* logSettings=new QSettings(configFileName,QSettings::IniFormat);
+   // logSettings->beginGroup("logging");
+  // logger=new FileLogger(logSettings,10000);
+   // logger->installMsgHandler();
 
     // Configure and start the TCP listener
     qDebug("ServiceHelper: Starting service");

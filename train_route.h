@@ -7,6 +7,7 @@
 #include "display_communication.h"
 #include "database.h"
 #include <QXmlStreamWriter>
+#include <QDomDocument>
 
 /** @brief Holds selected current route information and all related functions
     Detailed description follows here.
@@ -29,7 +30,7 @@ public:
     explicit train_route(QWidget *parent = 0);
      display_communication *udp_connection;
      QXmlStreamWriter *xmlWriter;
-     QFile *file;
+     QFile *file,*updating_file;
     ~train_route();
 
 signals:

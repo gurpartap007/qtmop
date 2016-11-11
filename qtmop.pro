@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network sql serialport
+QT       += core gui network sql serialport xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -60,7 +60,7 @@ FORMS    += mpd.ui \
     settings.ui \
     public_announcement.ui \
     numeric_keypad.ui
-OTHER_FILES += etc/*  logs/*
+OTHER_FILES += etc/*  logs/* etc/docroot/*
 RESOURCES += \
     icons.qrc
 CONFIG(debug, debug|release) {

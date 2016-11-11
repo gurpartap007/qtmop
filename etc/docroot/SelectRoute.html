@@ -1,0 +1,128 @@
+<html>
+<title>Main Operating Panel</title>
+<style>
+.selected {
+    background-color: brown;
+    color: #FFF;
+}
+</style>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+	function contains(a, obj) {
+	    var i = a.length;
+	    while (i--) {
+	       if (a[i] === obj) {
+	           return true;
+	       }
+	    }
+	    return false;
+	}
+  	function load() {
+	    var array = new Array();
+	 
+	    while (array.length < 10) {
+	        var temp = Math.round(Math.random() * 9);
+	        if (!contains(array, temp)) {
+	            array.push(temp);
+	        }
+	    }
+	    for (i = 0; i < 10; i++) {
+	        var btn = document.getElementById("btn" + i);
+	        btn.value = array[i];
+	    }
+	}
+
+	function loadXMLDoc(filter) {
+	  var xmlhttp = new XMLHttpRequest();
+	  xmlhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	      myFunction(this,filter);
+	    }
+	  };
+	  xmlhttp.open("GET", "train_route.xml", true);
+	  xmlhttp.send();
+	}
+	var table="<tr><th>Artist</th><th>Title</th></tr>";
+	function cell(tableRow,highlight)
+	{
+		if(highlight)
+ 	  		tableRow.style.backgroundColor = '#dcfac9';
+ 	  	else
+ 	  		tableRow.style.backgroundColor = '#ffffff';
+   		
+	}
+	function onclicked(text)
+	{
+		//newAJAXCommand(("RouteRun.html?trainumber="+tableRow.cells[0].innerHTML),'response',false);
+		window.location.href = "RouteRun.html?trainumber="+text;
+	}
+
+	function myFunction(xml,filter) {
+	  var i;
+	  var xmlDoc = xml.responseXML;
+	  
+	  var x = xmlDoc.getElementsByTagName("CD");
+	  table = "";
+	  for (i = 0; i <x.length; i++) {
+	  	var str = x[i].getAttribute("TRAIN");
+	  	if(String(str).startsWith(filter) == true)
+	  	{
+		    table += "<tr onmouseover=\"cell(this,1);\" onmouseout = \"cell(this,0);\" onclick = \"onclicked(this.cells[0].innerHTML);\"><td style= \"border: 1px #DDD solid; padding: 5px; cursor: pointer;\">" +
+		    x[i].getAttribute("TRAIN") +
+		    "</td><td style= \"border: 1px #DDD solid; padding: 5px; cursor: pointer;\">" +
+		    x[i].getAttribute("name") +
+		    "</td></tr>";
+		}
+	  }
+	  document.getElementById("demo").innerHTML = table;
+	}
+	function myfilter(text)
+	{
+		loadXMLDoc(text);
+	}
+	  	function input(e) {
+    var tbInput = document.getElementById("trainumber");
+    tbInput.value = tbInput.value + e.value;
+    myfilter(tbInput.value);
+	}
+	 
+	function del() {
+	    var tbInput = document.getElementById("trainumber");
+	    tbInput.value = tbInput.value.substr(0, tbInput.value.length - 1);
+	     myfilter(tbInput.value);
+	}
+	$(function(){
+		  $("#header").load("header.html"); 
+		  $("#footer").load("footer.html"); 
+		});
+		function slecttrainclick()
+		{
+			window.location.href = "SelectRoute.html";
+		}
+	</script>
+<body onload="load();loadXMLDoc('');">
+	<div id = "header"></div>
+	<div id = "SelectTrain" style="background-color: #f5f5f5;">
+  		<center style="font-size: 40;">Enter Train Number : <input style="width: 20%; font-size: 40; height: 40; border-radius: 5px;" id="trainumber" name="commit" value=""></center>
+  	</div>
+  	<center><div style = "max-height: 30%; height: 30%; margin-top:5px; max-width: 40%; border: 1px; overflow: scroll;"><table id="demo" style= "border: 1px solid black; width:100%" ></table></div></center>
+  	<center><div id="VirtualKey" style="background-color: #f5f5f5; border: 1px solid black; border-radius: 5px;width: 50%; height: 25%; margin-top:5px;">
+		    <input id="btn1" style="width: 30%;margin-top:5px;height: 22%"  type="button" onclick="input(this);" />
+		    <input id="btn2" style="width: 30%;margin-top:5px;height: 22%" type="button" onclick="input(this);" />
+		    <input id="btn3" style="width: 30%;margin-top:5px;height: 22%" type="button" onclick="input(this);" />
+		    <br />
+		    <input id="btn4" style="width: 30%;height: 22%" type="button" onclick="input(this);" />
+		    <input id="btn5" style="width: 30%;height: 22%" " type="button" onclick="input(this);" />
+		    <input id="btn6" style="width: 30%;height: 22%" type="button" onclick="input(this);" />
+		    <br />
+		    <input id="btn7" style="width: 30%;height: 22%" type="button" onclick="input(this);" />
+		    <input id="btn8" style="width: 30%;height: 22%" type="button" onclick="input(this);" />
+		    <input id="btn9" style="width: 30%;height: 22%" type="button" onclick="input(this);" />
+		    <br />
+		    <input id="btn0" style="width: 30%;height: 22%" type="button" onclick="input(this)" />
+		    <input id="btnDel" style="width: 30%;height: 22%" type="button" value="del" onclick="del();" />
+		    <input id="btnEnt" style="width: 30%;height: 22%" type="button" value="Ent" onclick="onclicked(document.getElementById('trainumber').value);" />
+	</div></center>
+	<div id = "footer"></div>
+  	</body>
+  	</html>

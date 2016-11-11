@@ -1,0 +1,72 @@
+<html>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+function showpopoup(menu)
+{
+	if(menu == 'settings')
+	{
+		$("#popup").load("settings.html"); 
+		document.getElementById("popup-windows").style.display = "block";
+	}
+	if(menu == 'pa')
+	{
+		$("#popup").load("pa.html"); 
+		document.getElementById("popup-windows").style.display = "block";
+	}
+	if(menu == 'etu')
+	{
+		$("#popup").load("etu.html"); 
+		document.getElementById("popup-windows").style.display = "block";
+	}
+	if(menu == 'intercom')
+	{
+		$("#popup").load("intercom.html"); 
+		document.getElementById("popup-windows").style.display = "block";
+	}
+	if(menu == 'controlroom')
+	{
+		$("#popup").load("intercom.html"); 
+		document.getElementById("popup-windows").style.display = "block";
+	}
+}
+function closepop() 
+{
+    document.getElementById("popup-windows").style.display  = "none";
+}
+</script>
+<style type="text/css">
+	.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+.headerimage{
+	cursor: pointer; 
+	background-color:#9ab1d6;
+}
+.headerimage:hover,focus
+{
+	background-color:#9ab1ff;
+}
+
+</style>
+<body>
+<img class = "headerimage" src="images\system_config.png" height="20%" width = "19%" onclick="showpopoup('settings')">
+<img class = "headerimage" class = "headerimage" src="images\announcement_on_podium.png" height="20%" width = "19%" onclick="showpopoup('pa')">
+<img class = "headerimage" src="images\etu.png" height="20%" width = "19%"  onclick="showpopoup('etu')">
+<img class = "headerimage" src="images\intercom.png" height="20%" width = "19%" onclick="showpopoup('intercom')">
+<img class = "headerimage" src="images\control_room.png" height="20%" width = "19%" onclick="showpopoup('controlroom')">
+<div id= "popup-windows" role="dialog" style = "display: none;z-index:1;position:fixed;background-color:#9ab1d6;border-radius:5px;width: 50%;height: 50%;margin-top: 0%;margin-left: 25%;opacity: 0.8;">
+<button class="close" style = "float: right;" onclick="closepop()">×</button>
+<div id= "popup"></div>
+</div>
+</body>
+</html>

@@ -19,8 +19,9 @@ train_route::train_route(QWidget *parent) :
 {
     ui->setupUi(this);
     udp_connection = new display_communication();
-   xmlWriter = new  QXmlStreamWriter  ;
-    file = new QFile("/home/apaul/Documents/running_route.xml");
+    xmlWriter = new  QXmlStreamWriter  ;
+    file = new QFile("/home/apaul/QtWebApp/Demo1/etc/docroot/route_stat.xml");
+    updating_file = new QFile("/home/apaul/QtWebApp/Demo1/etc/docroot/route_stat.xml");
     connect(this,SIGNAL(send_route_info(QString)),udp_connection,SLOT(send_train_route_info(QString)));
     connect(this,SIGNAL(add_stations()),this,SLOT(add_stations_for_current_train()));
     connect(&time_update,SIGNAL(timeout()),this,SLOT(update_date_time()));
@@ -99,8 +100,6 @@ void train_route::add_stations_for_current_train()
             current_route_data.stn[loop_count].status.bits.station_skipped = true;
         }
         station_name[loop_count]->setText(QString::fromUtf8((const char *)current_route_data.stn[loop_count].stn_name[0]));
-        qDebug() << "address of xmlwriter" ;
-
         xmlWriter->writeStartElement("STOPS");
         xmlWriter->writeAttribute("STOP",QString::fromUtf8((const char *)current_route_data.stn[loop_count].stn_name[0]));
         if(current_route_data.stn[current_route_data.status.next_halting_stn].bits.pf_left)
@@ -118,7 +117,7 @@ void train_route::add_stations_for_current_train()
     }
     xmlWriter->writeEndElement();
     xmlWriter->writeEndDocument();
-       delete file;
+    file->close();
 }
 
 ///////////////////// STRUCTURE FILLING FOR SELECTED ROUTE //////////////////////
@@ -139,7 +138,6 @@ void train_route::show_train_info()
     {
         QMessageBox::warning(0, "Error!", "Error opening file");
     }
-    qDebug() << "address of xmlwriter" << xmlWriter;
     xmlWriter->setDevice(file);
     xmlWriter->writeStartDocument();
     xmlWriter->setAutoFormatting(true);
@@ -180,8 +178,6 @@ void train_route::show_train_info()
     emit send_route_info(FC_RSF);
     udp_connection->hcd_timer->start();
     xmlWriter->writeEndElement();
-
-
 }
 
 /********************************************************************************/
@@ -447,7 +443,20 @@ void train_route::fill_stn_struct()
 
 int train_route::on_next_station_clicked()
 {
+/*********************** Replacing XML CONTENT ********************************************************/
+    if (!updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+    qDebug() << "unable to open xml file";
+    return 1;
+    }
+    QByteArray xmlData(updating_file->readAll());
+    QDomDocument doc("route_stat");
+    doc.setContent(xmlData);
+    QDomElement root = doc.firstChildElement("CATALOG");
+    QDomElement routeheader = root.firstChildElement("ROUTEHEADER");
+    routeheader.setAttribute("ROUTE","66666");
 
+/*********************** Replacing XML CONTENT ********************************************************/
 check_again:
     if(current_route_data.stn[current_route_data.status.next_halting_stn].status.bits.station_skipped)
     {
@@ -498,6 +507,13 @@ check_again:
             //   second_prev_widget->setDisabled(true);
             // second_prev_widget->setStyleSheet("background-color: rgb(150,150,150);");
             current_route_data.status.next_halting_stn = current_route_data.status.next_halting_stn + 1;
+            QDomElement current_stop = root.firstChildElement("STOPS");
+            QDomNodeList n = root.childNodes();
+            qDebug()<<n.length();
+            QDomElement cs = n.at(current_route_data.status.next_halting_stn + 1).toElement();
+            routeheader.setAttribute("ROUTE","66666");
+            qDebug() << "SKIPPED STOP  NAME" << cs.attribute("STOP");
+            cs.setAttribute("ADD","0");
         }
         current_item = ui->listWidget->item(current_route_data.status.next_halting_stn+1);
         current_widget = ui->listWidget->itemWidget(current_item);
@@ -523,6 +539,8 @@ check_again:
             ui->platform_left->setDisabled(true);
             ui->platform_right->setDisabled(false);
         }
+
+
         current_route_data.status.next_halting_stn ++;
         emit send_route_info(FC_SDF);
         if(((current_route_data.status.next_halting_stn)+1) == (station_codes.size()))
@@ -532,6 +550,11 @@ check_again:
             emit send_route_info(FC_REF);
         }
     }
+    updating_file->resize(0);
+    QTextStream stream(updating_file);
+    stream.setDevice(updating_file);
+    doc.save(stream, 4);
+    updating_file->close();
     return 0;
 }
 
