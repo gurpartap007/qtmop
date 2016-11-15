@@ -464,7 +464,8 @@ int train_route::on_next_station_clicked()
     doc.setContent(xmlData);
     QDomElement root = doc.firstChildElement("CATALOG");
     QDomElement routeheader = root.firstChildElement("ROUTEHEADER");
-    routeheader.setAttribute("NEXT","1");
+    routeheader.setAttribute("NEXT",QString::number(current_route_data.status.next_halting_stn));
+    routeheader.setAttribute("PERIPHERY","OUT");
     n = root.childNodes();
     qDebug()<<n.length();
 
@@ -588,4 +589,22 @@ void train_route::on_station_arrived_clicked()
         emit send_route_info(FC_SAF);
         current_route_data.status.next_halting_stn ++ ;
     }
+    if (!updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+    qDebug() << "unable to open xml file";
+    return;
+    }
+
+    QByteArray xmlData(updating_file->readAll());
+    QDomDocument doc("route_stat");
+     QDomNodeList n;
+    doc.setContent(xmlData);
+    QDomElement root = doc.firstChildElement("CATALOG");
+    QDomElement routeheader = root.firstChildElement("ROUTEHEADER");
+    routeheader.setAttribute("PERIPHERY","IN");
+    updating_file->resize(0);
+    QTextStream stream(updating_file);
+    stream.setDevice(updating_file);
+    doc.save(stream, 4);
+    updating_file->close();
 }

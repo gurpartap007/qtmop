@@ -21,13 +21,14 @@ music_streamer::music_streamer(QWidget *parent) :
     command_channel->bind(QHostAddress::Broadcast,COMMAND_PORT);
     playlists_channel->bind(QHostAddress::Broadcast,PLAYLISTS_PORT);
     this->setGeometry(0,0,0,0);
+       conn = mpd_connection_new("localhost",6600,1000);
     /* New Sql database which hold the all details about Routes,Devices,Events and announcements.
      * * */
     // bus_database = new database;
     /* New process will be created and "/usr/bin/mp3-decoder" will run in new process
      */
 
-    player = new QProcess();
+ //   player = new QProcess();
     // player->setProcessChannelMode(QProcess::MergedChannels);
     //////////////////// Setting player_timer to delay mplayer start  ////////////////////////
 
@@ -35,8 +36,7 @@ music_streamer::music_streamer(QWidget *parent) :
     player_timer->setInterval(1000);
     mpd_timer = new QTimer;
     player_started = false;
-  //  connect(player_timer,SIGNAL(timeout()),this,SLOT(mplayer_start()));
-  //  connect(mpd_timer,SIGNAL(timeout()),this,SLOT(check_mpd_status()));
+    connect(mpd_timer,SIGNAL(timeout()),this,SLOT(check_mpd_status()));
 }
 
 music_streamer::~music_streamer()
@@ -309,10 +309,10 @@ void music_streamer::create_announcement_playlist(QString func_code)
         hindi_playlist = replace_voice_delimiters_hindi(hindi_string);
         reg_playlist   = replace_voice_delimiters_reg(reg_string);
 
-        //if(!(status= mpd_run_status(conn)))
-        //   conn = mpd_connection_new("localhost",6600,1000);
-    //    mpd_run_status(conn);
-  //      mpd_run_clear(conn);
+        if(!(status= mpd_run_status(conn)))
+          conn = mpd_connection_new("localhost",6600,1000);
+        mpd_run_status(conn);
+      mpd_run_clear(conn);
        QTextStream stream_eng( &english_playlist_file );
        QTextStream stream_hin( &hindi_playlist_file );
        QTextStream stream_reg( &regional_playlist_file );
@@ -322,16 +322,22 @@ void music_streamer::create_announcement_playlist(QString func_code)
            for(int i=0;i<eng_playlist.length();i++)
                stream_eng << eng_playlist.at(i) << endl;
        }
+       else
+           qDebug() << "Unable To Open File: English";
        if ( hindi_playlist_file.open(QIODevice::ReadWrite | QIODevice::Truncate ) )
        {
            for(int i=0;i<hindi_playlist.length();i++)
                stream_hin << hindi_playlist.at(i) << endl;
        }
+       else
+           qDebug() << "Unable To Open File: Hindi";
        if ( regional_playlist_file.open(QIODevice::ReadWrite| QIODevice::Truncate  ) )
        {
            for(int i=0;i<reg_playlist.length();i++)
                stream_reg << reg_playlist.at(i) << endl;
        }
+       else
+           qDebug() << "Unable To Open File: regional";
        repeat_count = 6;
         ANNOUNCE_LANGUAGE = regional;
         check_mpd_status();
