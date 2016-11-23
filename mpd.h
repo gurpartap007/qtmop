@@ -9,7 +9,7 @@
 #include "public_announcement.h"
 #include "webserver.h"
 #include "xml_writer.h"
-
+#include "lgps.h"
 
 
 
@@ -38,6 +38,7 @@ public:
     etu *emergency_talkback;/**< Emergency Talkback class to handle calls in emergency conditions in Coaches**/
     public_announcement *announcement;
     settings *system_settings;
+    LGPS *gps;
     QPropertyAnimation *m_animation ;
     QTimer *timer_fade_in,*timer_fade_out;
     webserver *WebServer;

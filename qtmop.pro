@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     etubutton.cpp \
     requesthandler.cpp \
     webserver.cpp \
-    xml_writer.cpp
+    xml_writer.cpp \
+    libs/AGPS/lgps.cpp
 
 
 HEADERS  += mpd.h \
@@ -49,7 +50,8 @@ HEADERS  += mpd.h \
     logging/filelogger.h \
     requesthandler.h \
     webserver.h \
-    xml_writer.h
+    xml_writer.h \
+    libs/AGPS/lgps.h
 
 FORMS    += mpd.ui \
     music_streamer.ui \
@@ -64,7 +66,7 @@ OTHER_FILES += etc/*  logs/* etc/docroot/*
 RESOURCES += \
     icons.qrc
 CONFIG(debug, debug|release) {
-    unix:!mac:  LIBS += -L$$PWD/libs             -lQtWebApp
+    unix:!mac:  LIBS += -L$$PWD/libs/QtWebApp -lQtWebApp
     unix:!macx: LIBS += -L/usr/local/lib -llinphone -lmediastreamer_voip -lmediastreamer_base -lortp
     unix:!macx: LIBS += -L/usr/lib -lmpdclient
 }
@@ -75,3 +77,6 @@ DEPENDPATH += /usr/local/include ./logging/*     $$PWD/headers/*
 
 INCLUDEPATH += /usr/include
 DEPENDPATH += /usr/include
+INCLUDEPATH += $$PWD/libs/AGPS
+DEPENDPATH += $$PWD/libs/AGPS
+

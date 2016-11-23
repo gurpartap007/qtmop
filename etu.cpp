@@ -39,12 +39,57 @@ etu::etu(QWidget *parent) :
     ui(new Ui::etu)
 {
     ui->setupUi(this);
+    int i=0;
     connect(this,SIGNAL(new_incoming_call()),this,SLOT(incoming_call_handler()));
     connect(this,SIGNAL(mute_mic(bool)),this,SLOT(mute_microphone(bool)));
     qlinphone_init();
     ui->left_area->installEventFilter(this);
     ui->right_area->installEventFilter(this);
     ui->bottom_area->installEventFilter(this);
+    /************************************ mcu_stat.xml file Updation ***************************************/
+    etu_updating_file = new QFile("/home/apaul/apaul_projects/qtmop/etc/docroot/mcu_stat.xml");
+    if (!etu_updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        qDebug() << "unable to open xml file";
+        return;
+    }
+    QByteArray xmlData(etu_updating_file->readAll());
+    QDomDocument doc("mcu_stat");
+    QDomNodeList n;
+    doc.setContent(xmlData);
+    QDomElement root = doc.firstChildElement("CATALOG");
+    QDomElement statheader = root.firstChildElement("STATHEADER");
+    statheader.setAttribute("Mode","CR");
+    statheader.setAttribute("GSMSTAT","Online");
+    QDomElement ETUSTAT = root.firstChildElement("ETUSTAT");
+    ETUSTAT.setAttribute("EtuOnline","0");
+    ETUSTAT.setAttribute("EtuSelected","0");
+    ETUSTAT.setAttribute("EtuState","standby");
+    /*  for(i=0;i<10;i++)
+    {
+    QDomElement elem = doc.createElement("ETUS");
+    elem.setAttribute("IP", "255.255.255.255");
+     elem.setAttribute("NAME", "ETU 2");
+      elem.setAttribute("COACH", QString::number(i));
+       elem.setAttribute("STATUS", "OK");
+    ETUSTAT.appendChild(elem);
+    }*/
+    n = ETUSTAT.childNodes();
+    /*   for(i=0;i<n.size();i++)
+     ETUSTAT.removeChild(n.at(1));*/
+    while(!n.isEmpty())
+    {
+        QDomNode node = n.at(0);
+        node.parentNode().removeChild(node);
+    }
+    etu_updating_file->resize(0);
+    QTextStream stream(etu_updating_file);
+    stream.setDevice(etu_updating_file);
+    doc.save(stream, 4);
+    etu_updating_file->close();
+
+
+    /*******************************************************************************************************/
 }
 
 void etu::hello()
@@ -58,7 +103,7 @@ etu::~etu()
     delete ui;
 }
 //******************************************************************************************************************/
-//                        INITIALIZE THE NEW LINPHONE CORE AND SET DIFFERENT SETTINGS                               /
+//                        INITIALIZE THE NEW LINPHONE CORE AND SET DIFFERENT SETTINGS                                  /
 //******************************************************************************************************************/
 void etu::qlinphone_init()
 {
@@ -74,13 +119,11 @@ void etu::qlinphone_init()
     QTimer *iteration_timer = new QTimer(); // Timer to iterate linphone core and check call states at interval of 50 milli-seconds
     connect(iteration_timer, &QTimer::timeout, this, &etu::iterate);
     iteration_timer->start(50);
-
     dev=linphone_core_get_sound_devices(lc);
     for(i=0; dev[i]!=NULL; ++i)
     {
         qDebug() << i << dev[i];
     }
-
     linphone_core_set_ringer_device(lc,dev[1]);
     linphone_core_set_playback_device(lc,dev[1]);
     linphone_core_set_capture_device(lc,dev[1]);
@@ -91,12 +134,12 @@ void etu::qlinphone_init()
     linphone_core_enable_echo_limiter(lc,1);// Enable Echo Limiter
     linphone_core_set_inc_timeout(lc,60);// Set automatic termination of incoming Call to 1 minute
 }
-//*******************************************************************************************************************/
-//    HANDLE NEW INCOMING CALLS AND DO FOLLOWING TASKS:                                                              /
-//    1. Create New Notification Widget of Each New Call With Answer,Terminate,Hold and Bar Call Controls button     /
-//    2. Set Caller Name or ETB Unit Id in Each Call Notification.                                                   /
-//    3. Save reference of Calls Notification widget pointer for further operations                                  /
-//*******************************************************************************************************************/
+//*********************************************************************************************************************/
+//    HANDLE NEW INCOMING CALLS AND DO FOLLOWING TASKS:                                                                           /
+//    1. Create New Notification Widget of Each New Call With Answer,Terminate,Hold and Bar Call Controls button  /
+//    2. Set Caller Name or ETB Unit Id in Each Call Notification.                                                                                    /
+//    3. Save reference of Calls Notification widget pointer for further operations                                                          /
+//******************************************************************************************************************* /
 void etu::incoming_call_handler()
 {
     QStringList caller_ip;
@@ -122,6 +165,7 @@ void etu::incoming_call_handler()
     station_name      = new QLabel ;
     caller_ip = QString::fromLatin1(linphone_call_get_remote_address_as_string(call)).split('@');// get caller Ip Address for current Call
     station_name->setText(caller_ip.at(1));
+    call_history_lookup.insert(caller_ip.at(1),(long)unique_call_id);
     widget            = new QWidget(this);
     answer_button     = new EtuButton(unique_call_id,answer);
     terminate_button  = new EtuButton(unique_call_id,terminate);
@@ -171,12 +215,42 @@ void etu::incoming_call_handler()
     widgetLayout     -> setAlignment(terminate_button,Qt::AlignLeft);
     widgetLayout     -> setAlignment(station_name,Qt::AlignRight);
     widgetLayout     -> setAlignment(bar_button,Qt::AlignLeft);
-    widget           -> setLayout(widgetLayout);
-    widget           -> setStyleSheet("background-color: rgb(0,0,100);");
-    item-> setSizeHint(answer_button->minimumSizeHint());
+    widget                -> setLayout(widgetLayout);
+    widget                -> setStyleSheet("background-color: rgb(0,0,100);");
+    item                    -> setSizeHint(answer_button->minimumSizeHint());
     ui->call_queue->insertItem(unique_call_id-1,item); // Insert Current Call Notification along with buttons and ETB no in window
     ui->call_queue -> setItemWidget(item,widget);
     call_reference.append(item); //get Current Call notification window reference in QList call_reference
+    /****************************** UPDATE WEB USER INTERFACE *******************************/
+
+    if (!etu_updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        qDebug() << "unable to open xml file";
+        return;
+    }
+    QByteArray xmlData(etu_updating_file->readAll());
+    QDomDocument doc("mcu_stat");
+    QDomNodeList n;
+    doc.setContent(xmlData);
+    QDomElement root = doc.firstChildElement("CATALOG");
+    QDomElement statheader = root.firstChildElement("STATHEADER");
+    statheader.setAttribute("Mode","ETU");
+    QDomElement ETUSTAT = root.firstChildElement("ETUSTAT");
+    ETUSTAT.setAttribute("EtuOnline",QString::number( unique_call_id));
+    ETUSTAT.setAttribute("EtuSelected","0");
+    ETUSTAT.setAttribute("EtuState","standby");
+    QDomElement elem = doc.createElement("ETUS");
+    elem.setAttribute("IP", caller_ip.at(1));
+    elem.setAttribute("NAME", caller_ip.at(1));
+    elem.setAttribute("COACH",caller_ip.at(1));
+    elem.setAttribute("STATUS", "OK");
+    ETUSTAT.appendChild(elem);
+    etu_updating_file->resize(0);
+    QTextStream stream(etu_updating_file);
+    stream.setDevice(etu_updating_file);
+    doc.save(stream, 4);
+    etu_updating_file->close();
+    /************************************************************************************************/
 }
 
 void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg)
@@ -214,7 +288,7 @@ void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState
 }
 //*************************************************************************************************************/
 //            ITERATE EVERY 50 MILLI-SECONDS TO GET NOTIFICATIONS ABOUT CALLS AND CHECK FOR NEW CALLS          /
-//            STATES OF CALLS ARE SET BY LINPHONECORE                                                          /
+//            STATES OF CALLS AS SET BY LINPHONECORE                                                          /
 // ************************************************************************************************************/
 void etu::iterate()
 {
@@ -295,21 +369,48 @@ void etu::hold_call_slot(long call_id)
         emit this->call_status(false,true,call_id);
     }
 }
-//********************************************************************************************* */
-//                                CHECK CALL STATE CONTINOUSLY                                   /
-// IF CALL IS TERMINATED MANUALLY OR AUTOMATICALLY AFTER TIMEOUT :                               /
-// 1.CLEAR CALL NOTIFICATION FROM CALLS WINDOW                                                   /
+//********************************************************************************************* *                                        /
+//                                CHECK CALL STATE CONTINOUSLY                                                                                                 /
+// IF CALL IS TERMINATED MANUALLY OR AUTOMATICALLY AFTER TIMEOUT :                                                          /
+// 1.CLEAR CALL NOTIFICATION FROM CALLS WINDOW                                                                                                 /
 // 2.IF TERMINATED CALL IS LAST CALL AMONG MULTIPLE CALLS, THEN CLEAR CALLS_LIST QLIST AND CLOSE /
-//   ETU POPUP.                                                                                  /
-//***********************************************************************************************/
+//   ETU POPUP.                                                                                                                                                                      /
+//************************************************************************************************************************/
 void etu::check_call_state(LinphoneCall *call)
 {
     int counter=1;
+    QDomNodeList n;
     for (counter = 1;counter<Calls_list.size();counter++)  // iterate over total no. of simultenous calls
     {
         if(call == Calls_list.at(counter-1))
             break;
     }
+
+    /***********************************  XML UPDATION OF TERMINATED CALL *******************************/
+    if (!etu_updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        qDebug() << "unable to open xml file";
+        return;
+    }
+    QByteArray xmlData(etu_updating_file->readAll());
+    QDomDocument doc("mcu_stat");
+    doc.setContent(xmlData);
+    QDomElement root = doc.firstChildElement("CATALOG");
+    QDomElement ETUSTAT = root.firstChildElement("ETUSTAT");
+    ETUSTAT.setAttribute("EtuOnline",QString::number(ms_list_size(linphone_core_get_calls(lc))));
+    ETUSTAT.setAttribute("EtuState","standby");
+    n = ETUSTAT.childNodes();
+    ETUSTAT.removeChild(n.at(counter-1));
+    etu_updating_file->resize(0);
+    QTextStream stream(etu_updating_file);
+    stream.setDevice(etu_updating_file);
+    doc.save(stream, 4);
+    etu_updating_file->close();
+
+
+
+    /**************************************************************************************************************/
+    qDebug() << "CALL ID OF TERMINATED CALL -----> " << counter;
     ui->call_queue->removeItemWidget(call_reference.at(counter-1));// clear call notification from calls window
     qDebug() << "Call with id = " << counter << "terminated";
     if(!(ms_list_size(linphone_core_get_calls(lc))))// If there are no calls
@@ -324,9 +425,7 @@ void etu::check_call_state(LinphoneCall *call)
 
 void qlinphone_text_recieved(LinphoneCore *lc, LinphoneChatRoom *cr, const LinphoneAddress *from, const char *msg)
 {
-
-   //     qDebug() <<  "Message received from " << linphone_address_as_string(from) <<  recieved_msg;
-
+    //     qDebug() <<  "Message received from " << linphone_address_as_string(from) <<  recieved_msg;
 }
 //********************************************************************************************* */
 // GET CALL REFERENCE POINTER REQUESTED BY ANSWER,TERMINATE,HOLD OR BAR BUTTON                   /
@@ -363,7 +462,6 @@ void etu::mute_microphone(bool mic_mute)
         linphone_core_mute_mic(lc,true);// Mute MicroPhone
     else
         linphone_core_mute_mic(lc,false);// Unmute MicroPhone
-
 }
 
 void etu::bar_call_slot(long call_id)
@@ -373,8 +471,62 @@ void etu::bar_call_slot(long call_id)
     linphone_chat_room_send_message(cr,"barred,30");
     usleep(1000);
     end_call_slot(call_id);
+}
+
+void etu::accept_call_by_ip_address(QString ipaddr)
+{
+    long selected_call_id = call_history_lookup.value(ipaddr);
+    if (!etu_updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        qDebug() << "unable to open xml file";
+        return;
+    }
+    QByteArray xmlData(etu_updating_file->readAll());
+    QDomDocument doc("mcu_stat");
+    doc.setContent(xmlData);
+    QDomElement root = doc.firstChildElement("CATALOG");
+    QDomElement ETUSTAT = root.firstChildElement("ETUSTAT");
+    ETUSTAT.setAttribute("EtuSelected",QString::number( selected_call_id));
+    ETUSTAT.setAttribute("EtuState","standby");
+    etu_updating_file->resize(0);
+    QTextStream stream(etu_updating_file);
+    stream.setDevice(etu_updating_file);
+    doc.save(stream, 4);
+    etu_updating_file->close();
+    accept_call_slot(selected_call_id);
+}
+void etu::terminate_call_by_ip_address(QString ipaddr)
+{
+    long selected_call_id = call_history_lookup.value(ipaddr);
+    QDomNodeList n;
+    end_call_slot(selected_call_id);
+    if (!etu_updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        qDebug() << "unable to open xml file";
+        return;
+    }
+    QByteArray xmlData(etu_updating_file->readAll());
+    QDomDocument doc("mcu_stat");
+    doc.setContent(xmlData);
+    QDomElement root = doc.firstChildElement("CATALOG");
+    QDomElement ETUSTAT = root.firstChildElement("ETUSTAT");
+    ETUSTAT.setAttribute("EtuOnline",QString::number(ms_list_size(linphone_core_get_calls(lc))));
+    ETUSTAT.setAttribute("EtuState","standby");
+    ETUSTAT.setAttribute("EtuSelected","0");
+    n = ETUSTAT.childNodes();
+    ETUSTAT.removeChild(n.at(selected_call_id-1));
+    etu_updating_file->resize(0);
+    QTextStream stream(etu_updating_file);
+    stream.setDevice(etu_updating_file);
+    doc.save(stream, 4);
+    etu_updating_file->close();
 
 }
 
+void etu::hold_resume_call_by_ip_address(QString ipaddr)
+{
+    long selected_call_id = call_history_lookup.value(ipaddr);
+    hold_call_slot(selected_call_id);
+}
 
 

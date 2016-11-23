@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "header.h"
+#include <QDomElement>
 /** @brief Emergency Talkback class which involves handling of Calls like picking
  * call,holding a call,end a call and barring a user call.Call Queue from different coaches
  * is shown and driver can select the most important call first.
@@ -38,6 +39,9 @@ public slots:
     LinphoneCall *get_call_pointer(long call_id);
     void mute_microphone(bool mic_mute);
     void bar_call_slot(long call_id);
+    void accept_call_by_ip_address(QString ipaddr);
+    void terminate_call_by_ip_address(QString ipaddr);
+    void hold_resume_call_by_ip_address(QString ipaddr);
 
 signals:
     void call_ended();
@@ -53,11 +57,13 @@ protected:
 
 private:
     Ui::etu *ui;
+    QFile *etu_updating_file;
     QTimer *call_state_timer;
     LinphoneCall *call;
     QFont *station_name_font;
     LinphoneCore       *lc;
     const MSList       *call_logs;
+    QHash<QString, long> call_history_lookup;
     void check_call_state(LinphoneCall *call);
     friend void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg);
     friend void qlinphone_text_recieved(LinphoneCore *lc, LinphoneChatRoom *cr,const LinphoneAddress *from, const char *msg);

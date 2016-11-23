@@ -1,5 +1,20 @@
 #ifndef SQL_ENUMS_H
 #define SQL_ENUMS_H
+typedef unsigned char ubyte;
+typedef char sbyte;
+typedef	unsigned short uinteger;
+typedef	int sinteger;
+typedef	unsigned long uword;
+typedef	long int sword;
+typedef	const unsigned char urombyte;
+typedef	const char srombyte;
+typedef	const unsigned short uromint;
+typedef	const int sromint;
+typedef urombyte *const uromptr;
+typedef srombyte *const sromptr;
+typedef unsigned char *const uramptr;
+typedef sbyte *const sramptr;
+typedef long double lword;
 namespace Time {
 enum{
     HOURS,

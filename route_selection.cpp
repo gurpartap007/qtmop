@@ -40,13 +40,12 @@ route_selection::~route_selection()
     delete slave_trains_model;
     delete proxyModel;
 }
-
 void route_selection::settext(char value)
 {
     int route_count=0;
     if(value == ENTER_CLICK )
     {
-        qDebug() << train_routes;
+     //   qDebug() << train_routes;
         while(train_routes[route_count]!=NULL)
         {
             if(strcmp(display,train_routes[route_count].toUtf8().constData()))
@@ -177,7 +176,7 @@ void route_selection::select_train_route_with_sorting()
         xmlWriter.writeAttribute("TRAIN",all_trains_no_list.at(loop_count));
          xmlWriter.writeEndElement();
     }
-qDebug() << "TOTAL TRAIN NAMES --------> " << master_train_names.size();
+//qDebug() << "TOTAL TRAIN NAMES --------> " << master_train_names.size();
      //-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --//
  xmlWriter.writeEndElement();
    xmlWriter.writeEndDocument();
@@ -228,18 +227,18 @@ void route_selection::write_route_data_to_xml(QString selected_train_no)
     if(!query_determine_slave_train.next())
     {
         slave_train_no = selected_train_no;
-        qDebug() << "Slave train no " << slave_train_no;
+     //   qDebug() << "Slave train no " << slave_train_no;
         QSqlQuery find_master_train("SELECT `master_route` FROM `tbl_slave_route` where `train_number`='"+ selected_train_no + "'");
         find_master_train.next();
         master_train_no = find_master_train.value(0).toString();
-        qDebug() << "Master train no " << master_train_no;
-        qDebug() << "Master Train Route" << master_trains_model->data(model->index(0,0));
+      //  qDebug() << "Master train no " << master_train_no;
+      //  qDebug() << "Master Train Route" << master_trains_model->data(model->index(0,0));
         slave_train=true;
     }
     else
     {
         master_train_no = selected_train_no;
-        qDebug() << "Master train no " << master_train_no;
+       // qDebug() << "Master train no " << master_train_no;
     }
     ui->tableView->hide();
     ui->lineEdit->hide();
@@ -267,14 +266,14 @@ void route_selection::on_backButton_clicked()
 
 void route_selection::on_linedit_clicked()
 {
-    qDebug() << "Line Edit Clicked";
+  //  qDebug() << "Line Edit Clicked";
     ui->lineEdit->setAlignment(Qt::AlignCenter);
     ui->lineEdit->setAlignment(Qt::AlignRight);
 }
 
 void route_selection::lineedit_filtering(QString value)
 {
-    qDebug() << "prepending value ^ which means start with";
+  //  qDebug() << "prepending value ^ which means start with";
     value.prepend("^");
     proxyModel->setFilterRegExp(value);
 }
@@ -290,18 +289,18 @@ void route_selection::on_tableView_clicked()
     if(!query_determine_slave_train.next())
     {
         slave_train_no = selected_train_no;
-        qDebug() << "Slave train no " << slave_train_no;
+      //  qDebug() << "Slave train no " << slave_train_no;
         QSqlQuery find_master_train("SELECT `master_route` FROM `tbl_slave_route` where `train_number`='"+ selected_train_no + "'");
         find_master_train.next();
         master_train_no = find_master_train.value(0).toString();
-        qDebug() << "Master train no " << master_train_no;
-        qDebug() << "Master Train Route" << master_trains_model->data(model->index(0,0));
+      //  qDebug() << "Master train no " << master_train_no;
+      //  qDebug() << "Master Train Route" << master_trains_model->data(model->index(0,0));
         slave_train=true;
     }
     else
     {
         master_train_no = selected_train_no;
-        qDebug() << "Master train no " << master_train_no;
+     //   qDebug() << "Master train no " << master_train_no;
     }
 
     ui->tableView->hide();

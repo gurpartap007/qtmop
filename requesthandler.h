@@ -37,6 +37,10 @@ signals:
     void change_pf_direction(QChar);
     void change_next_stop(QByteArray,QByteArray);
     void skip_stop(QByteArray);
+    void accept_selected_call(QString);
+    void disconnect_selected_call(QString);
+    void hold_selected_call(QString);
+    void resume_selected_call(QString);
 public slots:
     void setContentType(QString fileName, HttpResponse& response) const;
     /**

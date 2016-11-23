@@ -12,7 +12,7 @@ webserver::webserver(QObject *parent) : QObject(parent)
    // logger->installMsgHandler();
 
     // Configure and start the TCP listener
-    qDebug("ServiceHelper: Starting service");
+  //  qDebug("ServiceHelper: Starting service");
     QSettings* listenerSettings=new QSettings(configFileName,QSettings::IniFormat);
     listenerSettings->beginGroup("listener");
     requestHandler = new RequestHandler;
@@ -44,7 +44,7 @@ QString webserver::searchConfigFile()
         {
             // found
             fileName=QDir(file.fileName()).canonicalPath();
-            qDebug("Using config file %s",qPrintable(fileName));
+      //      qDebug("Using config file %s",qPrintable(fileName));
             return fileName;
         }
     }

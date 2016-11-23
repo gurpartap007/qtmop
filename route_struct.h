@@ -3,6 +3,9 @@
 #define DIG_STN_NAME 32
 #define DIG_STN_CODE 6
 #define DIG_TRAIN_NUM 6
+#define MAX_STATIONS_PER_ROUTE 96
+
+
 typedef enum
 {
     ARRIVAL,
@@ -44,6 +47,7 @@ union route_status_flags
         bool right_angle;
         bool welcome_message_generated;
         bool trip_formatted;
+        bool route_info_avail;
     }bits;
 };
 
@@ -99,15 +103,18 @@ struct train_struct
 struct stn_info_struct
 {
     GPS_POS loc; // latitude longitude
-    unsigned long distance_from_previous_station;
     unsigned int arrival_peri; // arrival periphery
     unsigned int departure_peri; //departure periphery
     unsigned int approaching_peri; //approaching periphery
-    unsigned int track_distance_from_curr_pt;
+    float distance_frm_src;
     unsigned int stn_id;
     unsigned char stn_code[DIG_STN_CODE];
     unsigned char stn_name[3][DIG_STN_NAME];
     unsigned char wait_time;
+    float gps_distance_from_curr_loc;
+    float gps_distance_from_prev_loc;
+    float distance_from_curr_loc;
+    float distance_from_prev_loc;
     struct bits_struct
     {
         bool fast_train;
@@ -120,7 +127,7 @@ struct stn_info_struct
 };
 typedef struct route_struct
 {
-    struct stn_info_struct stn[96];
+    struct stn_info_struct stn[MAX_STATIONS_PER_ROUTE];
     struct train_struct train;
     struct status_struct status;
 }route;

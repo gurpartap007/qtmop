@@ -12,7 +12,8 @@ int current_station = 0;
 extern QString slave_train_no;
 bool is_slave_train  = false;
 route_struct current_route_data;
-
+sinteger mul_factor[MAX_STATIONS_PER_ROUTE];
+float track_dist_bn_stns[MAX_STATIONS_PER_ROUTE];
 train_route::train_route(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::train_route)
@@ -121,13 +122,23 @@ void train_route::add_stations_for_current_train()
 }
 
 ///////////////////// STRUCTURE FILLING FOR SELECTED ROUTE //////////////////////
-
+void train_route::gps_packet_handler(qint64 event,void *data)
+{
+    gps_packet = *(union gps_union *)data;
+    gps_packet.data.status.bits.to_be_processed = 1;
+    date_time.clear();
+    date_time = QString::number(gps_packet.data.cpu.time.hrs) + ":" + QString::number(gps_packet.data.cpu.time.min) + ":" + QString::number(gps_packet.data.cpu.time.sec);
+    date_time += QString::number(gps_packet.data.cpu.date.day) + "/" + QString::number(gps_packet.data.cpu.date.month) + "/20" + QString::number(gps_packet.data.cpu.date.yrs);
+   // ui->date_time->setText(date_time);
+ }
 void train_route::structure_filling(bool slave_train)
 {
     fill_train_struct(slave_train);
     fill_stn_struct();
     show_train_info();
     emit add_stations();
+    emit simulate("/home/apaul/apaul_projects/qtmop/etc/sim/MSB-VLC.TXT");
+    calculate_multiplying_factor();
 }
 void train_route::emulate_skip(int id)
 {
@@ -145,7 +156,7 @@ void train_route::show_train_info()
     xmlWriter->writeStartDocument();
     xmlWriter->setAutoFormatting(true);
     xmlWriter->writeStartElement("CATALOG");
-    xmlWriter->writeStartElement("ROUTEHEADER");
+    xmlWriter->writeStartElement("ROUTEtrain");
     ui->train_name->setText(master_train_no);
     xmlWriter->writeAttribute("ROUTE",master_train_no);
     ui->source_station_name->setText(QString::fromUtf8((const char *)current_route_data.train.src.name.eng));
@@ -202,14 +213,36 @@ void train_route::on_skip_station_clicked(int id)
 
 void train_route::update_date_time()
 {
-    date_time.clear();
-    current_date = QDate::currentDate();
-    date_time.append(current_date.toString(Qt::TextDate));
-    date_time.append("  ");
-    current_time = QTime::currentTime();
-    date_time.append(current_time.toString(Qt::TextDate));
+    //date_time.clear();
+    //current_date = QDate::currentDate();
+    //date_time.append(current_date.toString(Qt::TextDate));
+    //date_time.append("  ");
+    //current_time = QTime::currentTime();
+    //date_time.append(current_time.toString(Qt::TextDate));
     ui->date_time->setText(date_time);
     ui->coach_count->adjustSize();
+    route_tasks();
+    /*********************** Replacing XML CONTENT ********************************************************/
+        if (!updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
+        {
+        qDebug() << "unable to open xml file";
+        return;
+        }
+        QByteArray xmlData(updating_file->readAll());
+        QDomDocument doc("route_stat");
+         QDomNodeList n;
+        doc.setContent(xmlData);
+        QDomElement root = doc.firstChildElement("CATALOG");
+        QDomElement routetrain = root.firstChildElement("ROUTEtrain");
+        routetrain.setAttribute("GPSSTAT",(date_time));
+        routetrain.setAttribute("SPEED",QString::number(gps_packet.data.cpu.speed/100,'g',2));
+        routetrain.setAttribute("DISTANCE",QString::number(current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc,'g',3));
+        updating_file->resize(0);
+        QTextStream stream(updating_file);
+        stream.setDevice(updating_file);
+        doc.save(stream, 4);
+        updating_file->close();
+
 }
 
 void train_route::src_mid_des_station_name_filling()
@@ -434,41 +467,63 @@ void train_route::fill_stn_struct()
             current_route_data.stn[loop_count].bits.fast_train = true;
         else
             current_route_data.stn[loop_count].bits.fast_train = false;
-        current_route_data.stn[loop_count].distance_from_previous_station = (unsigned long) get_each_station_info.value(RouteMaster::DISTANCE_FRM_SOURCE).toFloat() - previous_distance;
+        current_route_data.stn[loop_count].distance_frm_src = get_each_station_info.value(RouteMaster::DISTANCE_FRM_SOURCE).toFloat();// - previous_distance;
         current_route_data.stn[loop_count].wait_time                      = get_each_station_info.value(RouteMaster::WAIT_TIME).toInt();
         previous_distance                                                 = get_each_station_info.value(RouteMaster::DISTANCE_FRM_SOURCE).toFloat();
         current_route_data.stn[loop_count].status.bits.station_skipped    = false;
         current_route_data.stn[loop_count].arrival_peri                   = get_each_station_info.value(RouteMaster::ARR_TRIGGERING).toInt();
         current_route_data.stn[loop_count].approaching_peri               = get_each_station_info.value(RouteMaster::APP_TRIGGERING).toInt();
-        current_route_data.stn[loop_count].departure_peri                 = get_each_station_info.value(RouteMaster::DEP_TRIGGERING).toInt();
+        current_route_data.stn[loop_count].departure_peri                 = 50;//get_each_station_info.value(RouteMaster::DEP_TRIGGERING).toInt();
+
         QSqlQuery get_long_latt_for_each_station("SELECT * FROM `tbl_StationCode` WHERE `station_code`='"+station_codes.at(loop_count)+"'");
         get_long_latt_for_each_station.first();
         current_route_data.stn[loop_count].loc.coordintes.longitude       = get_long_latt_for_each_station.value(StationCode::LONGITUDE).toFloat();
         current_route_data.stn[loop_count].loc.coordintes.latitude        = get_long_latt_for_each_station.value(StationCode::LATITUDE).toFloat();
+
+        uword temp_lat_long1 = 0,temp_lat_long2 = 0;
+        temp_lat_long1 = (uword)(current_route_data.stn[loop_count].loc.coordintes.latitude * 10000);
+        temp_lat_long2 = (temp_lat_long1/1000000)*60*10000;
+        temp_lat_long2 += (temp_lat_long1%1000000);
+        current_route_data.stn[loop_count].loc.coordintes.latitude = (float)temp_lat_long2;
+
+        temp_lat_long1 = (uword)(current_route_data.stn[loop_count].loc.coordintes.longitude * 10000);
+        temp_lat_long2 = (temp_lat_long1/1000000)*60*10000;
+        temp_lat_long2 += (temp_lat_long1%1000000);
+        current_route_data.stn[loop_count].loc.coordintes.longitude = (float)temp_lat_long2;
     }
     station_codes.clear();
 }
+void train_route::generate_station_departure()
+{
 
+    /*********************** Replacing XML CONTENT ********************************************************/
+        if (!updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
+        {
+        qDebug() << "unable to open xml file";
+        return;
+        }
+        QByteArray xmlData(updating_file->readAll());
+        QDomDocument doc("route_stat");
+         QDomNodeList n;
+        doc.setContent(xmlData);
+        QDomElement root = doc.firstChildElement("CATALOG");
+        QDomElement routetrain = root.firstChildElement("ROUTEtrain");
+        routetrain.setAttribute("NEXT",QString::number(current_route_data.status.next_halting_stn));
+        routetrain.setAttribute("PERIPHERY","OUT");
+        n = root.childNodes();
+      //  qDebug()<<n.length();
+        updating_file->resize(0);
+        QTextStream stream(updating_file);
+        stream.setDevice(updating_file);
+        doc.save(stream, 4);
+        updating_file->close();
+        emit send_route_info(FC_SDF);
+
+}
 
 int train_route::on_next_station_clicked()
 {
-/*********************** Replacing XML CONTENT ********************************************************/
-    if (!updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
-    {
-    qDebug() << "unable to open xml file";
-    return 1;
-    }
-    QByteArray xmlData(updating_file->readAll());
-    QDomDocument doc("route_stat");
-     QDomNodeList n;
-    doc.setContent(xmlData);
-    QDomElement root = doc.firstChildElement("CATALOG");
-    QDomElement routeheader = root.firstChildElement("ROUTEHEADER");
-    routeheader.setAttribute("NEXT",QString::number(current_route_data.status.next_halting_stn));
-    routeheader.setAttribute("PERIPHERY","OUT");
-    n = root.childNodes();
-    qDebug()<<n.length();
-
+    generate_station_departure();
 
 /*********************** Replacing XML CONTENT ********************************************************/
 check_again:
@@ -521,10 +576,10 @@ check_again:
             //   second_prev_widget->setDisabled(true);
             // second_prev_widget->setStyleSheet("background-color: rgb(150,150,150);");
             current_route_data.status.next_halting_stn = current_route_data.status.next_halting_stn + 1;
-            QDomElement cs = n.at(current_route_data.status.next_halting_stn + 1).toElement();
-            qDebug() << "SKIPPED STOP  NAME" << cs.attribute("STOP");
-            cs.setAttribute("ADD","0");
-            cs.setAttribute("PFD","LEFT");
+//            QDomElement cs = n.at(current_route_data.status.next_halting_stn + 1).toElement();
+  //          qDebug() << "SKIPPED STOP  NAME" << cs.attribute("STOP");
+    //        cs.setAttribute("ADD","0");
+      //      cs.setAttribute("PFD","LEFT");
         }
 
         current_item = ui->listWidget->item(current_route_data.status.next_halting_stn+1);
@@ -555,40 +610,21 @@ check_again:
 
         current_route_data.status.next_halting_stn ++;
 
-        emit send_route_info(FC_SDF);
         if(((current_route_data.status.next_halting_stn)+1) == (station_codes.size()))
         {
             ui->next_station->setDisabled(true);
             ui->next_station->setStyleSheet(" color: rgb(50,30,130);");
-            emit send_route_info(FC_REF);
+//            emit send_route_info(FC_REF);
         }
     }
-    updating_file->resize(0);
-    QTextStream stream(updating_file);
-    stream.setDevice(updating_file);
-    doc.save(stream, 4);
-    updating_file->close();
     return 0;
 }
-
-
-void train_route::on_station_arrived_clicked()
+void train_route::generate_station_arrival()
 {
     if(current_route_data.status.next_halting_stn == (station_codes.size()))
-    {
-
-        // ui->next_station->setStyleSheet(" color: rgb(50,30,130);");
-        current_route_data.status.next_halting_stn --;
-        emit send_route_info(FC_REF);
-
-    }
-    else
-    {
-        current_route_data.status.next_halting_stn = current_station;
-        // current_route_data.status.next_halting_stn -- ;
         emit send_route_info(FC_SAF);
-        current_route_data.status.next_halting_stn ++ ;
-    }
+    else
+        emit send_route_info(FC_REF);
     if (!updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
     {
     qDebug() << "unable to open xml file";
@@ -600,11 +636,234 @@ void train_route::on_station_arrived_clicked()
      QDomNodeList n;
     doc.setContent(xmlData);
     QDomElement root = doc.firstChildElement("CATALOG");
-    QDomElement routeheader = root.firstChildElement("ROUTEHEADER");
-    routeheader.setAttribute("PERIPHERY","IN");
+    QDomElement routetrain = root.firstChildElement("ROUTEtrain");
+    routetrain.setAttribute("PERIPHERY","IN");
     updating_file->resize(0);
     QTextStream stream(updating_file);
     stream.setDevice(updating_file);
     doc.save(stream, 4);
     updating_file->close();
+}
+
+void train_route::on_station_arrived_clicked()
+{
+    if(current_route_data.status.next_halting_stn == (station_codes.size()))
+    {
+        // ui->next_station->setStyleSheet(" color: rgb(50,30,130);");
+        current_route_data.status.next_halting_stn --;
+    }
+    else
+    {
+        current_route_data.status.next_halting_stn = current_station;
+        current_route_data.status.next_halting_stn ++ ;
+    }
+    generate_station_arrival();
+}
+void train_route::route_tasks()
+{
+   // qDebug()<<"route_tasks() route.cpp called..;";
+ //   manage_device_updates();
+    if(gps_packet.data.status.bits.to_be_processed)
+    {
+        gps_packet.data.status.bits.to_be_processed = 0;
+        curr_lattit = gps_packet.data.cpu.latit;
+        curr_longit = gps_packet.data.cpu.longit;
+        if(current_route_data.status.flags.bits.position_identified)
+        {
+           /*********************************************************************************************************************************************************/
+           /***********************Calculate distances based on stop lat longs and the curr lat longs****************************************************************/
+           /*********************************************************************************************************************************************************/
+                current_route_data.stn[current_route_data.status.next_halting_stn].gps_distance_from_prev_loc = current_route_data.stn[current_route_data.status.next_halting_stn].gps_distance_from_curr_loc;
+                current_route_data.stn[current_route_data.status.next_halting_stn].gps_distance_from_curr_loc = get_distance(current_route_data.stn[current_route_data.status.next_halting_stn].loc.coordintes.latitude,current_route_data.stn[current_route_data.status.next_halting_stn].loc.coordintes.longitude);
+                current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_prev_loc = current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc;
+                double curr_distance = 0;
+                curr_distance = current_route_data.stn[current_route_data.status.next_halting_stn].gps_distance_from_curr_loc;
+                if(current_route_data.status.next_halting_stn)
+                    curr_distance = (((float)mul_factor[current_route_data.status.next_halting_stn - 1] * curr_distance) / 10000) + curr_distance;
+                else
+                    curr_distance = (((float)mul_factor[0] * curr_distance) / 10000) + curr_distance;
+                current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc = curr_distance;
+            /*********************************************************************************************************************************************************/
+            /***********************Calculate distances based on stop lat longs and the curr lat longs****************************************************************/
+            /*********************************************************************************************************************************************************/
+
+            /*********************************************************************************************************************************************************/
+            /***********************Generate Arrival Departure triggers based on the distance of current stop form the current location*******************************/
+            /*********************************************************************************************************************************************************/
+             if(((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000) <= current_route_data.stn[current_route_data.status.next_halting_stn].approaching_peri) && ((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_prev_loc*1000) > current_route_data.stn[current_route_data.status.next_halting_stn].approaching_peri))
+             {
+            //    qDebug() << "WITHIN 1 KM OF " << QString::fromLatin1((const char*)current_route_data.stn[current_route_data.status.next_stn].stn_name);
+                //emit route_events(STOP_APPROACHING,0);
+             }
+             else if(((int)(current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000) <= current_route_data.stn[current_route_data.status.next_halting_stn].arrival_peri) && ((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_prev_loc*1000) > (current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000)))
+             {
+                if(current_route_data.status.flags.bits.inside_peri == 0)
+                {
+             //       qDebug() << "ENTERED ENTRY PERIPHERY OF " << QString::fromLatin1((const char*)current_route_data.stn[current_route_data.status.next_halting_stn].stn_name);
+                    current_route_data.status.flags.bits.inside_peri = 1;
+                    current_route_data.status.flags.bits.outside_peri = 0;
+                    //emit route_events(STOP_ARRIVAL,0);
+                    generate_station_arrival();
+                }
+             }
+             else if(((int)(current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000) > current_route_data.stn[current_route_data.status.next_halting_stn].departure_peri) && ((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_prev_loc*1000) < (current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000)))
+             {
+                 if(current_route_data.status.flags.bits.outside_peri == 0 && current_route_data.status.flags.bits.inside_peri == 1)
+                 {
+              //      qDebug() << "LEFT EXIT PERIPHERY OF " << QString::fromLatin1((const char*)current_route_data.stn[current_route_data.status.next_halting_stn].stn_name);
+                   // current_route_data.Prev_stop = current_route_data.status.next_halting_stn;
+                    current_route_data.status.next_halting_stn++;
+                    current_route_data.status.next_stn = current_route_data.status.next_halting_stn + 1;
+                    current_route_data.status.flags.bits.inside_peri = 0;
+                    current_route_data.status.flags.bits.outside_peri = 1;
+                   generate_station_departure();
+                    //emit route_events(STOP_DEPARTURE,0);
+                 }
+             }
+             /*********************************************************************************************************************************************************/
+             /***********************Ended Arrival Departure triggers based on the distance of current stop form the current location**********************************/
+             /*********************************************************************************************************************************************************/
+        }
+        if(current_route_data.status.flags.bits.route_info_avail && (!current_route_data.status.flags.bits.position_identified))
+            lost_path_recovery();
+    }
+}
+
+
+void train_route::lost_path_recovery()
+{
+
+    int nearest_stn_no = current_route_data.status.next_halting_stn;
+    float actual_distance_between_currpt_n_a,actual_distance_between_currpt_n_b,actual_distance_between_currpt_n_c;
+    while(current_route_data.status.next_halting_stn <  current_route_data.train.no_of_stns)
+    {
+        current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc = get_distance(current_route_data.stn[current_route_data.status.next_halting_stn].loc.coordintes.latitude,current_route_data.stn[current_route_data.status.next_halting_stn].loc.coordintes.longitude);
+        current_route_data.status.next_halting_stn++;
+    }
+    while(1)
+    {
+        while((current_route_data.stn[nearest_stn_no].distance_from_curr_loc > current_route_data.stn[nearest_stn_no + 1].distance_from_curr_loc) && (nearest_stn_no < current_route_data.train.no_of_stns))
+            nearest_stn_no++;
+        current_route_data.status.next_halting_stn = nearest_stn_no;
+        if(!current_route_data.status.next_halting_stn && current_route_data.stn[0].distance_from_curr_loc < track_dist_bn_stns[0])
+        {
+            current_route_data.status.next_halting_stn++;
+            break;
+        }
+        else if(current_route_data.status.next_halting_stn ==  (current_route_data.train.no_of_stns - 1))
+        {
+            if(current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc < track_dist_bn_stns[current_route_data.status.next_halting_stn - 1])
+                break;
+            else
+            {
+                current_route_data.status.next_halting_stn = 0;
+                return;
+            }
+        }
+        else
+        {
+            actual_distance_between_currpt_n_a = (((float)mul_factor[nearest_stn_no - 1] * current_route_data.stn[nearest_stn_no - 1].distance_from_curr_loc)/10000) + current_route_data.stn[nearest_stn_no - 1].distance_from_curr_loc;
+            actual_distance_between_currpt_n_b = (((((float)mul_factor[nearest_stn_no - 1] + (float)mul_factor[nearest_stn_no - 1])/2)* current_route_data.stn[nearest_stn_no].distance_from_curr_loc)/10000) + current_route_data.stn[nearest_stn_no].distance_from_curr_loc;
+            actual_distance_between_currpt_n_c = (((float)mul_factor[nearest_stn_no] * current_route_data.stn[nearest_stn_no + 1].distance_from_curr_loc)/10000) + current_route_data.stn[nearest_stn_no + 1].distance_from_curr_loc;
+            if(actual_distance_between_currpt_n_b < 0.800)
+                break;
+            if(actual_distance_between_currpt_n_a < track_dist_bn_stns[nearest_stn_no - 1] && actual_distance_between_currpt_n_c > track_dist_bn_stns[nearest_stn_no])
+                break;
+            else if(actual_distance_between_currpt_n_a > track_dist_bn_stns[nearest_stn_no - 1] && actual_distance_between_currpt_n_c < track_dist_bn_stns[nearest_stn_no])
+            {
+                current_route_data.status.next_halting_stn++;
+                break;
+            }
+            else if(actual_distance_between_currpt_n_b > track_dist_bn_stns[nearest_stn_no - 1])
+            {
+                while((current_route_data.stn[nearest_stn_no].distance_from_curr_loc > current_route_data.stn[nearest_stn_no + 1].distance_from_curr_loc) && (nearest_stn_no < current_route_data.train.no_of_stns))
+                    nearest_stn_no++;
+                if(current_route_data.status.next_halting_stn == current_route_data.train.no_of_stns - 1 && current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc < track_dist_bn_stns[current_route_data.status.next_halting_stn - 1])
+                    break;
+
+            }
+            else if(actual_distance_between_currpt_n_b > track_dist_bn_stns[nearest_stn_no])
+            {
+                current_route_data.status.flags.bits.position_identified = 0;
+                return;
+            }
+            else if(actual_distance_between_currpt_n_a < track_dist_bn_stns[nearest_stn_no - 1] && actual_distance_between_currpt_n_c < track_dist_bn_stns[nearest_stn_no])
+            {
+                if(temp_prev_distance != 0.0)
+                {
+                    if(gps_packet.data.cpu.speed>2 && temp_prev_distance > actual_distance_between_currpt_n_b)
+                    {
+                        current_route_data.status.flags.bits.right_angle = 0;
+                        break;
+                    }
+                    else if(gps_packet.data.cpu.speed>2 && temp_prev_distance < actual_distance_between_currpt_n_b)
+                    {
+                        current_route_data.status.next_halting_stn++;
+                        current_route_data.status.flags.bits.right_angle = 0;
+                        break;
+                    }
+                    else
+                        return;
+                }
+                temp_prev_distance = actual_distance_between_currpt_n_b;
+                current_route_data.status.flags.bits.position_identified = 0;
+                current_route_data.status.flags.bits.right_angle = 1;
+            }
+            else
+                break;
+        }
+    }
+    if(!current_route_data.status.flags.bits.right_angle)
+    {
+        current_route_data.status.flags.bits.position_identified = 1;
+      //  if(current_route_data.status.next_halting_stn)
+        //    current_route_data.Prev_stop = current_route_data.status.next_halting_stn - 1;
+       // else
+        //    current_route_data.Prev_stop = current_route_data.status.next_halting_stn;
+        current_route_data.status.next_stn = current_route_data.status.next_halting_stn + 1;
+        if((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000) > current_route_data.stn[current_route_data.status.next_halting_stn].arrival_peri)
+        {
+            current_route_data.status.flags.bits.outside_peri = 1;
+            generate_station_departure();
+            //emit route_events(STOP_DEPARTURE,0);
+        }
+        else
+        {
+            current_route_data.status.flags.bits.inside_peri = 1;
+            generate_station_arrival();
+
+            //emit route_events(STOP_ARRIVAL,0);
+        }
+    }
+}
+void train_route::calculate_multiplying_factor(void)
+{
+    float temp_mul_factor = 0;
+    int stn_no = 0;
+    int prev_stn_dist = current_route_data.stn[stn_no++].distance_frm_src;
+    while(stn_no < current_route_data.train.no_of_stns)
+    {
+        track_dist_bn_stns[stn_no - 1]   = current_route_data.stn[stn_no].distance_frm_src - prev_stn_dist;
+        prev_stn_dist = current_route_data.stn[stn_no].distance_frm_src;
+        temp_mul_factor = get_distance_bn_pts(current_route_data.stn[stn_no - 1].loc.coordintes.latitude,current_route_data.stn[stn_no - 1].loc.coordintes.longitude,current_route_data.stn[stn_no].loc.coordintes.latitude,current_route_data.stn[stn_no].loc.coordintes.longitude);
+        temp_mul_factor = (((float)(track_dist_bn_stns[stn_no - 1]) - temp_mul_factor)/temp_mul_factor)*10000;
+        mul_factor[stn_no++ - 1] = (sinteger)temp_mul_factor;
+    }
+    current_route_data.status.flags.bits.route_info_avail  = 1;
+}
+float train_route::get_distance(float x2, float y2)
+{
+    float temp_distance;
+    temp_distance = (curr_lattit - x2)*(curr_lattit - x2)+(curr_longit - y2)*(curr_longit - y2);
+    temp_distance = sqrt(temp_distance);
+    temp_distance = temp_distance * 176 / 945 / 1000;
+    return(temp_distance);
+}
+float train_route::get_distance_bn_pts(float x1, float y1,float x2, float y2)
+{
+    float temp_distance;
+    temp_distance = (x1 - x2)*(x1 - x2)+(y1 - y2)*(y1 - y2);
+    temp_distance = sqrt(temp_distance);
+    temp_distance = temp_distance * 176 / 945 / 1000;
+    return(temp_distance);
 }

@@ -16,8 +16,8 @@ music_streamer::music_streamer(QWidget *parent) :
     ui(new Ui::music_streamer)
 {
     ui->setupUi(this);
-    command_channel = new QUdpSocket(this);
-    playlists_channel = new QUdpSocket(this);
+    command_channel  = new QUdpSocket(this);
+    playlists_channel    = new QUdpSocket(this);
     command_channel->bind(QHostAddress::Broadcast,COMMAND_PORT);
     playlists_channel->bind(QHostAddress::Broadcast,PLAYLISTS_PORT);
     this->setGeometry(0,0,0,0);
@@ -365,28 +365,28 @@ case regional:
 
      mpd_run_clear(conn);
      mpd_run_load(conn,"regional");
-   Sleeper::sleep(2);
+ //  Sleeper::sleep(2);
      mpd_run_play(conn);
-  Sleeper::msleep(50);
-    send_command_to_player(PLAY);
+     send_command_to_player(PLAY);
+     Sleeper::msleep(500);
     ANNOUNCE_LANGUAGE = hindi;
    break;
 case hindi:
     mpd_run_clear(conn);
     mpd_run_load(conn,"hindi");
-    Sleeper::sleep(2);
+ //   Sleeper::sleep(2);
      mpd_run_play(conn);
-     Sleeper::msleep(50);
      send_command_to_player(PLAY);
+     Sleeper::msleep(500);
    ANNOUNCE_LANGUAGE = english;
    break;
 case english:
     mpd_run_clear(conn);
     mpd_run_load(conn,"english");
-    Sleeper::sleep(2);
+   // Sleeper::sleep(2);
      mpd_run_play(conn);
-     Sleeper::msleep(50);
    send_command_to_player(PLAY);
+   Sleeper::msleep(500);
    ANNOUNCE_LANGUAGE = regional;
    break;
 }
