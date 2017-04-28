@@ -1,3 +1,4 @@
+//checking tags
 #include "mpd.h"
 #include "ui_mpd.h"
 mpd::mpd(QApplication *app_ptr ,QWidget *parent) :
