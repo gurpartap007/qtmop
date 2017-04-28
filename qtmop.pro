@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     requesthandler.cpp \
     webserver.cpp \
     xml_writer.cpp \
-    libs/AGPS/lgps.cpp
+    libs/AGPS/lgps.cpp \
+    intercom.cpp
 
 
 HEADERS  += mpd.h \
@@ -51,7 +52,8 @@ HEADERS  += mpd.h \
     requesthandler.h \
     webserver.h \
     xml_writer.h \
-    libs/AGPS/lgps.h
+    libs/AGPS/lgps.h \
+    intercom.h
 
 FORMS    += mpd.ui \
     music_streamer.ui \
@@ -60,8 +62,8 @@ FORMS    += mpd.ui \
     train_route.ui \
     etu.ui \
     settings.ui \
-    public_announcement.ui \
     numeric_keypad.ui
+   # intercom.ui
 OTHER_FILES += etc/*  logs/* etc/docroot/*
 RESOURCES += \
     icons.qrc

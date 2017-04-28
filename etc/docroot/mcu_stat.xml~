@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<CATALOG>
+    <STATHEADER EtuSelected="0" Mode="ETU" GSMSTAT="Online"/>
+    <ETUSTAT EtuOnline="3" EtuSelected="2" EtuState="standby">
+        <ETUS STATUS="OK" IP="192.168.0.26" COACH="192.168.0.26" NAME="192.168.0.26"/>
+        <ETUS STATUS="OK" IP="192.168.0.26" COACH="192.168.0.26" NAME="192.168.0.26"/>
+        <ETUS STATUS="OK" IP="192.168.1.36" COACH="192.168.1.36" NAME="192.168.1.36"/>
+    </ETUSTAT>
+</CATALOG>

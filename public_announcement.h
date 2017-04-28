@@ -32,21 +32,11 @@ public:
 signals:
     void back_clicked();
 
-protected:
-    void paintEvent(QPaintEvent* event);
-    virtual bool eventFilter( QObject * watched, QEvent * event );
-
-private slots:
-    void on_pushButton_clicked();
+public slots:
     void start_gstreamer();
-    void on_pushButton_2_clicked();
-
     void on_start_announcement_clicked();
-
     void on_end_announcement_clicked();
 
-private:
-    Ui::public_announcement *ui;
 };
 
 #endif // PUBLIC_ANNOUNCEMENT_H

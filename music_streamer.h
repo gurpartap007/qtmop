@@ -1,12 +1,7 @@
 #ifndef MUSIC_STREAMER_H
 #define MUSIC_STREAMER_H
 
-#include <QWidget>
-#include <QUdpSocket>
-#include <QThread>
 #include "header.h"
-#include "database.h"
-#include <QString>
 /** @brief Music streaming using mpdclient Api,MPD and ICECAST2 server
 
     Detailed description follows here.
@@ -42,15 +37,9 @@ public:
 
     explicit music_streamer(QWidget *parent = 0);
     ~music_streamer();
-    database *bus_database;/**< database connection to BUS_PIS Database in sql**/
     mpd_connection *conn;/**< connection to mpd server**/
     struct mpd_status * status;/**< MPD daemon connection status and to fetch various information from mpd**/
-    struct mpd_song *song;/**< Structure to store song information returned from MPD daemon**/
-    QTimer *player_timer;/**< Timer to delay the execution of mp3 player because stream is not availble for first 1-2 seconds **/
-    const struct mpd_audio_format *audio_format;/**< Structure to store format of currently played song returned by MPD**/
-    QProcess *player;/**< MP3 player used to play stream(mp3-decoder)...very fast playback with minimum latency**/
     QString mpd_music_path;/**<MPD music path for storing songs,playlists **/
-    bool player_started;
     QTimer *mpd_timer;
     QString data_set_name;
     QStringList eng_playlist,hindi_playlist,reg_playlist;
@@ -66,7 +55,6 @@ public slots:
     void create_announcement_playlist(QString func_code);
     void check_mpd_status();
     void send_command_to_player(int command);
-    void send_playlists_to_player();
 
 
 private:

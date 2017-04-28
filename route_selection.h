@@ -53,11 +53,9 @@ public slots:
      * @brief Shows the current route selected by user which exist in main database.
      */
     void route_window();
-    void select_next(QByteArray next_stop,QByteArray IN_OUT);
-    void change_pf(QChar);
+    void select_next(QByteArray IN_OUT);
     void skip_station(QByteArray);
     void select_train_route_with_sorting();
-    void route_data_to_relevant_channels();
     void write_route_data_to_xml(QString selected_train_no);
 
 private slots:

@@ -43,6 +43,7 @@ signals:
     void send_route_info(QString func_code);
     void emulate_skip_click(int);
     void simulate(QString filename);
+    void route_end();
 public slots:
     void show_train_info();
     void add_stations_for_current_train();
@@ -60,7 +61,7 @@ private slots:
     void on_skip_station_clicked(int id);
     void update_date_time();
     int on_next_station_clicked();
-
+    void show_end_route();
     void on_station_arrived_clicked();
 
 private:

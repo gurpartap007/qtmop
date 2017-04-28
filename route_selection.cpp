@@ -24,8 +24,8 @@ route_selection::route_selection(QWidget *parent) :
     connect(this,SIGNAL(train_selected(bool)),current_route,SLOT(structure_filling(bool)));
     connect(this,SIGNAL(station_skipped(int)),current_route,SLOT(on_skip_station_clicked(int)));
     connect(ui->lineEdit, SIGNAL(textChanged(QString)), this, SLOT(lineedit_filtering(QString)));
-   connect(this,SIGNAL(next_clicked()),current_route,SLOT(on_next_station_clicked()));
-   connect(this,SIGNAL(halt_clicked()),current_route,SLOT(on_station_arrived_clicked()));
+    connect(this,SIGNAL(next_clicked()),current_route,SLOT(on_next_station_clicked()));
+    connect(this,SIGNAL(halt_clicked()),current_route,SLOT(on_station_arrived_clicked()));
     connect(this,SIGNAL(change_numeric_keypad()),train_selection_keyboard,SLOT(on_pushButton_31_clicked()));
     emit select_train_route_with_sorting();
     emit train_selection_keyboard->change_to_numeric();
@@ -45,7 +45,7 @@ void route_selection::settext(char value)
     int route_count=0;
     if(value == ENTER_CLICK )
     {
-     //   qDebug() << train_routes;
+        //   qDebug() << train_routes;
         while(train_routes[route_count]!=NULL)
         {
             if(strcmp(display,train_routes[route_count].toUtf8().constData()))
@@ -109,10 +109,10 @@ void route_selection::select_train_route_with_sorting()
     {
         QMessageBox::warning(0, "Error!", "Error opening file");
     }
-        xmlWriter.setDevice(&file);
-        xmlWriter.writeStartDocument();
-        xmlWriter.setAutoFormatting(true);
-        xmlWriter.writeStartElement("CATALOG");
+    xmlWriter.setDevice(&file);
+    xmlWriter.writeStartDocument();
+    xmlWriter.setAutoFormatting(true);
+    xmlWriter.writeStartElement("CATALOG");
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->horizontalHeader()->setFont(header_font);
@@ -156,7 +156,7 @@ void route_selection::select_train_route_with_sorting()
     for(loop_count=0;loop_count<master_trains_model->rowCount();loop_count++)
     {
         ColumnData << new QStandardItem(master_trains_model->data(master_trains_model->index(loop_count,TrainNumber::TRAN_NAME_ENGLISH)).toString());
-          master_train_names.append(master_trains_model->data(master_trains_model->index(loop_count,TrainNumber::TRAN_NAME_ENGLISH)).toString());
+        master_train_names.append(master_trains_model->data(master_trains_model->index(loop_count,TrainNumber::TRAN_NAME_ENGLISH)).toString());
     }
 
     //////////////////////////// Extract master train Name from Master Train Number //////////////////////////////
@@ -172,14 +172,14 @@ void route_selection::select_train_route_with_sorting()
         ColumnData << new QStandardItem(master_train_names.at(loop_count));
         xmlWriter.writeStartElement("CD");
         xmlWriter.writeAttribute("name",master_train_names.at(loop_count));
-       // xmlWriter.writeEndElement();
+        // xmlWriter.writeEndElement();
         xmlWriter.writeAttribute("TRAIN",all_trains_no_list.at(loop_count));
-         xmlWriter.writeEndElement();
+        xmlWriter.writeEndElement();
     }
-//qDebug() << "TOTAL TRAIN NAMES --------> " << master_train_names.size();
-     //-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --//
- xmlWriter.writeEndElement();
-   xmlWriter.writeEndDocument();
+    //qDebug() << "TOTAL TRAIN NAMES --------> " << master_train_names.size();
+    //-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --//
+    xmlWriter.writeEndElement();
+    xmlWriter.writeEndDocument();
     model->insertColumn(1,ColumnData);
     ColumnData.clear();
     model->setHorizontalHeaderLabels(labels);
@@ -195,30 +195,17 @@ void route_selection::select_train_route_with_sorting()
     ui->backButton->hide();
 }
 
-void route_selection::route_data_to_relevant_channels()
-{
-    int route_lines_depth;
-    route_lines_depth = 20;
-    ui->lineEdit->displayText();
-    ui->lineEdit->fontInfo();
-    ui->lineEdit->blockSignals(false);
-    route_lines_depth = ui->lineEdit->depth();
-}
-void route_selection::select_next(QByteArray next_stop,QByteArray IN_OUT)
+void route_selection::select_next(QByteArray IN_OUT)
 {
     if(IN_OUT[0] == 'I')
         emit halt_clicked();
     else
         emit next_clicked();
 }
-void route_selection::change_pf(QChar dir)
-{
-
-}
 void route_selection::skip_station(QByteArray index)
 {
     emit current_route->emulate_skip_click(index.toInt());
-//    emit station_skipped(index.toInt());
+    //    emit station_skipped(index.toInt());
 }
 void route_selection::write_route_data_to_xml(QString selected_train_no)
 {
@@ -227,18 +214,18 @@ void route_selection::write_route_data_to_xml(QString selected_train_no)
     if(!query_determine_slave_train.next())
     {
         slave_train_no = selected_train_no;
-     //   qDebug() << "Slave train no " << slave_train_no;
+        //   qDebug() << "Slave train no " << slave_train_no;
         QSqlQuery find_master_train("SELECT `master_route` FROM `tbl_slave_route` where `train_number`='"+ selected_train_no + "'");
         find_master_train.next();
         master_train_no = find_master_train.value(0).toString();
-      //  qDebug() << "Master train no " << master_train_no;
-      //  qDebug() << "Master Train Route" << master_trains_model->data(model->index(0,0));
+        //  qDebug() << "Master train no " << master_train_no;
+        //  qDebug() << "Master Train Route" << master_trains_model->data(model->index(0,0));
         slave_train=true;
     }
     else
     {
         master_train_no = selected_train_no;
-       // qDebug() << "Master train no " << master_train_no;
+        // qDebug() << "Master train no " << master_train_no;
     }
     ui->tableView->hide();
     ui->lineEdit->hide();
@@ -266,14 +253,14 @@ void route_selection::on_backButton_clicked()
 
 void route_selection::on_linedit_clicked()
 {
-  //  qDebug() << "Line Edit Clicked";
+    //  qDebug() << "Line Edit Clicked";
     ui->lineEdit->setAlignment(Qt::AlignCenter);
     ui->lineEdit->setAlignment(Qt::AlignRight);
 }
 
 void route_selection::lineedit_filtering(QString value)
 {
-  //  qDebug() << "prepending value ^ which means start with";
+    //  qDebug() << "prepending value ^ which means start with";
     value.prepend("^");
     proxyModel->setFilterRegExp(value);
 }
@@ -289,18 +276,18 @@ void route_selection::on_tableView_clicked()
     if(!query_determine_slave_train.next())
     {
         slave_train_no = selected_train_no;
-      //  qDebug() << "Slave train no " << slave_train_no;
+        //  qDebug() << "Slave train no " << slave_train_no;
         QSqlQuery find_master_train("SELECT `master_route` FROM `tbl_slave_route` where `train_number`='"+ selected_train_no + "'");
         find_master_train.next();
         master_train_no = find_master_train.value(0).toString();
-      //  qDebug() << "Master train no " << master_train_no;
-      //  qDebug() << "Master Train Route" << master_trains_model->data(model->index(0,0));
+        //  qDebug() << "Master train no " << master_train_no;
+        //  qDebug() << "Master Train Route" << master_trains_model->data(model->index(0,0));
         slave_train=true;
     }
     else
     {
         master_train_no = selected_train_no;
-     //   qDebug() << "Master train no " << master_train_no;
+        //   qDebug() << "Master train no " << master_train_no;
     }
 
     ui->tableView->hide();

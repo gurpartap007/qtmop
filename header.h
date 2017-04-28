@@ -19,6 +19,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <QString>
+#include <QThread>
 #include <QRegExp>
 #include <QByteArray>
 #include <QStringListModel>

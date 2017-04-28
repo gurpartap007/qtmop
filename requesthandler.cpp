@@ -14,7 +14,7 @@ bool routeRunFlag = true;
 RequestHandler::RequestHandler(QObject* parent)
     :HttpRequestHandler(parent)
 {
-  //  qDebug("RequestHandler: created");
+    //  qDebug("RequestHandler: created");
     QFileInfo configFile(configFileName);
     docroot= configFile.absolutePath();
     docroot = docroot + "/docroot";
@@ -34,7 +34,7 @@ void RequestHandler::service(HttpRequest& request, HttpResponse& response)
     if (path.startsWith("/RouteRun") && routeRunFlag)
     {
         QByteArray train_number = request.getParameter("trainumber");
-     //   qDebug() << "Selected route" << train_number ;
+        //   qDebug() << "Selected route" << train_number ;
         emit  write_train_routes(QString::fromLatin1(train_number));
         routeRunFlag = false;
     }
@@ -47,8 +47,8 @@ void RequestHandler::service(HttpRequest& request, HttpResponse& response)
         QByteArray  resume_caller_ip = request.getParameter(("RESUME"));
         if(accept_caller_ip.length())
         {
-           qDebug() << "######### ACCEPT CALL selected ######### ";
-           emit accept_selected_call(accept_caller_ip);
+            qDebug() << "######### ACCEPT CALL selected ######### ";
+            emit accept_selected_call(accept_caller_ip);
         }
         else  if(disconnect_caller_ip.length())
         {
@@ -58,26 +58,33 @@ void RequestHandler::service(HttpRequest& request, HttpResponse& response)
         else  if(hold_caller_ip.length())
         {
             qDebug() << "######### HOLD CALL selected ######### ";
-             emit hold_selected_call(hold_caller_ip);
+            emit hold_selected_call(hold_caller_ip);
         }
         else if(resume_caller_ip.length())
         {
             qDebug() << "######### RESUME CALL selected ######### ";
-             emit resume_selected_call(resume_caller_ip);
+            emit resume_selected_call(resume_caller_ip);
         }
         return;
     }
     else if(path.startsWith("/ModeSelection.html"))
     {
-    QByteArray selected_mode = request.getParameter("Mode");
-    if(selected_mode == "PA")
-        qDebug() << "######### PA MODE selected ######### ";
-    else if(selected_mode == "CR")
-        qDebug() << "######### CR MODE selected ######### ";
-   else if(selected_mode == "CC")
-        qDebug() << "######### CC MODE selected ######### ";
-    else if(selected_mode == "ETU")
-        qDebug() << "######### ETU MODE selected ######### ";
+        QByteArray selected_mode = request.getParameter("Mode");
+        qDebug() << "$$$$$$$$$$$$$$$$ MODE" << selected_mode;
+        if(selected_mode == "PA")
+        {
+            qDebug() << "######### PA MODE selected ######### ";
+            emit announcement_clicked() ;
+        }
+        else if(selected_mode == "CR")
+            qDebug() << "######### CR MODE selected ######### ";
+        else if(selected_mode == "CC")
+        {
+            qDebug() << "######### CC MODE selected ######### ";
+            emit intercom_clicked();
+        }
+        else if(selected_mode == "ETU")
+            qDebug() << "######### ETU MODE selected ######### ";
     }
     else if(path.startsWith("/RouteRunResponse"))
     {
@@ -111,7 +118,7 @@ void RequestHandler::service(HttpRequest& request, HttpResponse& response)
         {
             QByteArray buffer=file.read(65536);
             response.write(buffer);
-     // qDebug("RequestHandler: finished request");
+            // qDebug("RequestHandler: finished request");
         }
     }
 }
@@ -181,7 +188,7 @@ void RequestHandler::setContentType(QString fileName, HttpResponse& response) co
     // Todo: add all of your content types
     else
     {
-       // qDebug("StaticFileController: unknown MIME type for filename '%s'", qPrintable(fileName));
+        // qDebug("StaticFileController: unknown MIME type for filename '%s'", qPrintable(fileName));
     }
 }
 

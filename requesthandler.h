@@ -41,6 +41,8 @@ signals:
     void disconnect_selected_call(QString);
     void hold_selected_call(QString);
     void resume_selected_call(QString);
+    void intercom_clicked();
+    void announcement_clicked() ;
 public slots:
     void setContentType(QString fileName, HttpResponse& response) const;
     /**

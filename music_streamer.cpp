@@ -1,4 +1,4 @@
-﻿ #include "music_streamer.h"
+﻿#include "music_streamer.h"
 #include "ui_music_streamer.h"
 #define COMMAND_PORT 4000
 #define PLAYLISTS_PORT 4001
@@ -21,28 +21,15 @@ music_streamer::music_streamer(QWidget *parent) :
     command_channel->bind(QHostAddress::Broadcast,COMMAND_PORT);
     playlists_channel->bind(QHostAddress::Broadcast,PLAYLISTS_PORT);
     this->setGeometry(0,0,0,0);
-       conn = mpd_connection_new("localhost",6600,1000);
-    /* New Sql database which hold the all details about Routes,Devices,Events and announcements.
-     * * */
-    // bus_database = new database;
-    /* New process will be created and "/usr/bin/mp3-decoder" will run in new process
-     */
-
- //   player = new QProcess();
-    // player->setProcessChannelMode(QProcess::MergedChannels);
-    //////////////////// Setting player_timer to delay mplayer start  ////////////////////////
-
-    player_timer = new QTimer;
-    player_timer->setInterval(1000);
+    conn = mpd_connection_new("localhost",6600,1000);
     mpd_timer = new QTimer;
-    player_started = false;
     connect(mpd_timer,SIGNAL(timeout()),this,SLOT(check_mpd_status()));
 }
 
 music_streamer::~music_streamer()
 {
     delete ui;
-    delete player_timer;
+    delete mpd_timer ;
 }
 
 QStringList  music_streamer::replace_voice_delimiters_eng(QString original_string)
@@ -97,7 +84,6 @@ QStringList  music_streamer::replace_voice_delimiters_eng(QString original_strin
                 next_stn_code = QString::fromLatin1((const char *)current_route_data.stn[current_route_data.status.next_halting_stn].stn_code);
                 next_stn_code.prepend("S_");
                 original_string.replace(voice_delimiters[i],next_stn_code);
-
                 break;
             }
             case 5:
@@ -178,7 +164,6 @@ QStringList  music_streamer::replace_voice_delimiters_hindi(QString original_str
                 next_stn_code = QString::fromLatin1((const char *)current_route_data.stn[current_route_data.status.next_halting_stn].stn_code);
                 next_stn_code.prepend("S_");
                 original_string.replace(voice_delimiters[i],next_stn_code);
-
                 break;
             }
             case 5:
@@ -203,6 +188,7 @@ QStringList  music_streamer::replace_voice_delimiters_hindi(QString original_str
         temp.append(mp3);
         appended_list.append(temp) ;
     }
+
     return appended_list;
 }
 
@@ -310,41 +296,41 @@ void music_streamer::create_announcement_playlist(QString func_code)
         reg_playlist   = replace_voice_delimiters_reg(reg_string);
 
         if(!(status= mpd_run_status(conn)))
-          conn = mpd_connection_new("localhost",6600,1000);
+            conn = mpd_connection_new("localhost",6600,1000);
         mpd_run_status(conn);
-      mpd_run_clear(conn);
-       QTextStream stream_eng( &english_playlist_file );
-       QTextStream stream_hin( &hindi_playlist_file );
-       QTextStream stream_reg( &regional_playlist_file );
+        mpd_run_clear(conn);
+        QTextStream stream_eng( &english_playlist_file );
+        QTextStream stream_hin( &hindi_playlist_file );
+        QTextStream stream_reg( &regional_playlist_file );
 
-       if ( english_playlist_file.open(QIODevice::ReadWrite | QIODevice::Truncate  ) )
-       {
-           for(int i=0;i<eng_playlist.length();i++)
-               stream_eng << eng_playlist.at(i) << endl;
-       }
-       else
-           qDebug() << "Unable To Open File: English";
-       if ( hindi_playlist_file.open(QIODevice::ReadWrite | QIODevice::Truncate ) )
-       {
-           for(int i=0;i<hindi_playlist.length();i++)
-               stream_hin << hindi_playlist.at(i) << endl;
-       }
-       else
-           qDebug() << "Unable To Open File: Hindi";
-       if ( regional_playlist_file.open(QIODevice::ReadWrite| QIODevice::Truncate  ) )
-       {
-           for(int i=0;i<reg_playlist.length();i++)
-               stream_reg << reg_playlist.at(i) << endl;
-       }
-       else
-           qDebug() << "Unable To Open File: regional";
-       repeat_count = 6;
-        ANNOUNCE_LANGUAGE = regional;
+        if ( english_playlist_file.open(QIODevice::ReadWrite | QIODevice::Truncate  ) )
+        {
+            for(int i=0;i<eng_playlist.length();i++)
+                stream_eng << eng_playlist.at(i) << endl;
+        }
+        else
+            qDebug() << "Unable To Open File: English";
+        if ( hindi_playlist_file.open(QIODevice::ReadWrite | QIODevice::Truncate ) )
+        {
+            for(int i=0;i<hindi_playlist.length();i++)
+                stream_hin << hindi_playlist.at(i) << endl;
+        }
+        else
+            qDebug() << "Unable To Open File: Hindi";
+        if ( regional_playlist_file.open(QIODevice::ReadWrite| QIODevice::Truncate  ) )
+        {
+            for(int i=0;i<reg_playlist.length();i++)
+                stream_reg << reg_playlist.at(i) << endl;
+        }
+        else
+            qDebug() << "Unable To Open File: regional";
+        repeat_count = 6;
+        ANNOUNCE_LANGUAGE = regional; // [TO-DO] get language positioning from Database
         check_mpd_status();
-       QSqlQuery Query_to_get_data_for_msg_code("SELECT `msg_time` FROM `tbl_msg` where `msg_code` = '"+func_code+"'");
-       Query_to_get_data_for_msg_code.first();
-       mpd_timer->start((Query_to_get_data_for_msg_code.value(0).toInt() * 1000));
-       qDebug() << "mpd Timer :: " << Query_to_get_data_for_msg_code.value(0).toInt();
+        QSqlQuery Query_to_get_data_for_msg_code("SELECT `msg_time` FROM `tbl_msg` where `msg_code` = '"+func_code+"'");
+        Query_to_get_data_for_msg_code.first();
+        mpd_timer->start((Query_to_get_data_for_msg_code.value(0).toInt() * 1000));
+        qDebug() << "mpd Timer :: " << Query_to_get_data_for_msg_code.value(0).toInt();
     }
     else
         return ;
@@ -353,43 +339,41 @@ void music_streamer::create_announcement_playlist(QString func_code)
 void music_streamer::check_mpd_status()
 {
     repeat_count --;
-   if(repeat_count == 0)
-   {
-       mpd_timer->stop();
-       repeat_count = 0;
-   }
+    if(repeat_count == 0)
+    {
+        mpd_timer->stop();
+        repeat_count = 0;
+    }
 
-switch(ANNOUNCE_LANGUAGE)
-{
-case regional:
-
-     mpd_run_clear(conn);
-     mpd_run_load(conn,"regional");
- //  Sleeper::sleep(2);
-     mpd_run_play(conn);
-     send_command_to_player(PLAY);
-     Sleeper::msleep(500);
-    ANNOUNCE_LANGUAGE = hindi;
-   break;
-case hindi:
-    mpd_run_clear(conn);
-    mpd_run_load(conn,"hindi");
- //   Sleeper::sleep(2);
-     mpd_run_play(conn);
-     send_command_to_player(PLAY);
-     Sleeper::msleep(500);
-   ANNOUNCE_LANGUAGE = english;
-   break;
-case english:
-    mpd_run_clear(conn);
-    mpd_run_load(conn,"english");
-   // Sleeper::sleep(2);
-     mpd_run_play(conn);
-   send_command_to_player(PLAY);
-   Sleeper::msleep(500);
-   ANNOUNCE_LANGUAGE = regional;
-   break;
-}
+    switch(ANNOUNCE_LANGUAGE)
+    {
+    case regional:
+        mpd_run_clear(conn);
+        mpd_run_load(conn,"regional");
+        mpd_run_play(conn);
+        send_command_to_player(PLAY);
+        Sleeper::msleep(50);
+        ANNOUNCE_LANGUAGE = hindi;
+        break;
+    case hindi:
+        mpd_run_clear(conn);
+        mpd_run_load(conn,"hindi");
+        //   Sleeper::sleep(2);
+        mpd_run_play(conn);
+        send_command_to_player(PLAY);
+        Sleeper::msleep(50);
+        ANNOUNCE_LANGUAGE = english;
+        break;
+    case english:
+        mpd_run_clear(conn);
+        mpd_run_load(conn,"english");
+        // Sleeper::sleep(2);
+        mpd_run_play(conn);
+        send_command_to_player(PLAY);
+        Sleeper::msleep(50);
+        ANNOUNCE_LANGUAGE = regional;
+        break;
+    }
 
 }
 
@@ -397,34 +381,8 @@ void music_streamer::send_command_to_player(int command)
 {
     command_data.append(QString::number(command));
     command_channel->writeDatagram(command_data.data(),QHostAddress::Broadcast,4000);
-    qDebug() << "COMMAND SENT ::::  " << command_data;
+    qDebug() << "COMMAND SENT >->->----:::::::::::::------::::::---->->-> " << command_data;
     command_data.clear();
 }
 
-void music_streamer::send_playlists_to_player()
-{
-    playlists_data.clear();
-        for(int i=0;i<eng_playlist.length();i++)
-        {
-            playlists_data.append(eng_playlist.at(i));
-            playlists_data.append(',');
-        }
-            playlists_data.append("ETX");
-            playlists_data.append(',');
 
-        for(int i=0;i<hindi_playlist.length();i++)
-        {
-            playlists_data.append(hindi_playlist.at(i));
-            playlists_data.append(',');
-        }
-        playlists_data.append("ETX");
-
-        for(int i=0;i<reg_playlist.length();i++)
-        {
-            playlists_data.append(',');
-            playlists_data.append(reg_playlist.at(i));
-        }
-         playlists_data.append(',');
-         playlists_data.append("ETX");
-        playlists_channel->writeDatagram(playlists_data.data(),QHostAddress::Broadcast,4001);
-}

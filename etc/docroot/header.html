@@ -121,7 +121,7 @@ function formetutable(xml,next)
 					table += "<tr class = \"row\" style=\"cursor:pointer;height:30%;max-height:30%;background-color:#71a5ed;\"><td style=\"border: 1px #DDD solid;width:10%;opacity: 0.5; border-radius:5px;font-size: 20;text-align:center;background-color:"+color[i%2]+";\">"+ "<img width = 70%; src = \"images/start.png\"></td><td style=\"border: 1px #DDD solid;width:10%; border-radius:5px;font-size: 20;opacity: 0.5;text-align:center;background-color:"+color[i%2]+";\">"+ "<img width = 70%;  src = \"images/stop.png\"></td></td><td style=\"border: 1px #DDD solid;width:70%; border-radius:5px;font-size: 20;text-align:center;background-color:"+color[i%2]+";\">" + x[i-1].getAttribute("NAME") + 
 					"</td></tr>";
 				else
-					table += "<tr class = \"row\" style=\"cursor:pointer;height:30%;max-height:30%;background-color:#71a5ed;\"><td onclick=\"selectetu(this.parentNode.cells[2].innerHTML);\" style=\"border: 1px #DDD solid;width:10%; border-radius:5px;font-size: 20;text-align:center;background-color:"+color[i%2]+";\">"+ "<img width = 70%;  src = \"images/start.png\"></td><td style=\"border: 1px #DDD solid;width:10%; border-radius:5px;font-size: 20;opacity: 0.5;text-align:center;background-color:"+color[i%2]+";\">"+ "<img width = 70%;  src = \"images/stop.png\"></td><td style=\"border: 1px #DDD solid;width:70%; border-radius:5px;font-size: 20;text-align:center;background-color:"+color[i%2]+";\">" + x[i-1].getAttribute("NAME") + 
+					table += "<tr class = \"row\"  style=\"cursor:pointer;height:30%;max-height:30%;background-color:#71a5ed;\"><td onclick=\"selectetu(this.parentNode.cells[2].innerHTML);\" style=\"border: 1px #DDD solid;width:10%; border-radius:5px;font-size: 20;text-align:center;background-color:"+color[i%2]+";\">"+ "<img width = 70%;  src = \"images/start.png\"></td><td style=\"border: 1px #DDD solid;width:10%; border-radius:5px;font-size: 20;opacity: 0.5;text-align:center;background-color:"+color[i%2]+";\">"+ "<img width = 70%;  src = \"images/stop.png\"></td><td style=\"border: 1px #DDD solid;width:70%; border-radius:5px;font-size: 20;text-align:center;background-color:"+color[i%2]+";\">" + x[i-1].getAttribute("NAME") + 
 					"</td></tr>";
 		  	}
 		  	table += "</table></div></div>";
@@ -130,6 +130,11 @@ function formetutable(xml,next)
 
 	  	}
 	}
+function showetucalls()
+{
+	display = 1;
+	document.getElementById("popup-windows").style.display = "block";
+}
 function showpopoup(menu)
 {
 
@@ -141,21 +146,38 @@ function showpopoup(menu)
 	}
 	if(menu == 'pa')
 	{
-		httpGet("ModeSelection.html?Mode=PA",response);
+		if(document.getElementById("paicon").style.backgroundColor == 'rgb(255, 0, 0)')
+			httpGet("ModeSelection.html?Mode=PA&Enable=0",response);
+		else
+			httpGet("ModeSelection.html?Mode=PA&Enable=1",response);
 	}
 	if(menu == 'etu')
 	{
-		httpGet("ModeSelection.html?Mode=ETU",response);
-		display = 1;
-		document.getElementById("popup-windows").style.display = "block";
+		
+		var color = document.getElementById("etuicon").style.backgroundColor;
+		if(document.getElementById("etuicon").style.backgroundColor == 'rgb(255, 0, 0)')
+		{
+			httpGet("ModeSelection.html?Mode=ETU&Enable=0",response);
+			
+		}
+		else
+		{
+			httpGet("ModeSelection.html?Mode=ETU&Enable=1",response);
+		}
 	}
 	if(menu == 'intercom')
 	{
-		httpGet("ModeSelection.html?Mode=CC",response);
+		if(document.getElementById("ccicon").style.backgroundColor == 'rgb(255, 0, 0)')
+			httpGet("ModeSelection.html?Mode=CC&Enable=0",response);
+		else
+			httpGet("ModeSelection.html?Mode=CC&Enable=1",response);
 	}
 	if(menu == 'controlroom')
 	{
-		httpGet("ModeSelection.html?Mode=CR",response);
+		if(document.getElementById("cricon").style.backgroundColor == 'rgb(255, 0, 0)')
+			httpGet("ModeSelection.html?Mode=CR&Enable=0",response);
+		else
+			httpGet("ModeSelection.html?Mode=CR&Enable=1",response);
 	}
 }
 function closepop() 
@@ -206,11 +228,11 @@ function closepop()
 </style>
 <body>
 <img class = "headerimage" src="images\system_config.png" height="20%" width = "15%" onclick="showpopoup('settings')">
-<img id = "paicon" class = "headerimage" class = "headerimage" src="images\announcement_on_podium.png" height="20%" width = "15%" onclick="showpopoup('pa')">
-<img id = "etuicon" class = "headerimage" src="images\etu.png" height="20%" width = "15%"  onclick="showpopoup('etu')">
-<img id = "ccicon" class = "headerimage" src="images\intercom.png" height="20%" width = "15%" onclick="showpopoup('intercom')">
-<img id = "cricon" class = "headerimage" src="images\control_room.png" height="20%" width = "15%" onclick="showpopoup('controlroom')">
-<img id = "gsmicon" class = "headerimage" src="images\notconnected.png" height="20%" width = "15%" onclick="showpopoup('data')">
+<img id = "paicon" class = "headerimage" src="images\announcement_on_podium.png" height="20%" width = "15%" ondblclick="showpopoup('pa')">
+<img id = "etuicon" class = "headerimage" src="images\etu.png" height="20%" width = "15%"  ondblclick="showpopoup('etu')" onclick="showetucalls()">
+<img id = "ccicon" class = "headerimage" src="images\intercom.png" height="20%" width = "15%" ondblclick="showpopoup('intercom')">
+<img id = "cricon" class = "headerimage" src="images\control_room.png" height="20%" width = "15%" ondblclick="showpopoup('controlroom')">
+<img id = "gsmicon" class = "headerimage" src="images\notconnected.png" height="20%" width = "15%" ondblclick="showpopoup('data')">
 <div id= "popup-windows" role="dialog" style = "display: none;z-index:1;position:fixed;background-color:#9ab1d6;border-radius:5px;width: 50%;height: 50%;margin-top: 0%;margin-left: 25%;opacity: 0.95;">
 <button class="close" style = "float: right;" onclick="closepop()">×</button>
 <div id= "popup"></div>

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <CATALOG>
-    <STATHEADER EtuSelected="0" Mode="ETU" GSMSTAT="Online"/>
-    <ETUSTAT EtuOnline="0" EtuState="standby" EtuSelected="0"/>
+    <STATHEADER Mode="IDLE" EtuSelected="0" GSMSTAT="Online"/>
+    <ETUSTAT EtuSelected="0" EtuOnline="0" EtuState="standby"/>
 </CATALOG>

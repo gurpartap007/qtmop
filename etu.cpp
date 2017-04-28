@@ -12,7 +12,7 @@ bool call_connected         = false;
 bool call_paused            = false;
 bool call_running           = false;
 long unique_call_id;
-LinphoneCall *active_call;
+static LinphoneCall *active_call;
 QList <QListWidgetItem *> call_reference; // List of Call Notification widget item which includes call control buttons and caller name
 QList <LinphoneCall *> Calls_list;// List of incoming calls
 void etu::paintEvent(QPaintEvent* /*event*/)
@@ -59,7 +59,7 @@ etu::etu(QWidget *parent) :
     doc.setContent(xmlData);
     QDomElement root = doc.firstChildElement("CATALOG");
     QDomElement statheader = root.firstChildElement("STATHEADER");
-    statheader.setAttribute("Mode","CR");
+    statheader.setAttribute("Mode","IDLE");
     statheader.setAttribute("GSMSTAT","Online");
     QDomElement ETUSTAT = root.firstChildElement("ETUSTAT");
     ETUSTAT.setAttribute("EtuOnline","0");
@@ -113,7 +113,7 @@ void etu::qlinphone_init()
     confDir.mkdir("Linphone");
     QString config_file = confDir.absolutePath() + "/Linphone/.linphonerc";
     LinphoneCoreVTable vtable = {0};
-    vtable.call_state_changed = qcall_state_changed; // Calls State Call Back function
+  //  vtable.call_state_changed = qcall_state_changed; // Calls State Call Back function
     vtable.text_received = qlinphone_text_recieved;
     lc = linphone_core_new(&vtable, config_file.toStdString().c_str() , NULL, this);
     QTimer *iteration_timer = new QTimer(); // Timer to iterate linphone core and check call states at interval of 50 milli-seconds
@@ -253,7 +253,7 @@ void etu::incoming_call_handler()
     /************************************************************************************************/
 }
 
-void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg)
+/*void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg)
 {
     active_call = call;
     switch(cstate)
@@ -285,7 +285,7 @@ void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState
     default:
         break;
     }
-}
+}*/
 //*************************************************************************************************************/
 //            ITERATE EVERY 50 MILLI-SECONDS TO GET NOTIFICATIONS ABOUT CALLS AND CHECK FOR NEW CALLS          /
 //            STATES OF CALLS AS SET BY LINPHONECORE                                                          /

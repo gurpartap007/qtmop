@@ -12,6 +12,7 @@ int current_station = 0;
 extern QString slave_train_no;
 bool is_slave_train  = false;
 route_struct current_route_data;
+static bool isRouteEnded = false;
 sinteger mul_factor[MAX_STATIONS_PER_ROUTE];
 float track_dist_bn_stns[MAX_STATIONS_PER_ROUTE];
 train_route::train_route(QWidget *parent) :
@@ -25,6 +26,7 @@ train_route::train_route(QWidget *parent) :
     updating_file = new QFile("/home/apaul/apaul_projects/qtmop/etc/docroot/route_stat.xml");
     connect(this,SIGNAL(send_route_info(QString)),udp_connection,SLOT(send_train_route_info(QString)));
     connect(this,SIGNAL(add_stations()),this,SLOT(add_stations_for_current_train()));
+    connect(this,SIGNAL(route_end()),this,SLOT(show_end_route()));
     connect(&time_update,SIGNAL(timeout()),this,SLOT(update_date_time()));
     time_update.start(1000);
     //udp_connection->device_reset();
@@ -127,10 +129,10 @@ void train_route::gps_packet_handler(qint64 event,void *data)
     gps_packet = *(union gps_union *)data;
     gps_packet.data.status.bits.to_be_processed = 1;
     date_time.clear();
-    date_time = QString::number(gps_packet.data.cpu.time.hrs) + ":" + QString::number(gps_packet.data.cpu.time.min) + ":" + QString::number(gps_packet.data.cpu.time.sec);
+    date_time = QString::number(gps_packet.data.cpu.time.hrs) + ":" + QString::number(gps_packet.data.cpu.time.min) + ":" + QString::number(gps_packet.data.cpu.time.sec ) +"   ";
     date_time += QString::number(gps_packet.data.cpu.date.day) + "/" + QString::number(gps_packet.data.cpu.date.month) + "/20" + QString::number(gps_packet.data.cpu.date.yrs);
-   // ui->date_time->setText(date_time);
- }
+    // ui->date_time->setText(date_time);
+}
 void train_route::structure_filling(bool slave_train)
 {
     fill_train_struct(slave_train);
@@ -146,7 +148,7 @@ void train_route::emulate_skip(int id)
 }
 void train_route::show_train_info()
 {
- //   QFile file("/home/apaul/Documents/running_route.xml");
+    //   QFile file("/home/apaul/Documents/running_route.xml");
 
     if (!file->open(QIODevice::WriteOnly))
     {
@@ -207,7 +209,6 @@ void train_route::on_skip_station_clicked(int id)
     current_item = ui->listWidget->item(id);
     current_widget =  ui->listWidget->itemWidget(current_item);
     current_route_data.stn[id].status.bits.station_skipped = !current_route_data.stn[id].status.bits.station_skipped;
-
     //   current_item->setForeground(QBrush(QColor(200,0,0,100)));
 }
 
@@ -223,26 +224,33 @@ void train_route::update_date_time()
     ui->coach_count->adjustSize();
     route_tasks();
     /*********************** Replacing XML CONTENT ********************************************************/
-        if (!updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
-        {
+    if (!updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
+    {
         qDebug() << "unable to open xml file";
         return;
-        }
-        QByteArray xmlData(updating_file->readAll());
-        QDomDocument doc("route_stat");
-         QDomNodeList n;
-        doc.setContent(xmlData);
-        QDomElement root = doc.firstChildElement("CATALOG");
-        QDomElement routetrain = root.firstChildElement("ROUTEtrain");
-        routetrain.setAttribute("GPSSTAT",(date_time));
-        routetrain.setAttribute("SPEED",QString::number(gps_packet.data.cpu.speed/100,'g',2));
-        routetrain.setAttribute("DISTANCE",QString::number(current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc,'g',3));
-        updating_file->resize(0);
-        QTextStream stream(updating_file);
-        stream.setDevice(updating_file);
-        doc.save(stream, 4);
-        updating_file->close();
-
+    }
+    QByteArray xmlData(updating_file->readAll());
+    QDomDocument doc("route_stat");
+    QDomNodeList n;
+    doc.setContent(xmlData);
+    QDomElement root = doc.firstChildElement("CATALOG");
+    QDomElement routetrain = root.firstChildElement("ROUTEtrain");
+    routetrain.setAttribute("GPSSTAT",(date_time));
+    if(!isRouteEnded)
+    {
+    routetrain.setAttribute("SPEED",QString::number(gps_packet.data.cpu.speed/100,'g',2));
+    routetrain.setAttribute("DISTANCE",QString::number(current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc,'g',3));
+    }
+    else
+    {
+        routetrain.setAttribute("SPEED","0");
+        routetrain.setAttribute("DISTANCE","0");
+    }
+    updating_file->resize(0);
+    QTextStream stream(updating_file);
+    stream.setDevice(updating_file);
+    doc.save(stream, 4);
+    updating_file->close();
 }
 
 void train_route::src_mid_des_station_name_filling()
@@ -278,7 +286,6 @@ void train_route::src_mid_des_station_name_filling()
     QSqlQuery get_destination_station_name_reg("SELECT * FROM `tbl_StationName` WHERE `station_code`='"+QString::fromUtf8((const char *)current_route_data.train.des_stn_code)+"' and `stn_LangId`='Tamil'");
     get_destination_station_name_reg.first();
     memcpy(current_route_data.train.des.name.reg1,get_destination_station_name_reg.value(StationName::STATION_NAME).toString().toLatin1(),get_destination_station_name_reg.value(StationName::STATION_NAME).toString().size());
-
     /***********************************************************************************************/
 }
 
@@ -317,7 +324,6 @@ void train_route::find_ladies_and_slow_fast_status(bool slave_train)
     //**************************************************************************************************//
 
     //////////////////////////// FIND LADIES_SPECIAL_STATUS AND SLOW/FAST STATUS OF MASTER TRAIN ///////////////////
-
     else
     {
         QSqlQuery query_ladies_train_status("SELECT `ladies_train_status` FROM `tbl_TrainNumber` where `train_no`='"+ master_train_no + "'");
@@ -399,6 +405,7 @@ void train_route::fill_train_struct(bool slave_train)
         current_route_data.train.arr_time_min = arr_time_slave.at(Time::MINUTES).toInt();
         current_route_data.train.dep_time_hrs = dep_time_slave.at(Time::HOURS).toInt();
         current_route_data.train.dep_time_min = dep_time_slave.at(Time::MINUTES).toInt();
+
     }
     arrival_time.fromString(QString("15.20.2"),QString("hhmmss"));
     ///////////////// CONVERTING UNSIGNED CHAR * TO CONST CHAR * FOR CONVERSION TO QSTRING   ////////////////////
@@ -497,27 +504,27 @@ void train_route::generate_station_departure()
 {
 
     /*********************** Replacing XML CONTENT ********************************************************/
-        if (!updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
-        {
+    if (!updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
+    {
         qDebug() << "unable to open xml file";
         return;
-        }
-        QByteArray xmlData(updating_file->readAll());
-        QDomDocument doc("route_stat");
-         QDomNodeList n;
-        doc.setContent(xmlData);
-        QDomElement root = doc.firstChildElement("CATALOG");
-        QDomElement routetrain = root.firstChildElement("ROUTEtrain");
-        routetrain.setAttribute("NEXT",QString::number(current_route_data.status.next_halting_stn));
-        routetrain.setAttribute("PERIPHERY","OUT");
-        n = root.childNodes();
-      //  qDebug()<<n.length();
-        updating_file->resize(0);
-        QTextStream stream(updating_file);
-        stream.setDevice(updating_file);
-        doc.save(stream, 4);
-        updating_file->close();
-        emit send_route_info(FC_SDF);
+    }
+    QByteArray xmlData(updating_file->readAll());
+    QDomDocument doc("route_stat");
+    QDomNodeList n;
+    doc.setContent(xmlData);
+    QDomElement root = doc.firstChildElement("CATALOG");
+    QDomElement routetrain = root.firstChildElement("ROUTEtrain");
+    routetrain.setAttribute("NEXT",QString::number(current_route_data.status.next_halting_stn));
+    routetrain.setAttribute("PERIPHERY","OUT");
+    n = root.childNodes();
+    //  qDebug()<<n.length();
+    updating_file->resize(0);
+    QTextStream stream(updating_file);
+    stream.setDevice(updating_file);
+    doc.save(stream, 4);
+    updating_file->close();
+    emit send_route_info(FC_SDF);
 
 }
 
@@ -525,7 +532,7 @@ int train_route::on_next_station_clicked()
 {
     generate_station_departure();
 
-/*********************** Replacing XML CONTENT ********************************************************/
+    /*********************** Replacing XML CONTENT ********************************************************/
 check_again:
     if(current_route_data.stn[current_route_data.status.next_halting_stn].status.bits.station_skipped)
     {
@@ -533,7 +540,7 @@ check_again:
         {
             QListWidgetItem *prev_item;
             QWidget *prev_widget;
-//            prev_item = ui->listWidget->item(current_route_data.status.next_halting_stn-1);
+         // prev_item = ui->listWidget->item(current_route_data.status.next_halting_stn-1);
             prev_item = ui->listWidget->item(current_station);
             prev_widget =  ui->listWidget->itemWidget(prev_item);
             prev_widget->setDisabled(true);
@@ -576,10 +583,10 @@ check_again:
             //   second_prev_widget->setDisabled(true);
             // second_prev_widget->setStyleSheet("background-color: rgb(150,150,150);");
             current_route_data.status.next_halting_stn = current_route_data.status.next_halting_stn + 1;
-//            QDomElement cs = n.at(current_route_data.status.next_halting_stn + 1).toElement();
-  //          qDebug() << "SKIPPED STOP  NAME" << cs.attribute("STOP");
-    //        cs.setAttribute("ADD","0");
-      //      cs.setAttribute("PFD","LEFT");
+            //            QDomElement cs = n.at(current_route_data.status.next_halting_stn + 1).toElement();
+            //          qDebug() << "SKIPPED STOP  NAME" << cs.attribute("STOP");
+            //        cs.setAttribute("ADD","0");
+            //      cs.setAttribute("PFD","LEFT");
         }
 
         current_item = ui->listWidget->item(current_route_data.status.next_halting_stn+1);
@@ -614,26 +621,34 @@ check_again:
         {
             ui->next_station->setDisabled(true);
             ui->next_station->setStyleSheet(" color: rgb(50,30,130);");
-//            emit send_route_info(FC_REF);
+            //            emit send_route_info(FC_REF);
         }
     }
     return 0;
 }
 void train_route::generate_station_arrival()
 {
+    qDebug() << "/////////   halting station   //////" << current_route_data.status.next_halting_stn;
+
     if(current_route_data.status.next_halting_stn == (station_codes.size()))
-        emit send_route_info(FC_SAF);
-    else
+    {
         emit send_route_info(FC_REF);
+        isRouteEnded = true ;
+        update_date_time();
+         emit route_end();
+        qDebug() << "/////////   halting station   //////" << current_route_data.status.next_halting_stn;
+    }
+    else
+        emit send_route_info(FC_SAF);
     if (!updating_file->open(QIODevice::ReadWrite | QIODevice::Text))
     {
-    qDebug() << "unable to open xml file";
-    return;
+        qDebug() << "unable to open xml file";
+        return;
     }
 
     QByteArray xmlData(updating_file->readAll());
     QDomDocument doc("route_stat");
-     QDomNodeList n;
+    QDomNodeList n;
     doc.setContent(xmlData);
     QDomElement root = doc.firstChildElement("CATALOG");
     QDomElement routetrain = root.firstChildElement("ROUTEtrain");
@@ -661,8 +676,8 @@ void train_route::on_station_arrived_clicked()
 }
 void train_route::route_tasks()
 {
-   // qDebug()<<"route_tasks() route.cpp called..;";
- //   manage_device_updates();
+    // qDebug()<<"route_tasks() route.cpp called..;";
+    //   manage_device_updates();
     if(gps_packet.data.status.bits.to_be_processed)
     {
         gps_packet.data.status.bits.to_be_processed = 0;
@@ -670,19 +685,19 @@ void train_route::route_tasks()
         curr_longit = gps_packet.data.cpu.longit;
         if(current_route_data.status.flags.bits.position_identified)
         {
-           /*********************************************************************************************************************************************************/
-           /***********************Calculate distances based on stop lat longs and the curr lat longs****************************************************************/
-           /*********************************************************************************************************************************************************/
-                current_route_data.stn[current_route_data.status.next_halting_stn].gps_distance_from_prev_loc = current_route_data.stn[current_route_data.status.next_halting_stn].gps_distance_from_curr_loc;
-                current_route_data.stn[current_route_data.status.next_halting_stn].gps_distance_from_curr_loc = get_distance(current_route_data.stn[current_route_data.status.next_halting_stn].loc.coordintes.latitude,current_route_data.stn[current_route_data.status.next_halting_stn].loc.coordintes.longitude);
-                current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_prev_loc = current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc;
-                double curr_distance = 0;
-                curr_distance = current_route_data.stn[current_route_data.status.next_halting_stn].gps_distance_from_curr_loc;
-                if(current_route_data.status.next_halting_stn)
-                    curr_distance = (((float)mul_factor[current_route_data.status.next_halting_stn - 1] * curr_distance) / 10000) + curr_distance;
-                else
-                    curr_distance = (((float)mul_factor[0] * curr_distance) / 10000) + curr_distance;
-                current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc = curr_distance;
+            /*********************************************************************************************************************************************************/
+            /***********************Calculate distances based on stop lat longs and the curr lat longs****************************************************************/
+            /*********************************************************************************************************************************************************/
+            current_route_data.stn[current_route_data.status.next_halting_stn].gps_distance_from_prev_loc = current_route_data.stn[current_route_data.status.next_halting_stn].gps_distance_from_curr_loc;
+            current_route_data.stn[current_route_data.status.next_halting_stn].gps_distance_from_curr_loc = get_distance(current_route_data.stn[current_route_data.status.next_halting_stn].loc.coordintes.latitude,current_route_data.stn[current_route_data.status.next_halting_stn].loc.coordintes.longitude);
+            current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_prev_loc = current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc;
+            double curr_distance = 0;
+            curr_distance = current_route_data.stn[current_route_data.status.next_halting_stn].gps_distance_from_curr_loc;
+            if(current_route_data.status.next_halting_stn)
+                curr_distance = (((float)mul_factor[current_route_data.status.next_halting_stn - 1] * curr_distance) / 10000) + curr_distance;
+            else
+                curr_distance = (((float)mul_factor[0] * curr_distance) / 10000) + curr_distance;
+            current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc = curr_distance;
             /*********************************************************************************************************************************************************/
             /***********************Calculate distances based on stop lat longs and the curr lat longs****************************************************************/
             /*********************************************************************************************************************************************************/
@@ -690,39 +705,39 @@ void train_route::route_tasks()
             /*********************************************************************************************************************************************************/
             /***********************Generate Arrival Departure triggers based on the distance of current stop form the current location*******************************/
             /*********************************************************************************************************************************************************/
-             if(((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000) <= current_route_data.stn[current_route_data.status.next_halting_stn].approaching_peri) && ((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_prev_loc*1000) > current_route_data.stn[current_route_data.status.next_halting_stn].approaching_peri))
-             {
-            //    qDebug() << "WITHIN 1 KM OF " << QString::fromLatin1((const char*)current_route_data.stn[current_route_data.status.next_stn].stn_name);
+            if(((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000) <= current_route_data.stn[current_route_data.status.next_halting_stn].approaching_peri) && ((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_prev_loc*1000) > current_route_data.stn[current_route_data.status.next_halting_stn].approaching_peri))
+            {
+                //    qDebug() << "WITHIN 1 KM OF " << QString::fromLatin1((const char*)current_route_data.stn[current_route_data.status.next_stn].stn_name);
                 //emit route_events(STOP_APPROACHING,0);
-             }
-             else if(((int)(current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000) <= current_route_data.stn[current_route_data.status.next_halting_stn].arrival_peri) && ((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_prev_loc*1000) > (current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000)))
-             {
+            }
+            else if(((int)(current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000) <= current_route_data.stn[current_route_data.status.next_halting_stn].arrival_peri) && ((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_prev_loc*1000) > (current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000)))
+            {
                 if(current_route_data.status.flags.bits.inside_peri == 0)
                 {
-             //       qDebug() << "ENTERED ENTRY PERIPHERY OF " << QString::fromLatin1((const char*)current_route_data.stn[current_route_data.status.next_halting_stn].stn_name);
+                    //       qDebug() << "ENTERED ENTRY PERIPHERY OF " << QString::fromLatin1((const char*)current_route_data.stn[current_route_data.status.next_halting_stn].stn_name);
                     current_route_data.status.flags.bits.inside_peri = 1;
                     current_route_data.status.flags.bits.outside_peri = 0;
                     //emit route_events(STOP_ARRIVAL,0);
                     generate_station_arrival();
                 }
-             }
-             else if(((int)(current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000) > current_route_data.stn[current_route_data.status.next_halting_stn].departure_peri) && ((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_prev_loc*1000) < (current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000)))
-             {
-                 if(current_route_data.status.flags.bits.outside_peri == 0 && current_route_data.status.flags.bits.inside_peri == 1)
-                 {
-              //      qDebug() << "LEFT EXIT PERIPHERY OF " << QString::fromLatin1((const char*)current_route_data.stn[current_route_data.status.next_halting_stn].stn_name);
-                   // current_route_data.Prev_stop = current_route_data.status.next_halting_stn;
+            }
+            else if(((int)(current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000) > current_route_data.stn[current_route_data.status.next_halting_stn].departure_peri) && ((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_prev_loc*1000) < (current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000)))
+            {
+                if(current_route_data.status.flags.bits.outside_peri == 0 && current_route_data.status.flags.bits.inside_peri == 1)
+                {
+                    //      qDebug() << "LEFT EXIT PERIPHERY OF " << QString::fromLatin1((const char*)current_route_data.stn[current_route_data.status.next_halting_stn].stn_name);
+                    // current_route_data.Prev_stop = current_route_data.status.next_halting_stn;
                     current_route_data.status.next_halting_stn++;
                     current_route_data.status.next_stn = current_route_data.status.next_halting_stn + 1;
                     current_route_data.status.flags.bits.inside_peri = 0;
                     current_route_data.status.flags.bits.outside_peri = 1;
-                   generate_station_departure();
+                    generate_station_departure();
                     //emit route_events(STOP_DEPARTURE,0);
-                 }
-             }
-             /*********************************************************************************************************************************************************/
-             /***********************Ended Arrival Departure triggers based on the distance of current stop form the current location**********************************/
-             /*********************************************************************************************************************************************************/
+                }
+            }
+            /*********************************************************************************************************************************************************/
+            /***********************Ended Arrival Departure triggers based on the distance of current stop from the current location**********************************/
+            /*********************************************************************************************************************************************************/
         }
         if(current_route_data.status.flags.bits.route_info_avail && (!current_route_data.status.flags.bits.position_identified))
             lost_path_recovery();
@@ -816,10 +831,10 @@ void train_route::lost_path_recovery()
     if(!current_route_data.status.flags.bits.right_angle)
     {
         current_route_data.status.flags.bits.position_identified = 1;
-      //  if(current_route_data.status.next_halting_stn)
+        // if(current_route_data.status.next_halting_stn)
         //    current_route_data.Prev_stop = current_route_data.status.next_halting_stn - 1;
-       // else
-        //    current_route_data.Prev_stop = current_route_data.status.next_halting_stn;
+        // else
+        //2    current_route_data.Prev_stop = current_route_data.status.next_halting_stn;
         current_route_data.status.next_stn = current_route_data.status.next_halting_stn + 1;
         if((current_route_data.stn[current_route_data.status.next_halting_stn].distance_from_curr_loc*1000) > current_route_data.stn[current_route_data.status.next_halting_stn].arrival_peri)
         {
@@ -855,7 +870,7 @@ float train_route::get_distance(float x2, float y2)
 {
     float temp_distance;
     temp_distance = (curr_lattit - x2)*(curr_lattit - x2)+(curr_longit - y2)*(curr_longit - y2);
-    temp_distance = sqrt(temp_distance);
+    temp_distance = std::sqrt(temp_distance);
     temp_distance = temp_distance * 176 / 945 / 1000;
     return(temp_distance);
 }
@@ -863,7 +878,16 @@ float train_route::get_distance_bn_pts(float x1, float y1,float x2, float y2)
 {
     float temp_distance;
     temp_distance = (x1 - x2)*(x1 - x2)+(y1 - y2)*(y1 - y2);
-    temp_distance = sqrt(temp_distance);
+    temp_distance = std::sqrt(temp_distance);
     temp_distance = temp_distance * 176 / 945 / 1000;
     return(temp_distance);
+}
+void train_route::show_end_route()
+{
+    time_update.stop();
+    QMessageBox* msgBox 	= new QMessageBox();
+    msgBox->setWindowTitle("Train Route Ended");
+    msgBox->setText("This Journey Ends Here!");
+    msgBox->setWindowFlags(Qt::WindowStaysOnTopHint);
+    msgBox->show();
 }

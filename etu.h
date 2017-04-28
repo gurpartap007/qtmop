@@ -18,7 +18,7 @@
 namespace Ui {
 class etu;
 }
-void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg);
+//void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg);
 void qlinphone_text_recieved(LinphoneCore *lc, LinphoneChatRoom *cr,const LinphoneAddress *from, const char *msg);
 class etu : public QWidget
 {
@@ -65,7 +65,7 @@ private:
     const MSList       *call_logs;
     QHash<QString, long> call_history_lookup;
     void check_call_state(LinphoneCall *call);
-    friend void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg);
+ //   friend void qcall_state_changed(LinphoneCore *lc, LinphoneCall *call, LinphoneCallState cstate, const char *msg);
     friend void qlinphone_text_recieved(LinphoneCore *lc, LinphoneChatRoom *cr,const LinphoneAddress *from, const char *msg);
 
 };

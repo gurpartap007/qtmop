@@ -1,0 +1,196 @@
+<html>
+<title>Main Operating Panel</title>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+var display_index;
+var next_stop = 0;
+var table_length;
+	function loadXMLDoc(filter) {
+	  var xmlhttp = new XMLHttpRequest();
+	  xmlhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	      formtable(this,next_stop);
+	    }
+	  };
+	  xmlhttp.open("GET", "route_stat.xml", false);
+	  xmlhttp.send();
+	}
+	$(document).ready(function(){
+    $("button[name = 'PFR']").click(function(){
+        $.get("RouteRunResponse.html?PF='R'", function(data, status){
+           
+        });
+	    });
+    $("button[name = 'PFL']").click(function(){
+        $.get("RouteRunResponse.html?PF='L'", function(data, status){
+           
+        });
+	    });
+    $("button[name = 'Nxt']").click(function(){
+        $.get("RouteRunResponse.html?Next="+next_stop+"&Peri=IN", function(data, status){
+           
+        });
+	    });
+    $("button[name = 'Hlt']").click(function(){
+        $.get("RouteRunResponse.html?Next="+next_stop+"&Peri=OUT", function(data, status){
+           
+        });
+	    });
+	});
+	function cell(tableRow,highlight)
+	{
+		if(highlight == 1)
+ 	  		tableRow.style.backgroundColor = '#dcfac9';
+ 	  	else if(highlight == 0)
+ 	  		tableRow.style.backgroundColor = '#ffffff';
+ 	  	else if(highlight == 2)
+ 	  		tableRow.style.backgroundColor = '#ff0000';
+ 	  	else
+ 	  		tableRow.style.backgroundColor = '#700000';
+   		
+	}
+	function showstation(action)
+	{
+		var w = document.getElementById("table-station");
+		var rows = runroute.getElementsByTagName("tr");
+		if(display_index == next_stop)
+			cell(rows[display_index],2);
+		else
+			cell(rows[display_index],0);
+		if(action == 1)
+		{
+			if(display_index < (rows.length-1))	
+				display_index += 1;
+		}
+		else if(display_index)
+			display_index -= 1;
+
+		var row = $("#runroute").find('tr').eq( 0 );
+		var row2 = $("#runroute").find('tr').eq( display_index );
+		
+		if(display_index == next_stop)
+			cell(rows[display_index],3);
+		else
+			cell(rows[display_index],1);
+		var top = row2.offset().top - row.offset().top;
+		$("#table-station").scrollTop(top) ;
+	}
+	function skip(i)
+	{
+		alert("SKIPPING ");
+	}
+	function formtable(xml,next)
+	{
+		var i;
+	  	var xmlDoc = xml.responseXML;
+	  
+	  	var x = xmlDoc.getElementsByTagName("STOPS");
+	  	var nxt = 2;
+		var header = xmlDoc.getElementsByTagName("ROUTEHEADER");
+		var table="";
+		table_length = x.length;
+		display_index = 0;
+		next_stop = nxt.childNodes[0].nodeValue;
+		document.getElementById("SourceStation").innerHTML = header[0].getAttribute("SOURCE");
+		document.getElementById("ViaStation").innerHTML = header[0].getAttribute("VIA");
+		document.getElementById("DestinationStation").innerHTML = header[0].getAttribute("DESTINATION");
+		document.getElementById("Route").innerHTML = header[0].getAttribute("ROUTE");
+		document.getElementById("Train Type").innerHTML = header[0].getAttribute("TRAINTYPE");
+		document.getElementById("Car").innerHTML = header[0].getAttribute("COACHCOUNT");
+		document.getElementById("LS").innerHTML = header[0].getAttribute("LS");
+		document.getElementById("Handicap").innerHTML = header[0].getAttribute("HC");
+		document.getElementById("Next").style.backgroundColor = '#f5f5f5';
+		document.getElementById("Arrived").style.backgroundColor = '#f5f5f5';
+		document.getElementById("status-current").innerHTML = "NEXT STATION IS " + header[0].getAttribute("SOURCE"); + " AT " + header[0].getAttribute("DISTANCE") + "Kms.";
+		if(header[0].getAttribute("PERIPHERY"); == 'IN')
+			document.getElementById("Arrived").style.backgroundColor = '#ff0000';
+		else
+			document.getElementById("Next").style.backgroundColor = '#00ff00';
+		for (i = 0; i <x.length; i++) 
+		{
+			if(x[i].getAttribute("ADD") == '1')
+			{
+				if(next_stop == i)
+				{
+					table += "<tr onmouseover=\"cell(this,3);\" onmouseout = \"cell(this,2);\" style = \"background-color:#ff0000;\"><td style= \"border: 1px #DDD solid;width:10%; border-radius:5px; background-color:#f5f5f5; text-align:center; padding: 5px; cursor: pointer;\" onclick = \"skip(1);\">" +
+					    "SKIP" +
+					    "</td><td style= \"border: 1px #DDD solid;width:80%; padding: 5px; cursor: default;\">" +
+					    x[i].getAttribute("STOP") +
+					    "</td></tr>";
+					    if(x[i].getAttribute("PFD") == 'LEFT')
+					    {
+					    	document.getElementById("PFR").style.backgroundColor = '#f5f5f5';
+							document.getElementById("PFL").style.backgroundColor = '#00ff00';
+						}
+						else
+						{
+					    	document.getElementById("PFL").style.backgroundColor = '#f5f5f5';
+							document.getElementById("PFR").style.backgroundColor = '#00ff00';
+
+						}
+				}
+				else
+				{
+					table += "<tr onmouseover=\"cell(this,1);\" onmouseout = \"cell(this,0);\"><td style= \"border: 1px #DDD solid; border-radius:5px; width:10%; background-color:#f5f5f5; text-align:center; padding: 5px; cursor: pointer;\" onclick = \"skip(1);\">" +
+					    "SKIP" +
+					    "</td><td style= \"border: 1px #DDD solid; width:80%;padding: 5px; cursor: default;\">" +
+					    x[i].getAttribute("STOP") +
+					    "</td></tr>";
+				}
+			}
+			else
+			{
+				table += "<tr style = \"color:#7f7f7f;\"><td style= \"border: 1px #DDD solid; border-radius:5px; width:10%; background-color:#f5f5f5; text-align:center; padding: 5px; cursor: pointer;\" onclick = \"skip(1);\">" +
+				    "ADD" +
+				    "</td><td style= \"border: 1px #DDD solid; width:80%;padding: 5px; cursor: default;\">" +
+				    x[i].getAttribute("STOP") +
+				    "</td></tr>";
+			}
+		}
+	  	document.getElementById("runroute").innerHTML = table;
+	}
+</script>
+<body onload="loadXMLDoc('');">
+	<div id = "header"></div>
+	<div id = "route-headers" style = "background-color: #eaeaea;">
+	<div id = "route-header1" style="display: inline-block;width : 30%;">
+		<p>Source:<label id = "SourceStation"></label></p>
+		<p>Via:<label id = "ViaStation"></label></p>
+		<p>Destination:<label id = "DestinationStation"></label></p>
+	</div>
+	<div id = "route-header2" style="display: inline-block;width : 30%;">
+		<p>Route:<label id = "Route"></label></p>
+		<p>Train Type:<label id = "Train Type"></label></p>
+		<p>Coach Count:<label id = "Car"></label></p>
+	</div>
+	<div id = "route-header3" style="display: inline-block;width : 30%;">
+		<p>LS:<label id = "LS"></label></p>
+		<p>Handicap:<label id = "Handicap"></label></p>
+		<p>Time:<label id = "Time"></label></p>
+	</div>
+	</div>
+	<div id = "route-run-stat" style = "border-color: black; border: 1px solid black;margin-top:5px;">
+			<div id = "status-current" style = "max-height: 2%; height: 2%; width:100%; background-color: #eaeaea;"></div>
+		  	<div id="table-station" style = "max-height: 40%; height: 40%; width:70%;display:inline-block; margin-top:5px; max-width: 70%; border: 1px; overflow: hidden;"><table id="runroute" style= "border: 1px solid black; width:100%" ></table></div>
+		  	<div style = "max-height: 40%; height: 40%; display:inline-block;width:14%; margin-top:5px; max-width: 14%; border: 1px; overflow: hidden;"><button id="up" onclick="showstation(0);" style = "width:100%;height: 50%""><center>^</center></button><button id="dwn" onclick="showstation(1);" style = "width:100%;height: 50%""><center>v</center></button></div>
+		  	<div style = "max-height: 40%; height: 40%; display:inline-block;width:14%; margin-top:5px; max-width: 14%; border: 1px; overflow: hidden;">
+		  	<button id="Next" name = "Nxt" style = "width:100%;height: 25%""><center>Next</center></button>
+		  	<button id="Arrived" name = "Hlt" style = "width:100%;height: 25%""><center>Arrived</center></button>
+		  	<button id="PFR" name = "PFR" style = "width:100%;height: 25%" ><center>PFR</center></button>
+		  	<button id="PFL" name = "PFL"  style = "width:100%;height: 25%"><center>PFL</center></button>
+		  	</div>
+	</div>
+  	<div id = "footer"></div>
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  	<script>
+  		$(function(){
+		  $("#header").load("header.html"); 
+		  $("#footer").load("footer.html"); 
+		});
+		function slecttrainclick()
+		{
+			window.location.href = "SelectRoute.html";
+		}
+  	</script>
+</body>
+</html>

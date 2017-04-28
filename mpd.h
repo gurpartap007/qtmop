@@ -10,6 +10,7 @@
 #include "webserver.h"
 #include "xml_writer.h"
 #include "lgps.h"
+#include "intercom.h"
 
 
 
@@ -37,12 +38,15 @@ public:
     route_selection *select_route;/**< Route Selection of train based on database and User input**/
     etu *emergency_talkback;/**< Emergency Talkback class to handle calls in emergency conditions in Coaches**/
     public_announcement *announcement;
+    intercom  * interCom ;
     settings *system_settings;
     LGPS *gps;
     QPropertyAnimation *m_animation ;
     QTimer *timer_fade_in,*timer_fade_out;
     webserver *WebServer;
     xml_writer *xmlWriter;
+    QFile  *etu_updating_file;
+    QTimer *selection_timer;
 private slots:
 void on_select_route_clicked();
 void on_etu_clicked();
@@ -51,15 +55,19 @@ void close_etu_popup();
 void on_settings_clicked();
 void close_settings_popup();
 void on_pa_clicked();
-void close_announcement_popup();
 void on_intercom_clicked();
 void incoming_call_notification();
 void fade_in();
 void fade_out();
 void volume_control_slot();
+void update_xml(QString mode);
+void call_ended_from_guard();
+void show_active_call();
 private:
     Ui::mpd *ui;
+    bool intercom_running ;
     bool volume_muted;
+    bool announcement_running;
 };
 
 
